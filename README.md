@@ -1,4 +1,5 @@
 #TẠO GIT
+#
 git init
 #
 git add .

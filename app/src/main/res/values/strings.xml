@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ProductSalePrm</string>
-    <string name="l_p_trinh_android">Lâp trinh android!</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>

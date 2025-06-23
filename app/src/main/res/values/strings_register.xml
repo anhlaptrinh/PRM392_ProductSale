@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <string name="register">Đăng ký</string>
+ <string name="username">Tên người dùng</string>
+ <string name="password">Mật khẩu</string>
+ <string name="email_optional">Email (tùy chọn)</string>
+ <string name="phone_optional">Số điện thoại (tùy chọn)</string>
+ <string name="address_optional">Địa chỉ (tùy chọn)</string>
+ <string name="already_have_account">Đã có tài khoản? Đăng nhập</string>
+ <string name="create_account">Tạo tài khoản</string>
+</resources>

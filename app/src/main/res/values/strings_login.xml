@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_btn">Đăng nhập</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Mật khẩu</string>
+    <string name="login_forgot_password">Quên mật khẩu?</string>
+    <string name="login_register">Đăng ký</string>
+    <string name="login_no_account">Chưa có tài khoản?</string>
+</resources>

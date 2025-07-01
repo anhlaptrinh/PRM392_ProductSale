@@ -31,6 +31,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -43,9 +44,18 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation ("com.google.android.material:material:1.3.0-alpha03")
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
-    implementation ("com.github.bumptech.glide:glide:4.15.1")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
+    implementation (libs.material.v130alpha03)
+    implementation (libs.viewpager2)
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
 
+//    Google Play Services
+    implementation (libs.play.services.maps)
+    implementation (libs.play.services.location)
+
+    // Retrofit for networking
+    implementation (libs.retrofit)
+
+// Gson converter for Retrofit
+    implementation (libs.converter.gson)
 }

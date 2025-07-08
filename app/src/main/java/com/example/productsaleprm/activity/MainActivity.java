@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat;
 
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.databinding.ActivityMainBinding;
+import com.example.productsaleprm.fragement.CartFragment;
 import com.example.productsaleprm.fragement.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new HomeFragment())
+                    .replace(R.id.fragment_container, new CartFragment())
                     .commit();
         }
 

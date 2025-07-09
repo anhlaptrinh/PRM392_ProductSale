@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <!-- Card giữ nguyên giao diện gốc -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="3dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#B4B2A3"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <!-- Ảnh -->
+            <ImageView
+                android:id="@+id/imgItemCart"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:layout_weight="1"
+                android:src="@drawable/ic_heart"
+                android:clipToOutline="true" />
+
+            <!-- Tên + số lượng -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingStart="12dp">
+
+                <!-- Tên sản phẩm -->
+                <TextView
+                    android:id="@+id/tvProductName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Name"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:maxLines="2"
+                    android:layout_marginRight="8dp"
+                    android:ellipsize="end" />
+
+                <!-- Stepper nhỏ gọn -->
+                <LinearLayout
+                    android:id="@+id/stepperLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/qty_background"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="6dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnMinus"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="–"
+                        android:textSize="14sp"
+                        android:minWidth="32dp"
+                        app:cornerRadius="50dp"
+                        app:iconPadding="0dp"
+                        app:backgroundTint="@android:color/transparent"
+                        android:padding="0dp" />
+
+                    <TextView
+                        android:id="@+id/tvQuantity"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPlus"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="+"
+                        android:textSize="14sp"
+                        android:minWidth="32dp"
+                        app:cornerRadius="50dp"
+                        app:iconPadding="0dp"
+                        app:backgroundTint="@android:color/transparent"
+                        android:padding="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Giá -->
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$170"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="3dp" />
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|top"
+            android:layout_margin="3dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="Xoá"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@android:color/black" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Nút X xoá góc phải trên -->
+
+</FrameLayout>

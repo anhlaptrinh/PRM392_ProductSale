@@ -21,12 +21,19 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder>{
     private List<CartItem> cartList;
     private OnCartChangedListener listener;
+    private OnCartActionListener actionListener;
     private Context context;
     public interface OnCartChangedListener {
         void onCartUpdated();
     }
+    public interface  OnCartActionListener{
+        void deleteCartItem(CartItem item, int position);
+    }
     public void setOnCartChangedListener(OnCartChangedListener listener) {
         this.listener = listener;
+    }
+    public void setOnCartActionListener(OnCartActionListener listener) {
+        this.actionListener = listener;
     }
 
     public CartAdapter(Context context, List<CartItem> cartList) {
@@ -48,7 +55,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         CartItem item = cartList.get(position);
 
         // Gán tên sản phẩm
-        holder.tvProductName.setText(item.getName());
+        holder.tvProductName.setText(item.getProduct().getName());
 
         // Gán số lượng
         holder.tvQuantity.setText(String.valueOf(item.getQuantity()));
@@ -58,7 +65,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         // Load ảnh bằng Glide (giả sử bạn có URL ảnh trong item.getImageUrl())
         Glide.with(context)
-                .load(item.getImageUrl()) // hoặc đổi sang resource nếu bạn dùng drawable
+                .load(item.getProduct().getImagePath()) // hoặc đổi sang resource nếu bạn dùng drawable
                 .placeholder(R.drawable.ic_cart) // ảnh tạm khi loading
                 .into(holder.imgItemCart);
 
@@ -75,7 +82,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         });
         holder.btnDelete.setOnClickListener(v -> {
-            removeItemAndNotify(position);
+            if (actionListener != null) {
+                actionListener.deleteCartItem(item, position);
+            }
         });
 
     }

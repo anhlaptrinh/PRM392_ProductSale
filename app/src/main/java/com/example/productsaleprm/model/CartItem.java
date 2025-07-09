@@ -1,43 +1,55 @@
 package com.example.productsaleprm.model;
 
+import com.example.productsaleprm.model.response.CartProductResponse;
+
 import java.math.BigDecimal;
 
 public class CartItem {
-    private String name;
-    private String imageUrl;
+    private int id;
+
+
+
     private int quantity;
     private BigDecimal price;
+    private CartProductResponse product;
 
-    public CartItem(String name, String imageUrl, int quantity, BigDecimal price) {
-        this.name = name;
-        this.imageUrl = imageUrl;
+    public CartItem(int id, int quantity, BigDecimal price, CartProductResponse product) {
+        this.id = id;
         this.quantity = quantity;
         this.price = price;
+        this.product = product;
     }
 
-    public CartItem() {
-
+    public int getId() {
+        return id;
     }
 
-    public String getName() { return name; }
-    public String getImageUrl() { return imageUrl; }
-    public int getQuantity() { return quantity; }
-    public BigDecimal getPrice() { return price; }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public int getQuantity() {
+        return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public CartProductResponse getProduct() {
+        return product;
+    }
+
+    public void setProduct(CartProductResponse product) {
+        this.product = product;
     }
 
     public void increaseQuantity() { this.quantity++; }

@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.productsaleprm.R;
-import com.example.productsaleprm.activity.MainAuthActivity;
 
 public class ForgotPasswordFragment extends Fragment {
 
@@ -16,18 +19,24 @@ public class ForgotPasswordFragment extends Fragment {
     private Button btnSendReset;
     private TextView tvBackToLogin;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
+    public ForgotPasswordFragment() {}
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_forgot_password, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         etForgotEmail = view.findViewById(R.id.etForgotEmail);
         btnSendReset = view.findViewById(R.id.btnSendReset);
         tvBackToLogin = view.findViewById(R.id.tvBackToLogin);
 
         btnSendReset.setOnClickListener(v -> handleReset());
-        tvBackToLogin.setOnClickListener(v -> ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment()));
-
-        return view;
+        tvBackToLogin.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void handleReset() {
@@ -38,7 +47,20 @@ public class ForgotPasswordFragment extends Fragment {
             return;
         }
 
-        Toast.makeText(getContext(), "Đã gửi liên kết khôi phục về email", Toast.LENGTH_LONG).show();
-        ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment());
+        // ✅ Hiển thị thông báo
+        Toast.makeText(getContext(), "Đã gửi mã xác nhận đến email: " + email, Toast.LENGTH_SHORT).show();
+
+        // ✅ Chuyển sang Fragment_Verification + truyền email
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+
+        Fragment_Verification verificationFragment = new Fragment_Verification();
+        verificationFragment.setArguments(bundle);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.auth_fragment_container, verificationFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

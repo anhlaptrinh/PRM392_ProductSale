@@ -1,6 +1,8 @@
 package com.example.productsaleprm.fragement;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +17,13 @@ import androidx.fragment.app.Fragment;
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.activity.MainActivity;
 import com.example.productsaleprm.activity.MainAuthActivity;
+import com.example.productsaleprm.retrofit.AuthApi;
+import com.example.productsaleprm.model.response.LoginResponse;
+import com.example.productsaleprm.retrofit.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
 
@@ -46,11 +55,11 @@ public class LoginFragment extends Fragment {
     }
 
     private void handleLogin() {
-        String username = etUsername.getText().toString().trim();
+        String email = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(username)) {
-            etUsername.setError("Vui lòng nhập tên đăng nhập");
+        if (TextUtils.isEmpty(email)) {
+            etUsername.setError("Vui lòng nhập email");
             return;
         }
 
@@ -59,13 +68,35 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        if (username.equals("admin") && password.equals("123456")) {
-            Toast.makeText(getActivity(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getActivity(), MainActivity.class));
-            requireActivity().finish(); // kết thúc MainAuthActivity
-        } else {
-            Toast.makeText(getActivity(), "Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();
-        }
+        AuthApi authApi = RetrofitClient.getClient().create(AuthApi.class);
+        Call<LoginResponse> call = authApi.login(email, password);
+
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String token = response.body().getData();
+                    Toast.makeText(getActivity(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
+                    // ✅ Lưu token vào SharedPreferences
+                    SharedPreferences prefs = requireActivity().getSharedPreferences("auth", Context.MODE_PRIVATE);
+                    prefs.edit().putString("jwt_token", token).apply();
+
+                    // ✅ Chuyển sang MainActivity
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("token", token);
+                    startActivity(intent);
+                    requireActivity().finish();
+                } else {
+                    Toast.makeText(getActivity(), "Sai email hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+                Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void navigateToRegister() {

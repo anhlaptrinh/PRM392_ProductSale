@@ -1,5 +1,7 @@
 package com.example.productsaleprm.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +15,23 @@ public class MainAuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_auth); // tạo file này trong res/layout
 
-        // Load LoginFragment mặc định khi mở app
-        if (savedInstanceState == null) {
-            loadFragment(new LoginFragment());
+        // ✅ Kiểm tra token đã lưu chưa
+        SharedPreferences prefs = getSharedPreferences("auth", MODE_PRIVATE);
+        String token = prefs.getString("jwt_token", null);
+
+        if (token != null && !token.isEmpty()) {
+            // ✅ Đã đăng nhập → chuyển sang MainActivity
+            Intent intent = new Intent(MainAuthActivity.this, MainActivity.class);
+            intent.putExtra("token", token);
+            startActivity(intent);
+            finish(); // không cho quay lại trang login
+        } else {
+            // ❌ Chưa đăng nhập → load LoginFragment
+            setContentView(R.layout.activity_main_auth);
+            if (savedInstanceState == null) {
+                loadFragment(new LoginFragment());
+            }
         }
     }
 

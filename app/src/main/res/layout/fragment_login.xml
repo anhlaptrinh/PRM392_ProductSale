@@ -16,16 +16,17 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
+            android:layout_margin="8dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            android:background="@android:color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:padding="30dp">
+                android:padding="28dp"
+                android:gravity="center_horizontal">
 
                 <!-- Tiêu đề -->
                 <TextView
@@ -33,25 +34,24 @@
                     android:layout_height="wrap_content"
                     android:text="Đăng nhập"
                     android:textColor="#1A237E"
-                    android:textSize="24sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="24dp" />
 
-                <!-- Username hoặc Số điện thoại -->
+                <!-- Email -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:maxWidth="600dp"
                     app:startIconDrawable="@drawable/ic_person">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Tên đăng nhập hoặc số điện thoại"
-                        android:inputType="text"
-                        android:maxWidth="600dp" />
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:importantForAutofill="no" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Password -->
@@ -59,8 +59,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:maxWidth="600dp"
-                    app:startIconDrawable="@drawable/ic_lock">
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:endIconMode="password_toggle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPassword"
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Mật khẩu"
                         android:inputType="textPassword"
-                        android:maxWidth="600dp" />
+                        android:importantForAutofill="no" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Quên mật khẩu -->
@@ -80,8 +80,7 @@
                     android:textColor="#1A237E"
                     android:textSize="14sp"
                     android:gravity="end"
-                    android:layout_marginBottom="24dp"
-                    android:maxWidth="600dp" />
+                    android:layout_marginBottom="24dp" />
 
                 <!-- Nút đăng nhập -->
                 <Button
@@ -90,9 +89,9 @@
                     android:layout_height="wrap_content"
                     android:text="Đăng nhập"
                     android:backgroundTint="#4DB6AC"
-                    android:textColor="#FFFFFF"
-                    android:padding="12dp"
-                    android:maxWidth="600dp" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:padding="12dp" />
 
                 <!-- Gợi ý chưa có tài khoản -->
                 <TextView
@@ -101,8 +100,7 @@
                     android:text="Chưa có tài khoản?"
                     android:textSize="14sp"
                     android:gravity="center"
-                    android:layout_marginTop="16dp"
-                    android:maxWidth="600dp" />
+                    android:layout_marginTop="16dp" />
 
                 <!-- Nút đăng ký -->
                 <Button
@@ -112,9 +110,10 @@
                     android:text="Đăng ký"
                     android:backgroundTint="@android:color/darker_gray"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:maxWidth="600dp" />
+                    android:layout_marginTop="8dp" />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

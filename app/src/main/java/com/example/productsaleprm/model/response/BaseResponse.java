@@ -1,20 +1,31 @@
 package com.example.productsaleprm.model.response;
 
-import com.example.productsaleprm.model.StoreLocation;
-
-import java.util.List;
-
-public class BaseResponse {
+public class BaseResponse<T> {
     private int code;
     private String message;
-    private List<StoreLocation> data;
+    private T data;
 
-    public int getCode() { return code; }
-    public void setCode(int code) { this.code = code; }
+    public int getCode() {
+        return code;
+    }
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    public void setCode(int code) {
+        this.code = code;
+    }
 
-    public List<StoreLocation> getData() { return data; }
-    public void setData(List<StoreLocation> data) { this.data = data; }
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }

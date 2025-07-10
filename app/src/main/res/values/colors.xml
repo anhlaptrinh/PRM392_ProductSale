@@ -6,4 +6,5 @@
     <color name="colorBackground">#EAE2C6</color>
     <color name="colorTextPrimary">#F96E2A</color>
     <color name="colorTextSecondary">#BFBBA9</color>
+    <color name="deleteOrErrorBtn">#FE2020</color>
 </resources>

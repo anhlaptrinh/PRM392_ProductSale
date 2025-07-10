@@ -23,4 +23,6 @@ public interface CartAPI {
     @PUT("api/mobile/cart/{id}/quantity")
     Call<BaseResponse<CartUpdateResponse>> updateQuantity(@Path("id") int id, @Query("quantity") int quantity);
 
+    @DELETE("api/mobile/cart/clear")
+    Call<Void> clearCart();
 }

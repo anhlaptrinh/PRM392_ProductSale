@@ -12,6 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.productsaleprm.R;
+import com.example.productsaleprm.activity.MainAuthActivity;
+import com.example.productsaleprm.model.response.GenericResponse;
+import com.example.productsaleprm.retrofit.AuthApi;
+import com.example.productsaleprm.retrofit.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ForgotPasswordFragment extends Fragment {
 
@@ -19,13 +27,9 @@ public class ForgotPasswordFragment extends Fragment {
     private Button btnSendReset;
     private TextView tvBackToLogin;
 
-    public ForgotPasswordFragment() {}
-
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_forgot_password, container, false);
     }
 
@@ -47,20 +51,24 @@ public class ForgotPasswordFragment extends Fragment {
             return;
         }
 
-        // ✅ Hiển thị thông báo
-        Toast.makeText(getContext(), "Đã gửi mã xác nhận đến email: " + email, Toast.LENGTH_SHORT).show();
+        AuthApi authApi = RetrofitClient.getAuthApi();
+        authApi.forgotPassword(email).enqueue(new Callback<GenericResponse>() {
+            @Override
+            public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
-        // ✅ Chuyển sang Fragment_Verification + truyền email
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
+                    // 👉 Chuyển sang LoginFragment sau khi gửi thành công
+                    ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment());
+                } else {
+                    Toast.makeText(getContext(), "Không thể gửi email. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        Fragment_Verification verificationFragment = new Fragment_Verification();
-        verificationFragment.setArguments(bundle);
-
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.auth_fragment_container, verificationFragment)
-                .addToBackStack(null)
-                .commit();
+            @Override
+            public void onFailure(Call<GenericResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

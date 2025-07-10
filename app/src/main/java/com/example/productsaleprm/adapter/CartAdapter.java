@@ -28,6 +28,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
     public interface  OnCartActionListener{
         void deleteCartItem(CartItem item, int position);
+        void updateCartItem(CartItem item, int position, boolean isIncrease);
     }
     public void setOnCartChangedListener(OnCartChangedListener listener) {
         this.listener = listener;
@@ -72,13 +73,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         // Bắt sự kiện nút tăng giảm số lượng (nếu cần)
         holder.btnPlus.setOnClickListener(v -> {
 
-            item.increaseQuantity();
-            notifyItemChanged(position);
+            if (actionListener != null) {
+                actionListener.updateCartItem(item, position, true);
+            }
         });
 
         holder.btnMinus.setOnClickListener(v -> {
-                item.decreaseQuantity();
-                notifyItemChanged(position);
+            if (actionListener != null) {
+                actionListener.updateCartItem(item, position, false);
+            }
 
         });
         holder.btnDelete.setOnClickListener(v -> {

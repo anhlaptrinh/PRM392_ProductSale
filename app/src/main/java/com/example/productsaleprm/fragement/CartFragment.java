@@ -18,6 +18,7 @@ import com.example.productsaleprm.databinding.FragmentCartBinding;
 import com.example.productsaleprm.model.CartItem;
 import com.example.productsaleprm.model.response.BaseResponse;
 import com.example.productsaleprm.model.response.CartResponseData;
+import com.example.productsaleprm.model.response.CartUpdateResponse;
 import com.example.productsaleprm.retrofit.CartAPI;
 import com.example.productsaleprm.retrofit.RetrofitClient;
 
@@ -35,7 +36,7 @@ public class CartFragment extends Fragment {
 
     private CartAdapter cartAdapter;
     private FragmentCartBinding binding;
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMDcwMjkyLCJpYXQiOjE3NTIwNjY2OTIsInNjb3BlIjoiQURNSU4ifQ.IRCw6cc3Mx1-owzPJbXy-8PaX4bjcQbg1EpSWXMYd54";
+    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMTIwMDc4LCJpYXQiOjE3NTIxMTY0NzgsInNjb3BlIjoiQURNSU4ifQ.s9gwAdbmEy96bGiYymo2CLYuGO6FxsCshEZQS-8ky8I";
 
 
     @Nullable
@@ -80,6 +81,7 @@ public class CartFragment extends Fragment {
 
                     // Nếu list null thì dùng list rỗng để tránh lỗi
                     if (items == null) {
+
                         items = new ArrayList<>();
                     }
 
@@ -90,9 +92,31 @@ public class CartFragment extends Fragment {
                     cartAdapter = new CartAdapter(requireContext(), cartList);
                     cartAdapter.setOnCartChangedListener(CartFragment.this::checkEmptyCart);
                     //delete item
-                    cartAdapter.setOnCartActionListener((item, position) -> {
-                        deleteCartItemFromServer(item.getId(), position);
+                    cartAdapter.setOnCartActionListener(new CartAdapter.OnCartActionListener() {
+                        @Override
+                        public void deleteCartItem(CartItem item, int position) {
+                            deleteCartItemFromServer(item.getId(), position);
+                        }
+
+                        @Override
+                        public void updateCartItem(CartItem item, int position, boolean isIncrease) {
+                            int currentQty = item.getQuantity();
+                            int newQty = isIncrease ? currentQty + 1 : currentQty - 1;
+
+                            if (newQty <= 0) {
+                                Toast.makeText(getContext(), "Số lượng không được nhỏ hơn 1", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            item.setQuantity(newQty);
+                            item.setPrice(item.getPrice().multiply(BigDecimal.valueOf(newQty))); // bạn cần thêm unitPrice nếu chưa có
+                            cartAdapter.notifyItemChanged(position);
+                            updateTotalAmount();
+                            updateQuantityFromServer(item.getId(),position,newQty);
+
+                        }
                     });
+
+
                     binding.recyclerCart.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.recyclerCart.setAdapter(cartAdapter);
 
@@ -118,6 +142,7 @@ public class CartFragment extends Fragment {
         });
     }
 
+    //Delete
     private void deleteCartItemFromServer(int id, int position) {
 
         CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
@@ -144,6 +169,43 @@ public class CartFragment extends Fragment {
             }
         });
     }
+
+    //Update
+    private void updateQuantityFromServer(int itemId, int position, int newQuantity) {
+        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+
+        api.updateQuantity(itemId, newQuantity)  // 👈 quantity truyền bằng @Query
+                .enqueue(new Callback<>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse<CartUpdateResponse>> call,
+                                           Response<BaseResponse<CartUpdateResponse>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            CartUpdateResponse data = response.body().getData();
+
+                            if (data != null) {
+                                CartItem item = cartList.get(position);
+
+                                // Cập nhật dữ liệu mới từ server
+                                item.setQuantity(data.getQuantity());
+                                item.setPrice(data.getPrice());
+
+                                cartAdapter.notifyItemChanged(position);
+
+                                // Cập nhật tổng tiền
+                                binding.tvTotalAmount.setText("$" + data.getCartTotal());
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse<CartUpdateResponse>> call, Throwable t) {
+                        Toast.makeText(getContext(), "Lỗi cập nhật: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
     private void checkEmptyCart() {
         if (cartAdapter != null && cartAdapter.getItemCount() == 0) {

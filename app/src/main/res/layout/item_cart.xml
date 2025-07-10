@@ -30,7 +30,7 @@
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
                 android:layout_weight="1"
-                android:src="@drawable/ic_heart"
+                android:src="@drawable/ic_empty_product"
                 android:clipToOutline="true" />
 
             <!-- Tên + số lượng -->

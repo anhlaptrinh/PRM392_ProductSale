@@ -36,9 +36,10 @@ public class CartFragment extends Fragment {
 
     private CartAdapter cartAdapter;
     private FragmentCartBinding binding;
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMTIwMDc4LCJpYXQiOjE3NTIxMTY0NzgsInNjb3BlIjoiQURNSU4ifQ.s9gwAdbmEy96bGiYymo2CLYuGO6FxsCshEZQS-8ky8I";
+    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMTIzNjU3LCJpYXQiOjE3NTIxMjAwNTcsInNjb3BlIjoiQURNSU4ifQ.9nQITRM5J-xNFx8Ha3p35_fS3KsPmyGxqLMNEHVL5rU";
 
 
+    @SuppressLint("NotifyDataSetChanged")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,6 +49,31 @@ public class CartFragment extends Fragment {
         binding = FragmentCartBinding.inflate(inflater, container, false);
         fetchCartData();
         //cartAdapter.setOnCartChangedListener(this::checkEmptyCart);
+        binding.btnClearCart.setOnClickListener(v -> {
+            CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+            api.clearCart().enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        if (cartList == null) {
+                            cartList = new ArrayList<>();
+                        } else {
+                            cartList.clear();
+                        }
+
+                        cartAdapter.notifyDataSetChanged();
+                        updateTotalAmount();
+                        checkEmptyCart();
+                        Toast.makeText(getContext(), "Cart cleared", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error clearing cart", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
         checkEmptyCart();
 
         // Example: set text
@@ -217,6 +243,7 @@ public class CartFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateTotalAmount() {
         BigDecimal total = BigDecimal.ZERO;
 

@@ -67,7 +67,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         // Load ảnh bằng Glide (giả sử bạn có URL ảnh trong item.getImageUrl())
         Glide.with(context)
                 .load(item.getProduct().getImagePath()) // hoặc đổi sang resource nếu bạn dùng drawable
-                .placeholder(R.drawable.ic_cart) // ảnh tạm khi loading
+                .placeholder(R.drawable.ic_empty_product) // ảnh tạm khi loading
                 .into(holder.imgItemCart);
 
         // Bắt sự kiện nút tăng giảm số lượng (nếu cần)

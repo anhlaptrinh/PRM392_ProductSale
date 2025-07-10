@@ -15,7 +15,8 @@ import retrofit2.http.Query;
 
 public interface CartAPI {
     @GET("api/mobile/cart")
-    Call<BaseResponse<CartResponseData>> getCartItems();
+    Call<BaseResponse<CartResponseData>> getCartItems(@Query("page") int page,
+                                                      @Query("size") int size);
 
     @DELETE("api/mobile/cart/{id}")
     Call<Void> deleteCartItem(@Path("id") int cartItemId);

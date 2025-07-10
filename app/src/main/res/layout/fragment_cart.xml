@@ -1,10 +1,10 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         >
 
@@ -39,6 +39,8 @@
                 android:id="@+id/recyclerCart"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp"
                 android:layout_weight="1"/>
 
 
@@ -120,4 +122,4 @@
 
 
 
-</ScrollView>
+</LinearLayout>

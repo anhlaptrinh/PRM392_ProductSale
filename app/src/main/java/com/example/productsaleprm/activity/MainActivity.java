@@ -15,6 +15,7 @@ import com.example.productsaleprm.R;
 import com.example.productsaleprm.databinding.ActivityMainBinding;
 import com.example.productsaleprm.fragement.CartFragment;
 import com.example.productsaleprm.fragement.HomeFragment;
+import com.example.productsaleprm.fragement.WishlistFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {

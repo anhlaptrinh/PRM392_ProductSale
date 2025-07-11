@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new WishlistFragment())
+                    .replace(R.id.fragment_container, new CartFragment())
                     .commit();
         }
 
@@ -43,31 +43,28 @@ public class MainActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbarMain.toolbarContainer, R.string.nav_open,R.string.nav_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.nav_account) {
-                    // Show a Toast message for the Account item
-                    Toast.makeText(MainActivity.this,
-                            "Account Details", Toast.LENGTH_SHORT).show();
-                }
-
-                if (item.getItemId() == R.id.nav_settings) {
-                    // Show a Toast message for the Settings item
-                    Toast.makeText(MainActivity.this,
-                            "Settings Opened", Toast.LENGTH_SHORT).show();
-                }
-
-                if (item.getItemId() == R.id.nav_logout) {
-                    // Show a Toast message for the Logout item
-                    Toast.makeText(MainActivity.this,
-                            "You are Logged Out", Toast.LENGTH_SHORT).show();
-                }
-
-                // Close the drawer after selection
-                binding.drawerLayout.closeDrawers();
-                return false;
+        binding.navView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.nav_account) {
+                // Show a Toast message for the Account item
+                Toast.makeText(MainActivity.this,
+                        "Account Details", Toast.LENGTH_SHORT).show();
             }
+
+            if (item.getItemId() == R.id.nav_settings) {
+                // Show a Toast message for the Settings item
+                Toast.makeText(MainActivity.this,
+                        "Settings Opened", Toast.LENGTH_SHORT).show();
+            }
+
+            if (item.getItemId() == R.id.nav_logout) {
+                // Show a Toast message for the Logout item
+                Toast.makeText(MainActivity.this,
+                        "You are Logged Out", Toast.LENGTH_SHORT).show();
+            }
+
+            // Close the drawer after selection
+            binding.drawerLayout.closeDrawers();
+            return false;
         });
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             // Called when the back button is pressed.

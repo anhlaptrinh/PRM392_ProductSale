@@ -137,4 +137,5 @@ public class LoginFragment extends Fragment {
     private void navigateToForgotPassword() {
         ((MainAuthActivity) requireActivity()).loadFragment(new ForgotPasswordFragment());
     }
+
 }

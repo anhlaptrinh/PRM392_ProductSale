@@ -1,6 +1,7 @@
 package com.example.productsaleprm.model.response;
 
 import com.example.productsaleprm.model.WishList;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class WishListResponse {
     private boolean isLast;
     private int totalPages;
     private int page;
+    @SerializedName("wishListItem")
     private List<WishList> wishListItem;
 
     public int getTotalItems() {

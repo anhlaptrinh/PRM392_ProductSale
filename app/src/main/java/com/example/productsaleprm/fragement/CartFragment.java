@@ -39,6 +39,15 @@ public class CartFragment extends Fragment {
     private CartAdapter cartAdapter;
     private FragmentCartBinding binding;
 
+    private int currentPage = 0;
+    private final int pageSize = 5;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+
+    private final String token = getTokenFromPrefs();
+
+
+
     @SuppressLint("NotifyDataSetChanged")
     @Nullable
     @Override

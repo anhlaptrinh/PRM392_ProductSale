@@ -1,6 +1,8 @@
 package com.example.productsaleprm.fragement;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -291,6 +293,11 @@ public class CartFragment extends Fragment {
 
         binding.tvTotalAmount.setText("$" + total);
     }
+    private String getTokenFromPrefs() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
+        return prefs.getString("jwt_token", null);
+    }
+
 
 
 

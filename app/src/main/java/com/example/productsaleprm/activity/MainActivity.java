@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             public void handleOnBackPressed() {
                 // Check if the drawer is open
                 if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    // Close the drawer if it's open
+// Close the drawer if it's open
                     binding.drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
                     // Finish the activity if the drawer is closed

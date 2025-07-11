@@ -20,12 +20,15 @@ import com.example.productsaleprm.retrofit.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ForgotPasswordFragment extends Fragment {
 
     private EditText etForgotEmail;
     private Button btnSendReset;
     private TextView tvBackToLogin;
+
 
     @Nullable
     @Override
@@ -40,7 +43,7 @@ public class ForgotPasswordFragment extends Fragment {
         tvBackToLogin = view.findViewById(R.id.tvBackToLogin);
 
         btnSendReset.setOnClickListener(v -> handleReset());
-        tvBackToLogin.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+        tvBackToLogin.setOnClickListener(v -> ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment()));
     }
 
     private void handleReset() {
@@ -51,17 +54,27 @@ public class ForgotPasswordFragment extends Fragment {
             return;
         }
 
-        AuthApi authApi = RetrofitClient.getAuthApi();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitClient.getClient("").baseUrl()) // ⬅ lấy từ RetrofitClient
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AuthApi authApi = retrofit.create(AuthApi.class);
+
         authApi.forgotPassword(email).enqueue(new Callback<GenericResponse>() {
             @Override
             public void onResponse(Call<GenericResponse> call, Response<GenericResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
-                    // 👉 Chuyển sang LoginFragment sau khi gửi thành công
                     ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment());
                 } else {
-                    Toast.makeText(getContext(), "Không thể gửi email. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                    String errorMsg = "Không thể gửi email. Vui lòng thử lại.";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg = response.errorBody().string();
+                        }
+                    } catch (Exception ignored) {}
+                    Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 

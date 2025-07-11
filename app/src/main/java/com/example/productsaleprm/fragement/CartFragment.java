@@ -42,7 +42,7 @@ public class CartFragment extends Fragment {
     private boolean isLastPage = false;
     private boolean isLoading = false;
 
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMTQxNjI0LCJpYXQiOjE3NTIxMzgwMjQsInNjb3BlIjoiQURNSU4ifQ.JiL_4L4cWQ3eWXmmhPcc6hLhhZCQOBnKXMM_34XN9Wk";
+    private final String token = getTokenFromPrefs();
 
 
     @SuppressLint("NotifyDataSetChanged")

@@ -20,7 +20,7 @@
 
             <TextView
                 android:id="@+id/tvOrderTitle"
-                android:text="Your Order"
+                android:text="Your Cart"
                 android:textSize="22sp"
                 android:textStyle="bold"
 

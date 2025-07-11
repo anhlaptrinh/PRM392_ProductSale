@@ -1,6 +1,8 @@
 package com.example.productsaleprm.fragement;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.productsaleprm.activity.OrderActivity;
 import com.example.productsaleprm.adapter.CartAdapter;
 import com.example.productsaleprm.databinding.FragmentCartBinding;
 import com.example.productsaleprm.model.CartItem;
@@ -36,7 +39,7 @@ public class CartFragment extends Fragment {
 
     private CartAdapter cartAdapter;
     private FragmentCartBinding binding;
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMTIzNjU3LCJpYXQiOjE3NTIxMjAwNTcsInNjb3BlIjoiQURNSU4ifQ.9nQITRM5J-xNFx8Ha3p35_fS3KsPmyGxqLMNEHVL5rU";
+    private String token;
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -45,7 +48,9 @@ public class CartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        token = requireActivity()
+                .getSharedPreferences("auth", Context.MODE_PRIVATE)
+                .getString("jwt_token", "");
         binding = FragmentCartBinding.inflate(inflater, container, false);
         fetchCartData();
         //cartAdapter.setOnCartChangedListener(this::checkEmptyCart);
@@ -77,9 +82,12 @@ public class CartFragment extends Fragment {
         checkEmptyCart();
 
         // Example: set text
-        binding.tvOrderTitle.setText("Your Order");
-
-
+        binding.tvOrderTitle.setText("Your Cart");
+        //Checkout
+        binding.btnCheckout.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), OrderActivity.class);
+            startActivity(intent);
+        });
         return binding.getRoot();
     }
 

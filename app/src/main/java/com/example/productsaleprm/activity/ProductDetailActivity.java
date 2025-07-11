@@ -34,6 +34,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding = ProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Nút quay lại
+        binding.btnBack.setOnClickListener(v -> finish());
+
         // Lấy token từ SharedPreferences
         String token = getSharedPreferences("auth", MODE_PRIVATE)
                 .getString("jwt_token", "");

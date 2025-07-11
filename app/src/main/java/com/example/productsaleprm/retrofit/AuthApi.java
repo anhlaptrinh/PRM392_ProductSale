@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface AuthApi {
-    @POST("/api/authentication/login")
+    @POST("api/authentication/login")
     Call<LoginResponse> login(@Query("email") String email, @Query("password") String password);
 
     @POST("api/authentication/verification-code")

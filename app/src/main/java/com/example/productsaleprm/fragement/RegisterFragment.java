@@ -22,6 +22,8 @@ import com.example.productsaleprm.retrofit.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterFragment extends Fragment {
 
@@ -30,12 +32,12 @@ public class RegisterFragment extends Fragment {
     private TextView tvBackToLogin;
     private CountDownTimer countDownTimer;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        // Ánh xạ view
         etEmail = view.findViewById(R.id.etEmail);
         etVerificationCode = view.findViewById(R.id.etVerificationCode);
         etUsername = view.findViewById(R.id.etUsername);
@@ -61,12 +63,21 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        AuthApi authApi = RetrofitClient.getClient().create(AuthApi.class);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitClient.getClient("").baseUrl()) // ⬅ lấy từ RetrofitClient
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AuthApi authApi = retrofit.create(AuthApi.class);
         authApi.sendVerificationCode(email).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(getContext(), "Đã gửi OTP đến email", Toast.LENGTH_SHORT).show();
-                startCountdown();
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Đã gửi OTP đến email", Toast.LENGTH_SHORT).show();
+                    startCountdown();
+                } else {
+                    Toast.makeText(getContext(), "Không thể gửi mã xác minh", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -130,7 +141,13 @@ public class RegisterFragment extends Fragment {
         }
 
         RegisterRequest request = new RegisterRequest(email, password, username, phone, address);
-        AuthApi authApi = RetrofitClient.getClient().create(AuthApi.class);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitClient.getClient("").baseUrl()) // ⬅ lấy từ RetrofitClient
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AuthApi authApi = retrofit.create(AuthApi.class);
         authApi.register(otp, request).enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
@@ -138,7 +155,13 @@ public class RegisterFragment extends Fragment {
                     Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment());
                 } else {
-                    Toast.makeText(getContext(), "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
+                    String errorMsg = "Đăng ký thất bại";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg = response.errorBody().string();
+                        }
+                    } catch (Exception ignored) {}
+                    Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 

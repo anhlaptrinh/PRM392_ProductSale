@@ -1,6 +1,8 @@
 package com.example.productsaleprm.fragement;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,8 +38,6 @@ public class CartFragment extends Fragment {
 
     private CartAdapter cartAdapter;
     private FragmentCartBinding binding;
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMTIzNjU3LCJpYXQiOjE3NTIxMjAwNTcsInNjb3BlIjoiQURNSU4ifQ.9nQITRM5J-xNFx8Ha3p35_fS3KsPmyGxqLMNEHVL5rU";
-
 
     @SuppressLint("NotifyDataSetChanged")
     @Nullable
@@ -48,9 +48,10 @@ public class CartFragment extends Fragment {
 
         binding = FragmentCartBinding.inflate(inflater, container, false);
         fetchCartData();
+
         //cartAdapter.setOnCartChangedListener(this::checkEmptyCart);
         binding.btnClearCart.setOnClickListener(v -> {
-            CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+            CartAPI api = RetrofitClient.getClient(getTokenFromPrefs()).create(CartAPI.class);
             api.clearCart().enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -79,13 +80,12 @@ public class CartFragment extends Fragment {
         // Example: set text
         binding.tvOrderTitle.setText("Your Order");
 
-
         return binding.getRoot();
     }
 
     //lấy API cartItem
     private void fetchCartData(){
-        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+        CartAPI api = RetrofitClient.getClient(getTokenFromPrefs()).create(CartAPI.class);
         binding.progressBar.setVisibility(View.VISIBLE);
 
         api.getCartItems().enqueue(new Callback<BaseResponse<CartResponseData>>() {
@@ -107,7 +107,6 @@ public class CartFragment extends Fragment {
 
                     // Nếu list null thì dùng list rỗng để tránh lỗi
                     if (items == null) {
-
                         items = new ArrayList<>();
                     }
 
@@ -117,6 +116,7 @@ public class CartFragment extends Fragment {
                     // Khởi tạo adapter
                     cartAdapter = new CartAdapter(requireContext(), cartList);
                     cartAdapter.setOnCartChangedListener(CartFragment.this::checkEmptyCart);
+
                     //delete item
                     cartAdapter.setOnCartActionListener(new CartAdapter.OnCartActionListener() {
                         @Override
@@ -133,15 +133,14 @@ public class CartFragment extends Fragment {
                                 Toast.makeText(getContext(), "Số lượng không được nhỏ hơn 1", Toast.LENGTH_SHORT).show();
                                 return;
                             }
+
                             item.setQuantity(newQty);
                             item.setPrice(item.getPrice().multiply(BigDecimal.valueOf(newQty))); // bạn cần thêm unitPrice nếu chưa có
                             cartAdapter.notifyItemChanged(position);
                             updateTotalAmount();
-                            updateQuantityFromServer(item.getId(),position,newQty);
-
+                            updateQuantityFromServer(item.getId(), position, newQty);
                         }
                     });
-
 
                     binding.recyclerCart.setLayoutManager(new LinearLayoutManager(getContext()));
                     binding.recyclerCart.setAdapter(cartAdapter);
@@ -170,8 +169,7 @@ public class CartFragment extends Fragment {
 
     //Delete
     private void deleteCartItemFromServer(int id, int position) {
-
-        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+        CartAPI api = RetrofitClient.getClient(getTokenFromPrefs()).create(CartAPI.class);
 
         api.deleteCartItem(id).enqueue(new Callback<>() {
             @Override
@@ -198,7 +196,7 @@ public class CartFragment extends Fragment {
 
     //Update
     private void updateQuantityFromServer(int itemId, int position, int newQuantity) {
-        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+        CartAPI api = RetrofitClient.getClient(getTokenFromPrefs()).create(CartAPI.class);
 
         api.updateQuantity(itemId, newQuantity)  // 👈 quantity truyền bằng @Query
                 .enqueue(new Callback<>() {
@@ -232,7 +230,6 @@ public class CartFragment extends Fragment {
                 });
     }
 
-
     private void checkEmptyCart() {
         if (cartAdapter != null && cartAdapter.getItemCount() == 0) {
             binding.recyclerCart.setVisibility(View.GONE);
@@ -254,7 +251,11 @@ public class CartFragment extends Fragment {
         binding.tvTotalAmount.setText("$" + total);
     }
 
-
+    // ✅ Lấy token từ SharedPreferences
+    private String getTokenFromPrefs() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
+        return prefs.getString("jwt_token", null);
+    }
 
     @Override
     public void onDestroyView() {

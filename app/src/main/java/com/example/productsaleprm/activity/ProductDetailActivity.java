@@ -1,14 +1,10 @@
-package com.example.productsaleprm.fragement;
+package com.example.productsaleprm.activity;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.productsaleprm.databinding.ProductDetailBinding;
@@ -24,32 +20,29 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductDetailFragment extends Fragment {
+public class ProductDetailActivity extends AppCompatActivity {
 
     private ProductDetailBinding binding;
     private ProductAPI productAPI;
     private int quantity = 1;
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = ProductDetailBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Sử dụng ViewBinding cho Activity
+        binding = ProductDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Lấy token từ SharedPreferences
-        String token = requireContext()
-                .getSharedPreferences("auth", getContext().MODE_PRIVATE)
+        String token = getSharedPreferences("auth", MODE_PRIVATE)
                 .getString("jwt_token", "");
 
         // Tạo instance API
         productAPI = RetrofitClient.getClient(token).create(ProductAPI.class);
 
-        // Nhận productId từ Bundle
-        int productId = getArguments() != null ? getArguments().getInt("PRODUCT_ID", 0) : 0;
+        // Nhận productId từ Intent
+        int productId = getIntent().getIntExtra("PRODUCT_ID", 0);
 
         loadProductDetail(productId);
 
@@ -64,66 +57,57 @@ public class ProductDetailFragment extends Fragment {
                 binding.textQuantity.setText(String.valueOf(quantity));
             }
         });
+
         binding.buttonAddToCart.setOnClickListener(v -> {
             int selectedQuantity = quantity;
 
-            // CartAPI:
             CartAPI cartAPI = RetrofitClient.getClient(token).create(CartAPI.class);
-
             AddToCartRequest request = new AddToCartRequest(productId, selectedQuantity);
 
             cartAPI.addToCart(request).enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProductDetailActivity.this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "Thêm vào giỏ thất bại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProductDetailActivity.this, "Thêm vào giỏ thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    Toast.makeText(getContext(), "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(ProductDetailActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
-
     }
+
     private void loadProductDetail(int productId) {
         Call<ProductResponse> call = productAPI.getProductById(productId);
         call.enqueue(new Callback<ProductResponse>() {
             @Override
-            public void onResponse(@NonNull Call<ProductResponse> call,@NonNull Response<ProductResponse> response) {
-
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Product product = response.body().getData();
                     String imageUrl = product.getImageURL();
-                    // Load ảnh bằng Glide
-                    Glide.with(requireContext())
+
+                    Glide.with(ProductDetailActivity.this)
                             .load(imageUrl)
                             .into(binding.imageProduct);
+
                     binding.textPrice.setText(String.valueOf(product.getPrice()));
                     binding.textTitle.setText(product.getProductName());
                     binding.textDescription.setText(product.getFullDesc());
 
-
                 } else {
-                    Toast.makeText(getContext(), "Không tải được chi tiết sản phẩm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductDetailActivity.this, "Không tải được chi tiết sản phẩm", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<ProductResponse> call,@NonNull Throwable t) {
-                Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ProductResponse> call, Throwable t) {
+                Toast.makeText(ProductDetailActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

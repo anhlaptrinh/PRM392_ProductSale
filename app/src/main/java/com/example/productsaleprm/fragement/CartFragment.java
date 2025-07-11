@@ -59,7 +59,8 @@ public class CartFragment extends Fragment {
         binding.tvOrderTitle.setText("Your Order");
         //cartAdapter.setOnCartChangedListener(this::checkEmptyCart);
         binding.btnClearCart.setOnClickListener(v -> {
-            CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+            CartAPI api = RetrofitClient.getClient(requireContext()
+            ).create(CartAPI.class);
             api.clearCart().enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -116,7 +117,8 @@ public class CartFragment extends Fragment {
     //lấy API cartItem
     private void fetchCartData(int page){
         isLoading = true;
-        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+        CartAPI api = RetrofitClient.getClient(requireContext()
+        ).create(CartAPI.class);
         binding.progressBar.setVisibility(View.VISIBLE);
 
         api.getCartItems(page,pageSize).enqueue(new Callback<>() {
@@ -210,7 +212,8 @@ public class CartFragment extends Fragment {
     //Delete
     private void deleteCartItemFromServer(int id, int position) {
 
-        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+        CartAPI api = RetrofitClient.getClient(requireContext()
+        ).create(CartAPI.class);
 
         api.deleteCartItem(id).enqueue(new Callback<>() {
             @Override
@@ -238,7 +241,8 @@ public class CartFragment extends Fragment {
 
     //Update
     private void updateQuantityFromServer(int itemId, int position, int newQuantity) {
-        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+        CartAPI api = RetrofitClient.getClient(requireContext()
+        ).create(CartAPI.class);
 
         api.updateQuantity(itemId, newQuantity)  // 👈 quantity truyền bằng @Query
                 .enqueue(new Callback<>() {

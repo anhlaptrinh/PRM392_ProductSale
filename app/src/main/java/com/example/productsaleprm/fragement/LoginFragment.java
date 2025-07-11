@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,6 @@ import com.example.productsaleprm.retrofit.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginFragment extends Fragment {
 
@@ -69,21 +68,19 @@ public class LoginFragment extends Fragment {
 
         if (!isValidInput(email, password)) return;
 
+        // ✅ Dùng RetrofitClient đã có sẵn
+        AuthApi authApi = RetrofitClient.getClient(requireContext()
+        ).create(AuthApi.class);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitClient.getClient("").baseUrl()) // ⬅ lấy từ RetrofitClient
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AuthApi authApi = retrofit.create(AuthApi.class);
         authApi.login(email, password).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getData();
+                    Log.d("JWT_TOKEN", "Token Login nhận được: " + token);
                     saveToken(token);
                     Toast.makeText(getContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                    goToMainActivity(token);
+                    goToMainActivity();
                 } else {
                     showErrorFromResponse(response);
                 }
@@ -113,9 +110,8 @@ public class LoginFragment extends Fragment {
         prefs.edit().putString("jwt_token", token).apply();
     }
 
-    private void goToMainActivity(String token) {
+    private void goToMainActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("token", token);
         startActivity(intent);
         requireActivity().finish();
     }
@@ -137,5 +133,4 @@ public class LoginFragment extends Fragment {
     private void navigateToForgotPassword() {
         ((MainAuthActivity) requireActivity()).loadFragment(new ForgotPasswordFragment());
     }
-
 }

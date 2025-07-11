@@ -55,7 +55,8 @@ public class ForgotPasswordFragment extends Fragment {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitClient.getClient("").baseUrl()) // ⬅ lấy từ RetrofitClient
+                .baseUrl(RetrofitClient.getClient(requireContext()
+                ).baseUrl()) // ⬅ lấy từ RetrofitClient
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

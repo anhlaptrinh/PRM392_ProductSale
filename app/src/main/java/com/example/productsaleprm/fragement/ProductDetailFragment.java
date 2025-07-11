@@ -46,7 +46,8 @@ public class ProductDetailFragment extends Fragment {
                 .getString("jwt_token", "");
 
         // Tạo instance API
-        productAPI = RetrofitClient.getClient(token).create(ProductAPI.class);
+        productAPI = RetrofitClient.getClient(requireContext()
+        ).create(ProductAPI.class);
 
         // Nhận productId từ Bundle
         int productId = getArguments() != null ? getArguments().getInt("PRODUCT_ID", 0) : 0;
@@ -68,7 +69,8 @@ public class ProductDetailFragment extends Fragment {
             int selectedQuantity = quantity;
 
             // CartAPI:
-            CartAPI cartAPI = RetrofitClient.getClient(token).create(CartAPI.class);
+            CartAPI cartAPI = RetrofitClient.getClient(requireContext()
+            ).create(CartAPI.class);
 
             AddToCartRequest request = new AddToCartRequest(productId, selectedQuantity);
 

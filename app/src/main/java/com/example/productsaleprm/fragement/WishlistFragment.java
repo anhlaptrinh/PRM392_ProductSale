@@ -73,7 +73,8 @@ public class WishlistFragment extends Fragment {
     }
     private void fetchWishlistData(int page) {
         isLoading = true;
-        WishListAPI api = RetrofitClient.getClient(token).create(WishListAPI.class);
+        WishListAPI api = RetrofitClient.getClient(requireContext()
+        ).create(WishListAPI.class);
         binding.progressBar.setVisibility(View.VISIBLE);
         api.getWishList(page,pageSize).enqueue(new Callback<>() {
             @Override

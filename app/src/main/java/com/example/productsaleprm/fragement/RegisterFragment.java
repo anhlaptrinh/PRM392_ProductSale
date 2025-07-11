@@ -64,7 +64,8 @@ public class RegisterFragment extends Fragment {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitClient.getClient("").baseUrl()) // ⬅ lấy từ RetrofitClient
+                .baseUrl(RetrofitClient.getClient(requireContext()
+                ).baseUrl()) // ⬅ lấy từ RetrofitClient
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -143,7 +144,8 @@ public class RegisterFragment extends Fragment {
         RegisterRequest request = new RegisterRequest(email, password, username, phone, address);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitClient.getClient("").baseUrl()) // ⬅ lấy từ RetrofitClient
+                .baseUrl(RetrofitClient.getClient(requireContext()
+                ).baseUrl()) // ⬅ lấy từ RetrofitClient
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

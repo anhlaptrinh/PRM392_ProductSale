@@ -16,13 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.productsaleprm.R;
+import com.example.productsaleprm.interfaceui.OnWishlistClick;
 import com.example.productsaleprm.model.WishList;
 
 import java.util.List;
 
 public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishlistViewHolder> {
     private Context context;
+    private OnWishlistClick listener;
     private List<WishList> wishlistList;
+
+    public void setOnWishListChange(OnWishlistClick listener){
+        this.listener=listener;
+    }
 
     public WishListAdapter(Context context, List<WishList> wishlistList) {
         this.context = context;
@@ -56,10 +62,16 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.Wishli
         holder.txtRating.setText("(4.9)");
 
         holder.btnAdd.setOnClickListener(v -> {
+            if(listener != null){
+                listener.onWishlistChange();
+            }
             Toast.makeText(context, "Added to cart: " + item.getProductName(), Toast.LENGTH_SHORT).show();
         });
 
         holder.imgHeart.setOnClickListener(v -> {
+            if(listener != null){
+                listener.onWishlistChange();
+            }
             Toast.makeText(context, "Removed from wishlist: " + item.getProductName(), Toast.LENGTH_SHORT).show();
         });
     }

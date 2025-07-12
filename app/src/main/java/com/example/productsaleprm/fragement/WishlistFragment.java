@@ -118,10 +118,7 @@ public class WishlistFragment extends Fragment {
         });
 
     }
-    private String getTokenFromPrefs() {
-        SharedPreferences prefs = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
-        return prefs.getString("jwt_token", null);
-    }
+
     private void checkEmptyWishlist() {
         if (wishListAdapter != null && wishListAdapter.getItemCount() == 0) {
             binding.recyclerWishlist.setVisibility(View.GONE);

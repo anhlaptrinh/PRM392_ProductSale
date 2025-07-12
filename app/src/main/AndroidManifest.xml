@@ -23,30 +23,18 @@
             android:name=".activity.MainActivity"
             android:exported="false" /> <!-- 2) Khai báo Activity -->
         <activity
-            android:name=".activity.OrderActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.MainAuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--
-           <activity
-               android:name=".activity.MainActivity"
-               android:exported="true">
-               <intent-filter>
-                   <action android:name="android.intent.action.MAIN" />
 
-                   <category android:name="android.intent.category.LAUNCHER" />
-               </intent-filter>
-           </activity>
-        -->
-           <meta-data
-               android:name="com.google.android.geo.API_KEY"
-               android:value="@string/my_map_api_key" />
-       </application>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/my_map_api_key" />
+    </application>
 
-   </manifest>
+</manifest>

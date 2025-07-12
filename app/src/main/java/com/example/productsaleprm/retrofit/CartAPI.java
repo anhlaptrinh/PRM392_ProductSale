@@ -20,7 +20,8 @@ public interface CartAPI {
     @POST("api/mobile/cart")
     Call<ResponseBody> addToCart(@Body AddToCartRequest request);
     @GET("api/mobile/cart")
-    Call<BaseResponse<CartResponseData>> getCartItems();
+    Call<BaseResponse<CartResponseData>> getCartItems(@Query("page") int page,
+                                                      @Query("size") int size);
 
     @DELETE("api/mobile/cart/{id}")
     Call<Void> deleteCartItem(@Path("id") int cartItemId);

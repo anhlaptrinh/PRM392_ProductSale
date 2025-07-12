@@ -38,13 +38,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         CartItem item = orderList.get(position);
 
+        // Tên sản phẩm
         holder.tvProductName.setText(item.getProduct().getName());
+
+        // Số lượng hiển thị dạng: Qty: X
         holder.tvQuantity.setText("Qty: " + item.getQuantity());
+
+        // Giá (nếu muốn định dạng thêm, có thể dùng NumberFormat)
         holder.tvPrice.setText("$" + item.getPrice());
 
+        // Ảnh sản phẩm
         Glide.with(context)
                 .load(item.getProduct().getImagePath())
-                .placeholder(R.drawable.ic_cart)
+                .placeholder(R.drawable.ic_empty_product)
                 .into(holder.imgItem);
     }
 

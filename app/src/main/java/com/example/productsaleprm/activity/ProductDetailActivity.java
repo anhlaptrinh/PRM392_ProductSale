@@ -1,6 +1,7 @@
 package com.example.productsaleprm.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,30 +31,34 @@ public class ProductDetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Sử dụng ViewBinding cho Activity
+        // Khởi tạo ViewBinding
         binding = ProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Nút quay lại
         binding.btnBack.setOnClickListener(v -> finish());
 
-        // Lấy token từ SharedPreferences
+        // Lấy JWT token
         String token = getSharedPreferences("auth", MODE_PRIVATE)
                 .getString("jwt_token", "");
 
-        // Tạo instance API
-        productAPI = RetrofitClient.getClient(token).create(ProductAPI.class);
+        // Tạo ProductAPI
+        productAPI = RetrofitClient.getClient(this
+        ).create(ProductAPI.class);
 
         // Nhận productId từ Intent
         int productId = getIntent().getIntExtra("PRODUCT_ID", 0);
 
+        // Load chi tiết sản phẩm
         loadProductDetail(productId);
 
+        // Tăng số lượng
         binding.btnPlus.setOnClickListener(v -> {
             quantity++;
             binding.textQuantity.setText(String.valueOf(quantity));
         });
 
+        // Giảm số lượng
         binding.btnMinus.setOnClickListener(v -> {
             if (quantity > 1) {
                 quantity--;
@@ -61,11 +66,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        // Thêm vào giỏ hàng
         binding.buttonAddToCart.setOnClickListener(v -> {
-            int selectedQuantity = quantity;
-
-            CartAPI cartAPI = RetrofitClient.getClient(token).create(CartAPI.class);
-            AddToCartRequest request = new AddToCartRequest(productId, selectedQuantity);
+            CartAPI cartAPI = RetrofitClient.getClient(this).create(CartAPI.class);
+            AddToCartRequest request = new AddToCartRequest(productId, quantity);
 
             cartAPI.addToCart(request).enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -86,22 +90,20 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void loadProductDetail(int productId) {
-        Call<ProductResponse> call = productAPI.getProductById(productId);
-        call.enqueue(new Callback<ProductResponse>() {
+        productAPI.getProductById(productId).enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+
                 if (response.isSuccessful() && response.body() != null) {
                     Product product = response.body().getData();
-                    String imageUrl = product.getImageURL();
 
                     Glide.with(ProductDetailActivity.this)
-                            .load(imageUrl)
+                            .load(product.getImageURL())
                             .into(binding.imageProduct);
 
-                    binding.textPrice.setText(String.valueOf(product.getPrice()));
                     binding.textTitle.setText(product.getProductName());
+                    binding.textPrice.setText(String.valueOf(product.getPrice()));
                     binding.textDescription.setText(product.getFullDesc());
-
                 } else {
                     Toast.makeText(ProductDetailActivity.this, "Không tải được chi tiết sản phẩm", Toast.LENGTH_SHORT).show();
                 }

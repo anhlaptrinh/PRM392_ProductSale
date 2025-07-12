@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#8BD8CAB8"
+        android:orientation="vertical">
+
+        <!-- Ảnh sản phẩm + icon trái tim -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/imgProduct"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_empty_product" />
+
+            <ImageView
+                android:id="@+id/imgHeart"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_wislist"
+                 />
+        </RelativeLayout>
+
+        <!-- Tên sản phẩm + mô tả -->
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tvName"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raymond"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perfect Women Regular Fit Solid Shirt"
+                android:textColor="#777"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Rating -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="4dp">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:progressTint="#FFC107"
+                android:isIndicator="true"
+                android:rating="4.9"
+                android:scaleX="0.8"
+                android:scaleY="0.8" />
+
+            <TextView
+                android:id="@+id/txtRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(4.9)"
+                android:textSize="12sp"
+                android:layout_marginStart="4dp"
+                android:textColor="#000" />
+        </LinearLayout>
+
+
+        <!-- Giá + nút thêm -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <!-- Nút giá ($55.00) ở góc trái -->
+            <TextView
+                android:id="@+id/txtPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+
+                android:text="$ 55.00"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:background="@drawable/bg_price_chip"
+                android:textSize="14sp" />
+
+            <!-- Nút add ở góc phải -->
+            <ImageButton
+                android:id="@+id/btnAdd"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/ic_add"
+                android:background="@drawable/bg_add_button"
+                android:scaleType="centerInside" />
+        </FrameLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

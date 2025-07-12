@@ -62,6 +62,8 @@ dependencies {
     implementation (libs.converter.gson)
     implementation("com.daimajia.swipelayout:library:1.2.0@aar")
     implementation ("com.nineoldandroids:library:2.4.0")
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
+
 
 
 }

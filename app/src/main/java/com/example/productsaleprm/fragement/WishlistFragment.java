@@ -41,7 +41,6 @@ public class WishlistFragment extends Fragment {
     private int pageSize = 5;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMjUwMjYzLCJpYXQiOjE3NTIyNDY2NjMsInNjb3BlIjoiQURNSU4ifQ.K1sdc04ZL9j1CA2lczqnGict0ZYM-_abiRaF1rBO6PI";
 
 
 

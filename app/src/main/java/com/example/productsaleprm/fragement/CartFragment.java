@@ -44,7 +44,6 @@ public class CartFragment extends Fragment {
     private boolean isLastPage = false;
     private boolean isLoading = false;
 
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcm9kdWN0c2FsZS5jb20iLCJzdWIiOiJtZW1AZ21haWwuY29tIiwiZXhwIjoxNzUyMjU3MTE4LCJpYXQiOjE3NTIyNTM1MTgsInNjb3BlIjoiQURNSU4ifQ.xXwXeZW97pj5ui3TWlbS6vZG339MTC4OB4YHx68VfxA";
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -297,10 +296,7 @@ public class CartFragment extends Fragment {
 
         binding.tvTotalAmount.setText("$" + total);
     }
-    private String getTokenFromPrefs() {
-        SharedPreferences prefs = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
-        return prefs.getString("jwt_token", null);
-    }
+
 
 
 

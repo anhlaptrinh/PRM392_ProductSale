@@ -29,5 +29,11 @@ public class RetrofitClient {
 
         return retrofit;
     }
+    public static Retrofit getClientWithoutAuth() {
+        return new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
 }
 

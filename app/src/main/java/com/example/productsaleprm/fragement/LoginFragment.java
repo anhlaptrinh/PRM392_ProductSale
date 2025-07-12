@@ -69,7 +69,7 @@ public class LoginFragment extends Fragment {
         if (!isValidInput(email, password)) return;
 
         // ✅ Dùng RetrofitClient đã có sẵn
-        AuthApi authApi = RetrofitClient.getClient(requireContext()
+        AuthApi authApi = RetrofitClient.getClientWithoutAuth(
         ).create(AuthApi.class);
 
         authApi.login(email, password).enqueue(new Callback<LoginResponse>() {

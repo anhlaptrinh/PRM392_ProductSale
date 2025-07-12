@@ -18,6 +18,7 @@ import com.example.productsaleprm.R;
 import com.example.productsaleprm.adapter.WishListAdapter;
 import com.example.productsaleprm.databinding.FragmentCartBinding;
 import com.example.productsaleprm.databinding.FragmentWishlistBinding;
+import com.example.productsaleprm.interfaceui.OnWishlistClick;
 import com.example.productsaleprm.model.WishList;
 import com.example.productsaleprm.model.response.BaseResponse;
 import com.example.productsaleprm.model.response.WishListResponse;
@@ -92,6 +93,32 @@ public class WishlistFragment extends Fragment {
                     if (page == 0) {
                         wishListList = new ArrayList<>(wishListResponse.getWishListItem());
                         wishListAdapter = new WishListAdapter(requireContext(), wishListList);
+                        wishListAdapter.setOnWishListChange((id, position, isCreate) -> {
+                            WishListAPI api1 = RetrofitClient.getClient(requireContext()).create(WishListAPI.class);
+                            api1.deleteItemOrCreateCart(id,isCreate).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(@NonNull Call<Void> call1, Response<Void> response1) {
+                                    if(response.isSuccessful()){
+                                        wishListList.remove(position);
+                                        wishListAdapter.notifyItemRemoved(position);
+                                        wishListAdapter.notifyItemRangeChanged(position,wishListList.size());
+                                        checkEmptyWishlist();
+                                        if (isCreate)
+                                         Toast.makeText(getContext(), "Update to cart success", Toast.LENGTH_SHORT).show();
+                                        else Toast.makeText(getContext(), "Delete Success", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<Void> call1, Throwable t) {
+
+                                }
+                            });
+
+                        });
                         binding.recyclerWishlist.setLayoutManager(new GridLayoutManager(getContext(), 2));
                         binding.recyclerWishlist.setAdapter(wishListAdapter);
 
@@ -118,6 +145,7 @@ public class WishlistFragment extends Fragment {
         });
 
     }
+
 
     private void checkEmptyWishlist() {
         if (wishListAdapter != null && wishListAdapter.getItemCount() == 0) {

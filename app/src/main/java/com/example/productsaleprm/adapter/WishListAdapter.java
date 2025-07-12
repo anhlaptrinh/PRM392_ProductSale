@@ -63,14 +63,14 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.Wishli
 
         holder.btnAdd.setOnClickListener(v -> {
             if(listener != null){
-                listener.onWishlistChange();
+                listener.onWishlistChange(item.getId(),position,true);
             }
             Toast.makeText(context, "Added to cart: " + item.getProductName(), Toast.LENGTH_SHORT).show();
         });
 
         holder.imgHeart.setOnClickListener(v -> {
             if(listener != null){
-                listener.onWishlistChange();
+                listener.onWishlistChange(item.getId(),position,true);
             }
             Toast.makeText(context, "Removed from wishlist: " + item.getProductName(), Toast.LENGTH_SHORT).show();
         });

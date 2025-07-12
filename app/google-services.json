@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "37844698861",
+    "project_id": "productsaleprm392-60b46",
+    "storage_bucket": "productsaleprm392-60b46.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37844698861:android:f34b480dbe8078e8036ee4",
+        "android_client_info": {
+          "package_name": "com.example.productsaleprm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDguGxaQ8ZLb1b8tPqUDoE3oHmUwLmGu2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

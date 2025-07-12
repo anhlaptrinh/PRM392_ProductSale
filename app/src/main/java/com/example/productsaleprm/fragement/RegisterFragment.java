@@ -22,8 +22,6 @@ import com.example.productsaleprm.retrofit.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterFragment extends Fragment {
 
@@ -32,12 +30,16 @@ public class RegisterFragment extends Fragment {
     private TextView tvBackToLogin;
     private CountDownTimer countDownTimer;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+        initViews(view);
+        setupListeners();
+        return view;
+    }
 
+    private void initViews(View view) {
         etEmail = view.findViewById(R.id.etEmail);
         etVerificationCode = view.findViewById(R.id.etVerificationCode);
         etUsername = view.findViewById(R.id.etUsername);
@@ -48,12 +50,13 @@ public class RegisterFragment extends Fragment {
         btnRegister = view.findViewById(R.id.btnRegister);
         btnSendOtp = view.findViewById(R.id.btnSendOtp);
         tvBackToLogin = view.findViewById(R.id.tvBackToLogin);
+    }
 
+    private void setupListeners() {
         btnSendOtp.setOnClickListener(v -> sendVerificationCode());
         btnRegister.setOnClickListener(v -> handleRegister());
-        tvBackToLogin.setOnClickListener(v -> ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment()));
-
-        return view;
+        tvBackToLogin.setOnClickListener(v ->
+                ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment()));
     }
 
     private void sendVerificationCode() {
@@ -63,13 +66,7 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitClient.getClient(requireContext()
-                ).baseUrl()) // ⬅ lấy từ RetrofitClient
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AuthApi authApi = retrofit.create(AuthApi.class);
+        AuthApi authApi = RetrofitClient.getClientWithoutAuth().create(AuthApi.class);
         authApi.sendVerificationCode(email).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -90,7 +87,6 @@ public class RegisterFragment extends Fragment {
 
     private void startCountdown() {
         btnSendOtp.setEnabled(false);
-
         countDownTimer = new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
                 btnSendOtp.setText("Gửi lại (" + millisUntilFinished / 1000 + "s)");
@@ -112,44 +108,11 @@ public class RegisterFragment extends Fragment {
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email)) {
-            etEmail.setError("Vui lòng nhập email");
-            return;
-        }
-        if (TextUtils.isEmpty(otp)) {
-            etVerificationCode.setError("Vui lòng nhập mã xác minh");
-            return;
-        }
-        if (TextUtils.isEmpty(username)) {
-            etUsername.setError("Vui lòng nhập tên đăng nhập");
-            return;
-        }
-        if (TextUtils.isEmpty(phone)) {
-            etPhone.setError("Vui lòng nhập số điện thoại");
-            return;
-        }
-        if (TextUtils.isEmpty(address)) {
-            etAddress.setError("Vui lòng nhập địa chỉ");
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            etPassword.setError("Vui lòng nhập mật khẩu");
-            return;
-        }
-        if (!password.equals(confirmPassword)) {
-            etConfirmPassword.setError("Mật khẩu không khớp");
-            return;
-        }
+        if (!isValidInput(email, otp, username, phone, address, password, confirmPassword)) return;
 
         RegisterRequest request = new RegisterRequest(email, password, username, phone, address);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitClient.getClient(requireContext()
-                ).baseUrl()) // ⬅ lấy từ RetrofitClient
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AuthApi authApi = retrofit.create(AuthApi.class);
+        AuthApi authApi = RetrofitClient.getClientWithoutAuth().create(AuthApi.class);
         authApi.register(otp, request).enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
@@ -157,13 +120,7 @@ public class RegisterFragment extends Fragment {
                     Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment());
                 } else {
-                    String errorMsg = "Đăng ký thất bại";
-                    try {
-                        if (response.errorBody() != null) {
-                            errorMsg = response.errorBody().string();
-                        }
-                    } catch (Exception ignored) {}
-                    Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    showErrorFromResponse(response);
                 }
             }
 
@@ -172,6 +129,48 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getContext(), "Lỗi đăng ký: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private boolean isValidInput(String email, String otp, String username, String phone, String address, String password, String confirmPassword) {
+        if (TextUtils.isEmpty(email)) {
+            etEmail.setError("Vui lòng nhập email");
+            return false;
+        }
+        if (TextUtils.isEmpty(otp)) {
+            etVerificationCode.setError("Vui lòng nhập mã xác minh");
+            return false;
+        }
+        if (TextUtils.isEmpty(username)) {
+            etUsername.setError("Vui lòng nhập tên đăng nhập");
+            return false;
+        }
+        if (TextUtils.isEmpty(phone)) {
+            etPhone.setError("Vui lòng nhập số điện thoại");
+            return false;
+        }
+        if (TextUtils.isEmpty(address)) {
+            etAddress.setError("Vui lòng nhập địa chỉ");
+            return false;
+        }
+        if (TextUtils.isEmpty(password)) {
+            etPassword.setError("Vui lòng nhập mật khẩu");
+            return false;
+        }
+        if (!password.equals(confirmPassword)) {
+            etConfirmPassword.setError("Mật khẩu không khớp");
+            return false;
+        }
+        return true;
+    }
+
+    private void showErrorFromResponse(Response<?> response) {
+        String errorMsg = "Đăng ký thất bại!";
+        try {
+            if (response.errorBody() != null) {
+                errorMsg = response.errorBody().string();
+            }
+        } catch (Exception ignored) {}
+        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -37,12 +37,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         // Nút quay lại
         binding.btnBack.setOnClickListener(v -> finish());
 
-        // Lấy token từ SharedPreferences
-        String token = getSharedPreferences("auth", MODE_PRIVATE)
-                .getString("jwt_token", "");
-
         // Tạo instance API
-        productAPI = RetrofitClient.getClient(token).create(ProductAPI.class);
+        productAPI = RetrofitClient.getClient(this).create(ProductAPI.class);
 
         // Nhận productId từ Intent
         int productId = getIntent().getIntExtra("PRODUCT_ID", 0);
@@ -64,7 +60,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.buttonAddToCart.setOnClickListener(v -> {
             int selectedQuantity = quantity;
 
-            CartAPI cartAPI = RetrofitClient.getClient(token).create(CartAPI.class);
+            CartAPI cartAPI = RetrofitClient.getClient(this).create(CartAPI.class);
             AddToCartRequest request = new AddToCartRequest(productId, selectedQuantity);
 
             cartAPI.addToCart(request).enqueue(new Callback<ResponseBody>() {

@@ -29,13 +29,12 @@ public class OrderActivity extends AppCompatActivity {
     private OrderAdapter orderAdapter;
     private List<CartItem> cartList = new ArrayList<>();
     private String token;
+    private final int pageSize = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        token = getSharedPreferences("auth", MODE_PRIVATE)
-                .getString("jwt_token", "");
 
         // Nút quay lại
         binding.btnBack.setOnClickListener(v -> finish());
@@ -46,7 +45,7 @@ public class OrderActivity extends AppCompatActivity {
         binding.recyclerCart.setAdapter(orderAdapter);
 
         // Lấy dữ liệu giỏ hàng
-        fetchCartData();
+        fetchCartData(0);
 
         // Nút thanh toán
         binding.btnCheckout.setOnClickListener(v -> {
@@ -55,11 +54,11 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchCartData() {
-        CartAPI api = RetrofitClient.getClient(token).create(CartAPI.class);
+    private void fetchCartData(int page) {
+        CartAPI api = RetrofitClient.getClient(this).create(CartAPI.class);
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        api.getCartItems().enqueue(new Callback<BaseResponse<CartResponseData>>() {
+        api.getCartItems(page, pageSize).enqueue(new Callback<BaseResponse<CartResponseData>>() {
             @Override
             public void onResponse(Call<BaseResponse<CartResponseData>> call, Response<BaseResponse<CartResponseData>> response) {
                 binding.progressBar.setVisibility(View.GONE);

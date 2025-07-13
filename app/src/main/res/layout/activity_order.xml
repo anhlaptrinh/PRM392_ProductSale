@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -69,32 +69,85 @@
             android:layout_marginTop="12dp"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
+
+    <!-- Address Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@drawable/bg_add_button"
+            >
+
+            <!-- Icon Home -->
+            <ImageView
+                android:id="@+id/ivHomeIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"/>
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvAddressTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivery Address"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_toEndOf="@id/ivHomeIcon"
+                android:layout_marginStart="8dp"/>
+
+            <!-- Address Detail -->
+            <TextView
+                android:id="@+id/tvAddressDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_below="@id/tvAddressTitle"
+                android:layout_alignStart="@id/tvAddressTitle"
+                android:layout_marginTop="4dp"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
     <!-- Chọn phương thức thanh toán -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Phương thức thanh toán"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textStyle="bold"/>
 
     <RadioGroup
         android:id="@+id/rg_payment_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginHorizontal="16dp">
 
         <RadioButton
             android:id="@+id/rb_cod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thanh toán khi nhận hàng (COD)"
-            android:checked="true"/>
+            android:text="  Thanh toán khi nhận hàng (COD)"
+            android:checked="true"
+            android:drawableStart="@drawable/ic_cod_scale"/>
 
         <RadioButton
             android:id="@+id/rb_momo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thanh toán qua Momo"/>
+            android:text="  Thanh toán qua Momo"
+            android:drawableStart="@drawable/ic_momo_scale"
+            />
 
     </RadioGroup>
     <!-- Footer -->

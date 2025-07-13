@@ -22,6 +22,12 @@
             android:name=".activity.MapActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.PaymentSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MomoPaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ChatActivity"
             android:exported="false" />
         <activity

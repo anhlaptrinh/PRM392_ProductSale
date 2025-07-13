@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.productsaleprm.R;
 import com.example.productsaleprm.adapter.OrderAdapter;
 import com.example.productsaleprm.databinding.ActivityOrderBinding;
 import com.example.productsaleprm.model.CartItem;
@@ -49,8 +50,15 @@ public class OrderActivity extends AppCompatActivity {
 
         // Nút thanh toán
         binding.btnCheckout.setOnClickListener(v -> {
-            Toast.makeText(this, "Đang xử lý thanh toán...", Toast.LENGTH_SHORT).show();
-            // TODO: Thêm logic xử lý thanh toán thật
+            int selectedId = binding.rgPaymentMethod.getCheckedRadioButtonId();
+            String paymentMethod = "";
+            if (selectedId == R.id.rb_cod) {
+                paymentMethod = "COD";
+            } else if (selectedId == R.id.rb_momo) {
+                paymentMethod = "MOMO";
+            }
+
+
         });
     }
 

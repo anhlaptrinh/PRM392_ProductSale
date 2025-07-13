@@ -69,7 +69,34 @@
             android:layout_marginTop="12dp"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
+    <!-- Chọn phương thức thanh toán -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phương thức thanh toán"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"/>
 
+    <RadioGroup
+        android:id="@+id/rg_payment_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rb_cod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanh toán khi nhận hàng (COD)"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rb_momo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanh toán qua Momo"/>
+
+    </RadioGroup>
     <!-- Footer -->
     <RelativeLayout
         android:layout_width="match_parent"

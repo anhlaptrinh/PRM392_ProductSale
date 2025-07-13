@@ -32,7 +32,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đăng nhập"
+                    android:text="Login"
                     android:textColor="#1A237E"
                     android:textSize="26sp"
                     android:textStyle="bold"
@@ -66,7 +66,7 @@
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Mật khẩu"
+                        android:hint="Password"
                         android:inputType="textPassword"
                         android:importantForAutofill="no" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +76,7 @@
                     android:id="@+id/tvForgotPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Quên mật khẩu?"
+                    android:text="Fogot Password?"
                     android:textColor="#1A237E"
                     android:textSize="14sp"
                     android:gravity="end"
@@ -87,7 +87,7 @@
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Đăng nhập"
+                    android:text="Login"
                     android:backgroundTint="#4DB6AC"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
@@ -97,7 +97,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chưa có tài khoản?"
+                    android:text="Don't have an account?"
                     android:textSize="14sp"
                     android:gravity="center"
                     android:layout_marginTop="16dp" />
@@ -107,7 +107,7 @@
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Đăng ký"
+                    android:text="Register"
                     android:backgroundTint="@android:color/darker_gray"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"

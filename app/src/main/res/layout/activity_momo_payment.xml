@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
     <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarMomo"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="56dp"
         android:background="@color/colorPrimary">
+
         <ImageView
             android:id="@+id/btnBack"
             android:layout_width="24dp"
@@ -19,17 +19,16 @@
             android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_arrow_back" />
-        <!-- Tiêu đề custom, căn giữa -->
+
         <TextView
-            android:id="@+id/tvToolbarTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="MOMO Payment"
-            android:gravity="center"
-            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOMO PAYMENT"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white" />
-    </androidx.appcompat.widget.Toolbar>
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
     <!-- Nội dung QR -->
     <ScrollView

@@ -1,5 +1,6 @@
 package com.example.productsaleprm.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setupActionBar();
         setupBottomNav();
 
-        // Load màn hình mặc định là HomeFragment
+        // Default screen is HomeFragment
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
             binding.bottomNav.setSelectedItemId(R.id.nav_home);
@@ -50,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Handle Chat icon click
+        binding.toolbarMain.toolbarChat.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            startActivity(intent);
+        });
+
+        // Navigation drawer menu
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        // Handle back press
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -89,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_cart) {
                 selectedFragment = new CartFragment();
             } else if (id == R.id.nav_wishlist) {
-
                 selectedFragment = new WishlistFragment();
             } else if (id == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();

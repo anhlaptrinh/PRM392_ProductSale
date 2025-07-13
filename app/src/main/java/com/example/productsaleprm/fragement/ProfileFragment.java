@@ -1,5 +1,6 @@
 package com.example.productsaleprm.fragement;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.productsaleprm.activity.MapActivity;
 import com.example.productsaleprm.databinding.FragmentEditUserBinding;
 import com.example.productsaleprm.databinding.FragmentUserInfoBinding;
 import com.example.productsaleprm.model.User;
@@ -44,6 +46,11 @@ public class ProfileFragment extends Fragment {
             if (currentUser != null) {
                 switchToEditMode(container);
             }
+        });
+
+        userInfoBinding.btnGetStoreLocation.setOnClickListener(v -> {
+            Intent intent  = new Intent(requireContext(), MapActivity.class);
+            startActivity(intent);
         });
 
         return rootView;

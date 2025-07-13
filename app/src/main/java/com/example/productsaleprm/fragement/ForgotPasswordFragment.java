@@ -73,21 +73,21 @@ public class ForgotPasswordFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GenericResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Connection error:" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private boolean isValidEmail(String email) {
         if (TextUtils.isEmpty(email)) {
-            etForgotEmail.setError("Vui lòng nhập email");
+            etForgotEmail.setError("Please enter email");
             return false;
         }
         return true;
     }
 
     private void showErrorFromResponse(Response<?> response) {
-        String errorMsg = "Không thể gửi email. Vui lòng thử lại.";
+        String errorMsg = "Email could not be sent. Please try again.";
         try {
             if (response.errorBody() != null) {
                 errorMsg = response.errorBody().string();

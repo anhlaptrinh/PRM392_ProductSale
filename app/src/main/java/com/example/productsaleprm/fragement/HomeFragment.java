@@ -52,54 +52,9 @@ public class HomeFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
 
-    private Handler lookHandler = new Handler(Looper.getMainLooper());
-    private Runnable lookRunnable;
-    private int currentLookPosition = 0;
-    private void startAutoScrollLooks() {
-        lookRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (binding == null || binding.rvLooks == null) return;
-
-                currentLookPosition++;
-                if (currentLookPosition >= lookList.size()) {
-                    currentLookPosition = 0;
-                }
-
-                binding.rvLooks.smoothScrollToPosition(currentLookPosition);
-
-                lookHandler.postDelayed(this, 2000);
-            }
-        };
-
-        lookHandler.postDelayed(lookRunnable, 2000);
-    }
 
 
-    private Handler bannerHandler = new Handler(Looper.getMainLooper());
-    private Runnable bannerRunnable;
 
-    private void startAutoSlide() {
-        bannerRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (binding == null || binding.bannerViewPager == null) return;
-
-                int currentItem = binding.bannerViewPager.getCurrentItem();
-                int totalItem = bannerList.size();
-
-                if (currentItem < totalItem - 1) {
-                    binding.bannerViewPager.setCurrentItem(currentItem + 1, true);
-                } else {
-                    binding.bannerViewPager.setCurrentItem(0, true);
-                }
-
-                bannerHandler.postDelayed(this, 3000); // Lặp lại sau 3 giây
-            }
-        };
-
-        bannerHandler.postDelayed(bannerRunnable, 3000);
-    }
 
     public HomeFragment() {}
 
@@ -163,7 +118,7 @@ public class HomeFragment extends Fragment {
         BannerAdapter bannerAdapter = new BannerAdapter(bannerList);
         binding.bannerViewPager.setAdapter(bannerAdapter);
 
-        startAutoSlide();
+
     }
 
     private void setupBrands() {
@@ -194,7 +149,7 @@ public class HomeFragment extends Fragment {
         binding.rvLooks.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.rvLooks.setAdapter(lookAdapter);
 
-        startAutoScrollLooks();
+
     }
 
     private void setupProducts() {
@@ -229,15 +184,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        if (lookHandler != null && lookRunnable != null) {
-            lookHandler.removeCallbacks(lookRunnable);
-        }
-
-        if (bannerHandler != null && bannerRunnable != null) {
-            bannerHandler.removeCallbacks(bannerRunnable);
-        }
-
         binding = null;
     }
 

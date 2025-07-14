@@ -9,7 +9,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-
+import android.content.Intent;
+import android.os.Build;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.databinding.ActivityMainBinding;
 import com.example.productsaleprm.fragement.CartFragment;
@@ -37,6 +40,16 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(new HomeFragment());
             binding.bottomNav.setSelectedItemId(R.id.nav_home);
         }
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+            binding.bottomNav.setSelectedItemId(R.id.nav_home);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
     }
 
     private void setupActionBar() {
@@ -59,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Settings Opened", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_logout) {
                 Toast.makeText(this, "You are Logged Out", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_product) {
+                startActivity(new Intent(this, ProductActivity.class));
             }
 
             binding.drawerLayout.closeDrawers();

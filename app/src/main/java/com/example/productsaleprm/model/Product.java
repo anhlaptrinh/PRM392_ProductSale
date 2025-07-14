@@ -12,8 +12,9 @@ public class Product {
     private String imageURL;
     private int  categoryID;
     private String categoryName;
+    private boolean isFavorite;
 
-    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName) {
+    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName,boolean isFavorite) {
         this.id = id;
         this.productName = productName;
         this.briDesc = briDesc;
@@ -23,6 +24,7 @@ public class Product {
         this.imageURL = imageURL;
         this.categoryID = categoryID;
         this.categoryName = categoryName;
+        this.isFavorite = isFavorite;
     }
 
     public int getCategoryID() {
@@ -95,5 +97,12 @@ public class Product {
 
     public String getImageURL() {
         return imageURL;
+    }
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.isFavorite = favorite;
     }
 }

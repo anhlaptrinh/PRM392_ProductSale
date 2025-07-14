@@ -62,7 +62,7 @@ public class RegisterFragment extends Fragment {
     private void sendVerificationCode() {
         String email = etEmail.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {
-            etEmail.setError("Vui lòng nhập email");
+            etEmail.setError("Please enter email");
             return;
         }
 
@@ -71,16 +71,16 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Đã gửi OTP đến email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "OTP sent to email", Toast.LENGTH_SHORT).show();
                     startCountdown();
                 } else {
-                    Toast.makeText(getContext(), "Không thể gửi mã xác minh", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Unable to send verification code", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getContext(), "Lỗi gửi OTP: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error sending OTP:" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -89,12 +89,12 @@ public class RegisterFragment extends Fragment {
         btnSendOtp.setEnabled(false);
         countDownTimer = new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
-                btnSendOtp.setText("Gửi lại (" + millisUntilFinished / 1000 + "s)");
+                btnSendOtp.setText("Resend (" + millisUntilFinished / 1000 + "s)");
             }
 
             public void onFinish() {
                 btnSendOtp.setEnabled(true);
-                btnSendOtp.setText("Gửi lại mã");
+                btnSendOtp.setText("Resend code");
             }
         }.start();
     }
@@ -126,45 +126,45 @@ public class RegisterFragment extends Fragment {
 
             @Override
             public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Lỗi đăng ký: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Registration error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private boolean isValidInput(String email, String otp, String username, String phone, String address, String password, String confirmPassword) {
         if (TextUtils.isEmpty(email)) {
-            etEmail.setError("Vui lòng nhập email");
+            etEmail.setError("Please enter email");
             return false;
         }
         if (TextUtils.isEmpty(otp)) {
-            etVerificationCode.setError("Vui lòng nhập mã xác minh");
+            etVerificationCode.setError("Please enter verification code");
             return false;
         }
         if (TextUtils.isEmpty(username)) {
-            etUsername.setError("Vui lòng nhập tên đăng nhập");
+            etUsername.setError("Please enter username");
             return false;
         }
         if (TextUtils.isEmpty(phone)) {
-            etPhone.setError("Vui lòng nhập số điện thoại");
+            etPhone.setError("Please enter phone number");
             return false;
         }
         if (TextUtils.isEmpty(address)) {
-            etAddress.setError("Vui lòng nhập địa chỉ");
+            etAddress.setError("Please enter address");
             return false;
         }
         if (TextUtils.isEmpty(password)) {
-            etPassword.setError("Vui lòng nhập mật khẩu");
+            etPassword.setError("Please enter password");
             return false;
         }
         if (!password.equals(confirmPassword)) {
-            etConfirmPassword.setError("Mật khẩu không khớp");
+            etConfirmPassword.setError("Passwords do not match");
             return false;
         }
         return true;
     }
 
     private void showErrorFromResponse(Response<?> response) {
-        String errorMsg = "Đăng ký thất bại!";
+        String errorMsg = "Registration failed!";
         try {
             if (response.errorBody() != null) {
                 errorMsg = response.errorBody().string();

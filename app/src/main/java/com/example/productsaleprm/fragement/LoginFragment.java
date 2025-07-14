@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment {
                     String token = response.body().getData();
                     Log.d("JWT_TOKEN", "Token Login nhận được: " + token);
                     saveToken(token);
-                    Toast.makeText(getContext(), "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                     goToMainActivity();
                 } else {
                     showErrorFromResponse(response);
@@ -88,18 +88,18 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Connection error:" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private boolean isValidInput(String email, String password) {
         if (TextUtils.isEmpty(email)) {
-            etUsername.setError("Vui lòng nhập email");
+            etUsername.setError("Please enter email");
             return false;
         }
         if (TextUtils.isEmpty(password)) {
-            etPassword.setError("Vui lòng nhập mật khẩu");
+            etPassword.setError("Please enter password");
             return false;
         }
         return true;
@@ -117,7 +117,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void showErrorFromResponse(Response<LoginResponse> response) {
-        String message = "Sai email hoặc mật khẩu!";
+        String message = "Wrong email or password!";
         try {
             if (response.errorBody() != null) {
                 message = response.errorBody().string();

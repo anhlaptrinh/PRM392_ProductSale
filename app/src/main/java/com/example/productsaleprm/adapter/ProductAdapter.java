@@ -1,12 +1,13 @@
 package com.example.productsaleprm.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,77 +18,44 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
+    private Context context;
     private List<Product> productList;
 
-    public ProductAdapter(List<Product> products) {
-        this.productList = products;
+    public ProductAdapter(Context context, List<Product> productList) {
+        this.context = context;
+        this.productList = productList;
     }
 
-    public void setProductList(List<Product> products) {
-        this.productList = products;
-        notifyDataSetChanged();
-    }
-
+    @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_product, parent, false);
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
+
         holder.tvName.setText(product.getProductName());
-        holder.tvPrice.setText(product.getPrice().toPlainString() + "đ");
-        holder.tvDescription.setText(product.getFullDesc());
-
-
-        // Hiển thị hình ảnh nếu có
-        Glide.with(holder.itemView.getContext())
-                .load(product.getImageURL())
-                .placeholder(R.drawable.placeholder_image) // thêm ảnh mặc định nếu cần
-                .into(holder.ivImage);
-        boolean isFavorite = product.isFavorite(); // ví dụ getter
-
-        if (isFavorite) {
-            holder.imgHeart.setImageResource(R.drawable.ic_heart_filled);
-        } else {
-            holder.imgHeart.setImageResource(R.drawable.ic_heart_outline);
-        }
-
-        holder.imgHeart.setOnClickListener(v -> {
-            boolean newFavoriteState = !product.isFavorite();
-            product.setFavorite(newFavoriteState);
-            notifyItemChanged(position);
-
-
-            if (newFavoriteState) {
-                Toast.makeText(holder.itemView.getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(holder.itemView.getContext(), "Đã bỏ yêu thích", Toast.LENGTH_SHORT).show();
-            }
-        });
+        holder.tvPrice.setText(product.getPrice().toPlainString() + " ₫");
+        Glide.with(context).load(product.getImageURL()).into(holder.ivProductImage);
     }
 
     @Override
     public int getItemCount() {
-        return productList != null ? productList.size() : 0;
+        return productList.size();
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvPrice ,tvDescription;
-        ImageView ivImage;
-        public ImageView imgHeart;
+        ImageView ivProductImage;
+        TextView tvName, tvPrice;
 
-
-        public ProductViewHolder(View itemView) {
+        public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.textProductName);
-            tvPrice = itemView.findViewById(R.id.textProductPrice);
-            tvDescription = itemView.findViewById(R.id.textProductDescription);
-            ivImage = itemView.findViewById(R.id.imageProduct);
-            imgHeart = itemView.findViewById(R.id.imgHeart);
+            ivProductImage = itemView.findViewById(R.id.ivProductImage);
+            tvName = itemView.findViewById(R.id.tvProductName);
+            tvPrice = itemView.findViewById(R.id.tvProductPrice);
         }
     }
 }

@@ -27,17 +27,17 @@
                 android:padding="24dp"
                 android:gravity="center_horizontal">
 
-                <!-- Tiêu đề -->
+                <!-- Title -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đăng ký"
+                    android:text="Register"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="#1A237E"
                     android:layout_marginBottom="24dp" />
 
-                <!-- Email + Gửi mã OTP -->
+                <!-- Email + Send OTP -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,12 +60,12 @@
                             android:inputType="textEmailAddress" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Gửi mã OTP -->
+                    <!-- Send OTP -->
                     <Button
                         android:id="@+id/btnSendOtp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gửi mã"
+                        android:text="Send OTP"
                         android:layout_marginStart="8dp"
                         android:minWidth="80dp"
                         android:textSize="14sp"
@@ -84,7 +84,7 @@
                         android:id="@+id/etVerificationCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Mã xác minh (OTP)"
+                        android:hint="Verification Code (OTP)"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,7 +99,7 @@
                         android:id="@+id/etUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Tên đăng nhập"
+                        android:hint="Username"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +114,7 @@
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Số điện thoại"
+                        android:hint="Phone Number"
                         android:inputType="phone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +129,7 @@
                         android:id="@+id/etAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Địa chỉ"
+                        android:hint="Address"
                         android:inputType="textPostalAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,7 +144,7 @@
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Mật khẩu"
+                        android:hint="Password"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,26 +159,26 @@
                         android:id="@+id/etConfirmPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Xác nhận mật khẩu"
+                        android:hint="Confirm Password"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Nút đăng ký -->
+                <!-- Register Button -->
                 <Button
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tạo tài khoản"
+                    android:text="Create Account"
                     android:backgroundTint="#4DB6AC"
                     android:textColor="#FFFFFF"
                     android:padding="12dp" />
 
-                <!-- Quay lại -->
+                <!-- Back to Login -->
                 <TextView
                     android:id="@+id/tvBackToLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Đã có tài khoản? Đăng nhập"
+                    android:text="Already have an account? Login"
                     android:textColor="#1A237E"
                     android:gravity="center"
                     android:layout_marginTop="16dp" />

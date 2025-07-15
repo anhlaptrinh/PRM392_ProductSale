@@ -3,39 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+
+        >        <!-- Toolbar -->
+        <RelativeLayout
+            android:id="@+id/toolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Product"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
 
         <!-- Product Image -->
         <ImageView
+            android:src="@drawable/pant"
+            android:layout_marginTop="10dp"
             android:id="@+id/imageProduct"
             android:layout_width="0dp"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
 
         <!-- Title -->
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/imageProduct"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/imageProduct" />
 
         <!-- Rating -->
         <RatingBar
             android:id="@+id/ratingBar"
-            style="?android:attr/ratingBarStyleSmall"
+            style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
@@ -49,8 +80,8 @@
             android:id="@+id/textPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
@@ -67,15 +98,19 @@
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/textPrice">
+            app:layout_constraintBottom_toBottomOf="@id/textPrice"
+            android:background="@drawable/bg_quantity_selector"
+            android:padding="2dp"
+            >
 
             <Button
                 android:id="@+id/btnMinus"
                 android:text="−"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:textColor="@android:color/white"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:background="@android:color/transparent"
                 />
 
             <TextView
@@ -83,15 +118,17 @@
                 android:text="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"/>
+                android:padding="8dp"
+                android:textSize="18sp"/>
 
             <Button
                 android:id="@+id/btnPlus"
                 android:text="+"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimary"
-                android:textColor="@android:color/white"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:background="@android:color/transparent"
                 />
         </LinearLayout>
 
@@ -124,6 +161,7 @@
             android:layout_height="wrap_content"
             android:text="Description"
             android:textStyle="bold"
+            android:textSize="20sp"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/textCOD"
             app:layout_constraintStart_toStartOf="parent" />
@@ -132,8 +170,9 @@
             android:id="@+id/textDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             android:layout_marginTop="4dp"
+            android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/textDescriptionTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -144,8 +183,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="+ ADD TO CART"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@android:color/white"
+            app:backgroundTint="@null"
+            android:background="@drawable/bg_add_button"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/textDescription"
             app:layout_constraintStart_toStartOf="parent"

@@ -7,7 +7,9 @@
     android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ChatActivity">
+    tools:context=".activity.ChatActivity"
+    android:fitsSystemWindows="true"
+    >
     <View
         android:id="@+id/viewBackground"
         android:layout_width="match_parent"

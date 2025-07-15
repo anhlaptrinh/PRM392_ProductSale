@@ -50,6 +50,8 @@ public class HomeFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
 
+    private int pendingApiCalls = 0;
+
     public HomeFragment() {}
 
     @Override
@@ -62,6 +64,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        showLoading();
+
         setupCategory();
         setupBanner();
         setupBrands();
@@ -71,13 +75,13 @@ public class HomeFragment extends Fragment {
 
     private void setupCategory() {
         categoryList = new ArrayList<>();
-
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
         binding.rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.rvCategories.setAdapter(categoryAdapter);
 
         CategoryAPI categoryAPI = RetrofitClient.getClient(getContext()).create(CategoryAPI.class);
 
+        pendingApiCalls++;
         categoryAPI.getAllCategories().enqueue(new Callback<CategoryListResponse>() {
             @Override
             public void onResponse(@NonNull Call<CategoryListResponse> call, @NonNull Response<CategoryListResponse> response) {
@@ -88,15 +92,17 @@ public class HomeFragment extends Fragment {
                     categoryList.addAll(response.body().getData());
                     categoryAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getContext(), "Unable to get directory", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Unable to get categories", Toast.LENGTH_SHORT).show();
                 }
+                checkAllApiCompleted();
             }
 
             @Override
             public void onFailure(@NonNull Call<CategoryListResponse> call, @NonNull Throwable t) {
                 if (!isAdded() || binding == null) return;
                 Log.e("CATEGORY_API", "Error calling API Category:" + t.getMessage(), t);
-                Toast.makeText(getContext(), "Network error:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                checkAllApiCompleted();
             }
         });
     }
@@ -108,7 +114,6 @@ public class HomeFragment extends Fragment {
         bannerList.add(R.drawable.banner4);
         bannerList.add(R.drawable.banner5);
 
-
         BannerAdapter bannerAdapter = new BannerAdapter(bannerList);
         binding.bannerViewPager.setAdapter(bannerAdapter);
     }
@@ -118,11 +123,6 @@ public class HomeFragment extends Fragment {
         brandList.add(new Brand("Adidas", R.drawable.adidas));
         brandList.add(new Brand("Puma", R.drawable.puma));
         brandList.add(new Brand("Zara", R.drawable.zara));
-        brandList.add(new Brand("Dior", R.drawable.dior));
-        brandList.add(new Brand("Uniqlo", R.drawable.uniqlo));
-        brandList.add(new Brand("Fog", R.drawable.fog));
-        brandList.add(new Brand("Gap", R.drawable.gap));
-
 
         BrandAdapter brandAdapter = new BrandAdapter(getContext(), brandList);
         binding.rvBrands.setLayoutManager(new GridLayoutManager(getContext(), 4));
@@ -134,8 +134,6 @@ public class HomeFragment extends Fragment {
         lookList.add(new Look("Streetwear", "NYC", R.drawable.look2));
         lookList.add(new Look("Facion", "Japan", R.drawable.look3));
         lookList.add(new Look("Streetwear", "China", R.drawable.look4));
-        lookList.add(new Look("Streetwear", "Korea", R.drawable.look5));
-
 
         LookAdapter lookAdapter = new LookAdapter(getContext(), lookList);
         binding.rvLooks.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -149,6 +147,7 @@ public class HomeFragment extends Fragment {
 
         ProductAPI productAPI = RetrofitClient.getClient(getContext()).create(ProductAPI.class);
 
+        pendingApiCalls++;
         productAPI.getAllProducts().enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(@NonNull Call<ProductListResponse> call, @NonNull Response<ProductListResponse> response) {
@@ -159,16 +158,37 @@ public class HomeFragment extends Fragment {
                     productList.addAll(response.body().getData());
                     productAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getContext(), "Cannot get product", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Cannot get products", Toast.LENGTH_SHORT).show();
                 }
+                checkAllApiCompleted();
             }
 
             @Override
             public void onFailure(@NonNull Call<ProductListResponse> call, @NonNull Throwable t) {
                 if (!isAdded() || binding == null) return;
-                Toast.makeText(getContext(), "Network error:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                checkAllApiCompleted();
             }
         });
+    }
+
+    private void showLoading() {
+        if (binding != null && binding.progressBar != null) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideLoading() {
+        if (binding != null && binding.progressBar != null) {
+            binding.progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private void checkAllApiCompleted() {
+        pendingApiCalls--;
+        if (pendingApiCalls <= 0) {
+            hideLoading();
+        }
     }
 
     @Override

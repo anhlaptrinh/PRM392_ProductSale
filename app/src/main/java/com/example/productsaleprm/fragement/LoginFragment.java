@@ -31,6 +31,7 @@ public class LoginFragment extends Fragment {
     private EditText etUsername, etPassword;
     private Button btnLogin, btnRegister;
     private TextView tvForgotPassword;
+    private ProgressBar progressBar; // ✅ Thêm ProgressBar
 
     public LoginFragment() {}
 
@@ -54,6 +55,7 @@ public class LoginFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btnLogin);
         btnRegister = view.findViewById(R.id.btnRegister);
         tvForgotPassword = view.findViewById(R.id.tvForgotPassword);
+        progressBar = view.findViewById(R.id.progressBarLogin); // ✅ Gán view ProgressBar
     }
 
     private void setupListeners() {
@@ -68,13 +70,19 @@ public class LoginFragment extends Fragment {
 
         if (!isValidInput(email, password)) return;
 
-        // ✅ Dùng RetrofitClient đã có sẵn
-        AuthApi authApi = RetrofitClient.getClientWithoutAuth(
-        ).create(AuthApi.class);
+        // ✅ Hiển thị loading
+        progressBar.setVisibility(View.VISIBLE);
+        btnLogin.setEnabled(false);
+
+        AuthApi authApi = RetrofitClient.getClientWithoutAuth().create(AuthApi.class);
 
         authApi.login(email, password).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                // ✅ Ẩn loading sau phản hồi
+                progressBar.setVisibility(View.GONE);
+                btnLogin.setEnabled(true);
+
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getData();
                     Log.d("JWT_TOKEN", "Token Login nhận được: " + token);
@@ -88,7 +96,9 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Connection error:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                btnLogin.setEnabled(true);
+                Toast.makeText(getContext(), "Connection error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

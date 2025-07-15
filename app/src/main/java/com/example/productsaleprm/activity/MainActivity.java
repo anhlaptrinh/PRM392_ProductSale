@@ -1,5 +1,6 @@
 package com.example.productsaleprm.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.productsaleprm.fragement.WishlistFragment;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setupActionBar();
         setupBottomNav();
 
-        // Load màn hình mặc định là HomeFragment
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
             binding.bottomNav.setSelectedItemId(R.id.nav_home);
@@ -50,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        binding.toolbarMain.toolbarChat.setOnClickListener(v -> {
+            startActivity(new Intent(this, ChatActivity.class));
+        });
+
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-
             if (id == R.id.nav_account) {
                 Toast.makeText(this, "Account Details", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_settings) {
@@ -60,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_logout) {
                 Toast.makeText(this, "You are Logged Out", Toast.LENGTH_SHORT).show();
             }
-
             binding.drawerLayout.closeDrawers();
             return true;
         });
@@ -79,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupBottomNav() {
         binding.bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
             int id = item.getItemId();
+            Fragment selectedFragment = null;
 
             if (id == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
@@ -89,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_cart) {
                 selectedFragment = new CartFragment();
             } else if (id == R.id.nav_wishlist) {
-
                 selectedFragment = new WishlistFragment();
             } else if (id == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
@@ -99,12 +101,16 @@ public class MainActivity extends AppCompatActivity {
                 loadFragment(selectedFragment);
                 return true;
             }
-
             return false;
         });
     }
 
     private void loadFragment(Fragment fragment) {
+        if (currentFragment != null && currentFragment.getClass().equals(fragment.getClass())) {
+            return; // Tránh reload nếu đang ở đúng fragment
+        }
+
+        currentFragment = fragment;
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)

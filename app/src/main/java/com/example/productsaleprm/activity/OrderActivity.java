@@ -17,10 +17,13 @@ import com.example.productsaleprm.model.CartItem;
 import com.example.productsaleprm.model.response.BaseResponse;
 import com.example.productsaleprm.model.response.CartResponseData;
 import com.example.productsaleprm.model.response.PaymentResponse;
+import com.example.productsaleprm.model.response.PaymentSuccessResponse;
 import com.example.productsaleprm.model.resquest.CreateOrderRequest;
 import com.example.productsaleprm.retrofit.CartAPI;
 import com.example.productsaleprm.retrofit.OrderApi;
 import com.example.productsaleprm.retrofit.RetrofitClient;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -87,15 +90,17 @@ public class OrderActivity extends AppCompatActivity {
 
             // Gọi API
             OrderApi orderAPI = RetrofitClient.getClient(this).create(OrderApi.class);
-            Call<BaseResponse<PaymentResponse>> call = orderAPI.createOrder(request);
+            Call<BaseResponse<JsonElement>> call = orderAPI.createOrder(request);
 
             // 4. Xử lý response
-            call.enqueue(new Callback<BaseResponse<PaymentResponse>>() {
+            call.enqueue(new Callback<BaseResponse<JsonElement>>() {
                 @Override
-                public void onResponse(Call<BaseResponse<PaymentResponse>> call, Response<BaseResponse<PaymentResponse>> response) {
-                    if (response.isSuccessful()) {
+                public void onResponse(Call<BaseResponse<JsonElement>> call, Response<BaseResponse<JsonElement>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        JsonElement data = response.body().getData();
                         if ("MOMO".equalsIgnoreCase(finalPaymentMethod)) {
-                            PaymentResponse payment = response.body().getData();
+                            PaymentResponse payment = new Gson().fromJson(data, PaymentResponse.class);
+
                             String payUrl = payment.getPaymentUrl();
                             String qrCodeUrl = payment.getQrCodeUrl();
 
@@ -104,23 +109,24 @@ public class OrderActivity extends AppCompatActivity {
                             intent.putExtra("PAY_URL", payUrl);
                             startActivity(intent);
                         } else {
-                            // COD ➜ backend trả 204 No Content ➜ sẽ không chạy ở đây vì Retrofit coi 204 là empty
+                            // COD ➜ parse thành PaymentSuccessResponse
+                            PaymentSuccessResponse cod = new Gson().fromJson(data, PaymentSuccessResponse.class);
+
                             Intent intent = new Intent(OrderActivity.this, PaymentSuccessActivity.class);
                             intent.putExtra("PAYMENT_METHOD", "COD");
+                            intent.putExtra("ORDER_ID", cod.getOrderID());
+                            intent.putExtra("TOTAL_AMOUNT", cod.getTotalAmount().toPlainString());
+                            intent.putExtra("PAYMENT_DATE", cod.getPaymentDate());
+                            intent.putExtra("PAYMENT_STATUS", cod.getPaymentStatus());
                             startActivity(intent);
                         }
-                    } else if (response.code() == 204) {
-                        // Trường hợp COD ➜ backend trả 204
-                        Intent intent = new Intent(OrderActivity.this, PaymentSuccessActivity.class);
-                        intent.putExtra("PAYMENT_METHOD", "COD");
-                        startActivity(intent);
                     } else {
                         Toast.makeText(OrderActivity.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<BaseResponse<PaymentResponse>> call, Throwable t) {
+                public void onFailure(Call<BaseResponse<JsonElement>> call, Throwable t) {
                     Toast.makeText(OrderActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

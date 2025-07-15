@@ -21,11 +21,13 @@ import com.example.productsaleprm.activity.OrderActivity;
 import com.example.productsaleprm.adapter.CartAdapter;
 import com.example.productsaleprm.databinding.FragmentCartBinding;
 import com.example.productsaleprm.model.CartItem;
+import com.example.productsaleprm.model.User;
 import com.example.productsaleprm.model.response.BaseResponse;
 import com.example.productsaleprm.model.response.CartResponseData;
 import com.example.productsaleprm.model.response.CartUpdateResponse;
 import com.example.productsaleprm.retrofit.CartAPI;
 import com.example.productsaleprm.retrofit.RetrofitClient;
+import com.example.productsaleprm.retrofit.UserAPI;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class CartFragment extends Fragment {
     private final int pageSize = 5;
     private boolean isLastPage = false;
     private boolean isLoading = false;
+    User user;
 
 
 
@@ -113,8 +116,30 @@ public class CartFragment extends Fragment {
         binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), OrderActivity.class);
-                startActivity(intent);
+                UserAPI userAPI = RetrofitClient.getClient(getContext()).create(UserAPI.class);
+                userAPI.getCurrentUser().enqueue(new Callback<BaseResponse<User>>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            User user = response.body().getData();
+                            if (user != null) {
+                                Intent intent = new Intent(getActivity(), OrderActivity.class);
+                                intent.putExtra("USER_ID", user.getId());
+                                intent.putExtra("ADDRESS", user.getAddress());
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getContext(), "Không tìm thấy User!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Không load được User!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
+                        Toast.makeText(getContext(), "Không load được User!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

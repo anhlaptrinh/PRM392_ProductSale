@@ -31,7 +31,7 @@
             android:name=".activity.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainAuthActivity"
+            android:name=".activity.ProductDetailActivity"
             android:exported="false" /> <!-- 2) Khai báo Activity -->
         <activity
             android:name=".activity.OrderActivity"
@@ -40,7 +40,7 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ProductDetailActivity"
+            android:name=".activity.MainAuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

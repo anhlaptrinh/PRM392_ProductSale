@@ -1,9 +1,7 @@
 package com.example.productsaleprm.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -38,15 +36,27 @@ public class OrderActivity extends AppCompatActivity {
     private ActivityOrderBinding binding;
     private OrderAdapter orderAdapter;
     private List<CartItem> cartList = new ArrayList<>();
-    private String token;
     private final int pageSize = 5;
     private BigDecimal totalAmount;
+    private int userId = -1; // nhận từ Intent
+    private String address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // ✅ Lấy userId từ Intent
+        userId = getIntent().getIntExtra("USER_ID", -1);
+        if (userId == -1) {
+            Toast.makeText(this, "Không tìm thấy User ID!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        // Address
+        address = getIntent().getStringExtra("ADDRESS");
+        binding.tvAddressDetail.setText(address);
         // Nút quay lại
         binding.btnBack.setOnClickListener(v -> finish());
 
@@ -71,47 +81,24 @@ public class OrderActivity extends AppCompatActivity {
                 return;
             }
 
-            String paymentMethod = "";
-            if (selectedId == R.id.rb_cod) {
-                paymentMethod = "COD";
-            } else if (selectedId == R.id.rb_momo) {
-                paymentMethod = "MOMO";
-            }
-
-            final String finalPaymentMethod = paymentMethod;
-
-            int userId = getIntent().getIntExtra("USER_ID", 3); // ví dụ bạn truyền userId từ màn khác
-            if (userId == -1) {
-                Toast.makeText(OrderActivity.this, "Không tìm thấy User!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            String paymentMethod = selectedId == R.id.rb_cod ? "COD" : "MOMO";
 
             CreateOrderRequest request = new CreateOrderRequest(userId, totalAmount, paymentMethod);
+            OrderApi orderAPI = RetrofitClient.getClient(OrderActivity.this).create(OrderApi.class);
 
-            // Gọi API
-            OrderApi orderAPI = RetrofitClient.getClient(this).create(OrderApi.class);
-            Call<BaseResponse<JsonElement>> call = orderAPI.createOrder(request);
-
-            // 4. Xử lý response
-            call.enqueue(new Callback<BaseResponse<JsonElement>>() {
+            orderAPI.createOrder(request).enqueue(new Callback<BaseResponse<JsonElement>>() {
                 @Override
                 public void onResponse(Call<BaseResponse<JsonElement>> call, Response<BaseResponse<JsonElement>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         JsonElement data = response.body().getData();
-                        if ("MOMO".equalsIgnoreCase(finalPaymentMethod)) {
+                        if ("MOMO".equalsIgnoreCase(paymentMethod)) {
                             PaymentResponse payment = new Gson().fromJson(data, PaymentResponse.class);
-
-                            String payUrl = payment.getPaymentUrl();
-                            String qrCodeUrl = payment.getQrCodeUrl();
-
                             Intent intent = new Intent(OrderActivity.this, MomoPaymentActivity.class);
-                            intent.putExtra("QR_CODE_URL", qrCodeUrl);
-                            intent.putExtra("PAY_URL", payUrl);
+                            intent.putExtra("QR_CODE_URL", payment.getQrCodeUrl());
+                            intent.putExtra("PAY_URL", payment.getPaymentUrl());
                             startActivity(intent);
                         } else {
-                            // COD ➜ parse thành PaymentSuccessResponse
                             PaymentSuccessResponse cod = new Gson().fromJson(data, PaymentSuccessResponse.class);
-
                             Intent intent = new Intent(OrderActivity.this, PaymentSuccessActivity.class);
                             intent.putExtra("PAYMENT_METHOD", "COD");
                             intent.putExtra("ORDER_ID", cod.getOrderID());
@@ -127,10 +114,11 @@ public class OrderActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<BaseResponse<JsonElement>> call, Throwable t) {
-                    Toast.makeText(OrderActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderActivity.this, "Lỗi khi tạo đơn hàng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
+
     }
 
     private void fetchCartData(int page) {

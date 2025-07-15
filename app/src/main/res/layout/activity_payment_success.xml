@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/colorBackground">
 
     <!-- Nút Home thay nút Back -->
     <ImageView
@@ -32,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ORDER SUCCESSFUL"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorTextPrimary"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_centerHorizontal="true"
@@ -63,8 +64,8 @@
         android:layout_below="@id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fashion 3 Items"
-        android:textColor="@color/colorPrimary"
+        android:text="Summary"
+        android:textColor="@color/colorTextPrimary"
         android:textStyle="bold"
         android:layout_marginTop="24dp"/>
 

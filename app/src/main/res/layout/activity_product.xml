@@ -46,6 +46,12 @@
         android:weightSum="4">
 
         <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+        <Spinner
             android:id="@+id/spinnerSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

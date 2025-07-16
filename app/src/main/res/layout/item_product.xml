@@ -8,14 +8,28 @@
     android:background="@drawable/bg_item"
     android:layout_margin="4dp">
 
-    <ImageView
-        android:id="@+id/ivProductImage"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:scaleType="centerCrop"
-        android:background="#8BD8CAB8"
-        android:clipToOutline="true"/>
+        android:layout_marginBottom="8dp">
 
+        <ImageView
+            android:id="@+id/ivProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="#8BD8CAB8"
+            android:clipToOutline="true" />
+
+        <ImageView
+            android:id="@+id/ivHeart"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_heart_outline"
+            android:contentDescription="Wishlist Icon" />
+    </RelativeLayout>
     <TextView
         android:id="@+id/tvProductName"
         android:layout_width="match_parent"
@@ -25,7 +39,8 @@
         android:textSize="14sp"
         android:textColor="#1A237E"
         android:paddingTop="4dp"
-        android:maxLines="2" />
+        android:maxLines="2"
+        android:layout_marginBottom="7dp" />
 
     <TextView
         android:id="@+id/tvProductPrice"
@@ -35,6 +50,7 @@
         android:textColor="@android:color/holo_green_dark"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:paddingTop="2dp" />
+        android:paddingTop="2dp"
+        android:layout_marginBottom="8dp"/>
 
 </LinearLayout>

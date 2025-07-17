@@ -3,7 +3,8 @@ package com.example.productsaleprm.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -50,6 +51,17 @@ public class MainActivity extends AppCompatActivity {
                     != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
             }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "cart_channel";
+            CharSequence name = "Cart Notifications";
+            String description = "Hiển thị thông báo số lượng sản phẩm trong giỏ";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 

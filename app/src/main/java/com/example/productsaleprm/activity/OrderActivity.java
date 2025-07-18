@@ -153,7 +153,7 @@ public class OrderActivity extends AppCompatActivity {
     private void updateTotalAmount() {
         totalAmount = BigDecimal.ZERO;
         for (CartItem item : cartList) {
-            totalAmount = totalAmount.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            totalAmount = totalAmount.add(item.getPrice());
         }
         binding.tvTotalAmount.setText("$" + totalAmount);
     }

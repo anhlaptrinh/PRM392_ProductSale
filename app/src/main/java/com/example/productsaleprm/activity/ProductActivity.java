@@ -1,5 +1,5 @@
 package com.example.productsaleprm.activity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.example.productsaleprm.retrofit.CategoryAPI;
@@ -26,7 +26,6 @@ import android.view.View;
 import com.example.productsaleprm.model.response.CategoryListResponse;
 import android.widget.Toast;
 import com.example.productsaleprm.retrofit.WishListAPI;
-import com.example.productsaleprm.fragement.ProductDetailFragment;
 
 public class ProductActivity extends AppCompatActivity {
     private Spinner spinnerSort, spinnerCategory;
@@ -98,22 +97,10 @@ public class ProductActivity extends AppCompatActivity {
         });
 
         productAdapter.setOnProductItemClickListener(product -> {
-            // Tạo bundle chứa productId
-            Bundle bundle = new Bundle();
-            bundle.putInt("PRODUCT_ID", product.getId());
-
-            // Tạo Fragment chi tiết
-            ProductDetailFragment fragment = new ProductDetailFragment();
-            fragment.setArguments(bundle);
-
-            // Chuyển fragment
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(android.R.id.content, fragment) // hoặc R.id.container nếu bạn có FrameLayout riêng
-                    .addToBackStack(null)
-                    .commit();
+            Intent intent = new Intent(ProductActivity.this, ProductDetailActivity.class);
+            intent.putExtra("PRODUCT_ID", product.getId());
+            startActivity(intent);
         });
-
 
 
         spinnerSort = findViewById(R.id.spinnerSort);

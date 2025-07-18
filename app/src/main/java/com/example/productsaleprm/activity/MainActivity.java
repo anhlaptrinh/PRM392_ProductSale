@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_account) {
                 Toast.makeText(this, "Account Details", Toast.LENGTH_SHORT).show();
+            }else if (id == R.id.nav_order_history) {
+                startActivity(new Intent(this, OrderHistoryActivity.class));
             } else if (id == R.id.nav_settings) {
                 Toast.makeText(this, "Settings Opened", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_logout) {

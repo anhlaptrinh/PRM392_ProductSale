@@ -26,6 +26,7 @@ import android.view.View;
 import com.example.productsaleprm.model.response.CategoryListResponse;
 import android.widget.Toast;
 import com.example.productsaleprm.retrofit.WishListAPI;
+import com.example.productsaleprm.fragement.ProductDetailFragment;
 
 public class ProductActivity extends AppCompatActivity {
     private Spinner spinnerSort, spinnerCategory;
@@ -96,8 +97,26 @@ public class ProductActivity extends AppCompatActivity {
                     }
         });
 
+        productAdapter.setOnProductItemClickListener(product -> {
+            // Tạo bundle chứa productId
+            Bundle bundle = new Bundle();
+            bundle.putInt("PRODUCT_ID", product.getId());
 
-            spinnerSort = findViewById(R.id.spinnerSort);
+            // Tạo Fragment chi tiết
+            ProductDetailFragment fragment = new ProductDetailFragment();
+            fragment.setArguments(bundle);
+
+            // Chuyển fragment
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(android.R.id.content, fragment) // hoặc R.id.container nếu bạn có FrameLayout riêng
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+
+
+        spinnerSort = findViewById(R.id.spinnerSort);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 new String[]{"Default", "Ascending", "Descending"});

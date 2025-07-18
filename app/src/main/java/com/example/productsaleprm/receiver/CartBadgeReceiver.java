@@ -24,7 +24,9 @@ public class CartBadgeReceiver extends BroadcastReceiver {
                 .setContentText("Bạn có " + cartCount + " sản phẩm trong giỏ.")
                 .setNumber(cartCount) // số badge
                 .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                 .setWhen(System.currentTimeMillis())
+                .setShowWhen(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS)

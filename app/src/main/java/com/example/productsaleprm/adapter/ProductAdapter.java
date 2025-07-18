@@ -19,16 +19,34 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private Context context;
-    private OnProductWishlistClick listener;
     private List<Product> productList;
+
+    // Callback cho trái tim (wishlist)
+    public interface OnProductWishlistClick {
+        void onHeartClick(Product product, int position);
+    }
+
+    // Callback cho click vào item
+    public interface OnProductItemClickListener {
+        void onProductClick(Product product);
+    }
+
+    private OnProductWishlistClick wishlistClickListener;
+    private OnProductItemClickListener productClickListener;
+
+    public void setOnProductWishlistClick(OnProductWishlistClick listener) {
+        this.wishlistClickListener = listener;
+    }
+
+    public void setOnProductItemClickListener(OnProductItemClickListener listener) {
+        this.productClickListener = listener;
+    }
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
         this.productList = productList;
     }
-    public void setOnProductWishlistClick(OnProductWishlistClick listener) {
-        this.listener = listener;
-    }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,37 +61,44 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvName.setText(product.getProductName());
         holder.tvPrice.setText(product.getPrice().toPlainString() + " ₫");
         Glide.with(context).load(product.getImageURL()).into(holder.ivProductImage);
+
+        // Set icon yêu thích
         if (product.isFavorite()) {
             holder.ivHeart.setImageResource(R.drawable.ic_heart_filled);
         } else {
             holder.ivHeart.setImageResource(R.drawable.ic_heart_outline);
         }
+
+        // Bấm trái tim (toggle wishlist)
         holder.ivHeart.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onHeartClick(product, position);
+            if (wishlistClickListener != null) {
+                wishlistClickListener.onHeartClick(product, holder.getAdapterPosition());
             }
         });
 
+        // Bấm item → chuyển sang màn chi tiết
+        holder.itemView.setOnClickListener(v -> {
+            if (productClickListener != null) {
+                productClickListener.onProductClick(product);
+            }
+        });
     }
+
     @Override
     public int getItemCount() {
         return productList.size();
     }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivProductImage,ivHeart;
+        ImageView ivProductImage, ivHeart;
         TextView tvName, tvPrice;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProductImage = itemView.findViewById(R.id.ivProductImage);
-            ivHeart = itemView.findViewById(R.id.ivHeart);
+            ivHeart = itemView.findViewById(R.id.ivHeart); // trái tim
             tvName = itemView.findViewById(R.id.tvProductName);
             tvPrice = itemView.findViewById(R.id.tvProductPrice);
         }
-    }
-
-    public interface OnProductWishlistClick {
-        void onHeartClick(Product product, int position);
     }
 }

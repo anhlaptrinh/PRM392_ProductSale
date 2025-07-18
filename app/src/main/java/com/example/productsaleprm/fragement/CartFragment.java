@@ -28,6 +28,7 @@ import com.example.productsaleprm.model.response.CartUpdateResponse;
 import com.example.productsaleprm.retrofit.CartAPI;
 import com.example.productsaleprm.retrofit.RetrofitClient;
 import com.example.productsaleprm.retrofit.UserAPI;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -163,8 +164,6 @@ public class CartFragment extends Fragment {
                     binding.progressBar.setVisibility(View.GONE);
                     isLoading = false;
                     CartResponseData cartData = response.body().getData();
-
-
                     if (cartData.getCartItems() == null) {
                         if (page == 0) {
                             Toast.makeText(getContext(), "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
@@ -228,7 +227,6 @@ public class CartFragment extends Fragment {
                     checkEmptyCart();
                 } else {
                     binding.progressBar.setVisibility(View.GONE);
-
                     Toast.makeText(getContext(), "Don't have data", Toast.LENGTH_SHORT).show();
                 }
             }

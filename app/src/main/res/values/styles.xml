@@ -18,5 +18,7 @@
         <item name="boxStrokeColor">@color/colorTextPrimary</item>
         <item name="hintTextColor">@color/colorTextPrimary</item>
     </style>
-
+    <style name="RatingBarGold" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorControlActivated">#FFD700</item> <!-- màu vàng -->
+    </style>
 </resources>

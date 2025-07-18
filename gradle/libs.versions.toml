@@ -19,6 +19,8 @@ viewpager2 = "1.0.0"
 googleGmsGoogleServices = "4.4.3"
 firebaseFirestore = "25.1.4"
 firebaseDatabase = "21.0.0"
+firebaseMessaging = "23.4.1"
+
 
 [libraries]
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }

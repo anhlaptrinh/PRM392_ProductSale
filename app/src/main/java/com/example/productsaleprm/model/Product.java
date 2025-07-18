@@ -1,9 +1,11 @@
 package com.example.productsaleprm.model;
+import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
 public class Product {
-    private int productID;
+    @SerializedName("productID")
+    private int id;
     private String productName;
     private String briDesc;
     private String fullDesc;
@@ -12,9 +14,13 @@ public class Product {
     private String imageURL;
     private int  categoryID;
     private String categoryName;
+    @SerializedName("favorite")
+    private boolean isFavorite;
+    @SerializedName("wishlistId")
+    private Integer wishlistId;
 
-    public Product(int productID, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName) {
-        this.productID = productID;
+    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName,boolean isFavorite,Integer wishlistId) {
+        this.id = id;
         this.productName = productName;
         this.briDesc = briDesc;
         this.fullDesc = fullDesc;
@@ -23,6 +29,8 @@ public class Product {
         this.imageURL = imageURL;
         this.categoryID = categoryID;
         this.categoryName = categoryName;
+        this.isFavorite = isFavorite;
+        this.wishlistId=wishlistId;
     }
 
     public int getCategoryID() {
@@ -41,8 +49,8 @@ public class Product {
         this.categoryName = categoryName;
     }
 
-    public void setproductID(int productID) {
-        this.productID = productID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setProductName(String productName) {
@@ -69,8 +77,8 @@ public class Product {
         this.imageURL = imageURL;
     }
 
-    public int getProductID() {
-        return productID;
+    public int getId() {
+        return id;
     }
 
     public String getProductName() {
@@ -96,4 +104,13 @@ public class Product {
     public String getImageURL() {
         return imageURL;
     }
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.isFavorite = favorite;
+    }
+    public Integer getWishlistId() { return wishlistId; }
+    public void setWishlistId(Integer wishlistId) { this.wishlistId = wishlistId; }
 }

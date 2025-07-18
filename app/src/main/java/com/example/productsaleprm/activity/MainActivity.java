@@ -3,14 +3,18 @@ package com.example.productsaleprm.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-
+import android.content.Intent;
+import android.os.Build;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.databinding.ActivityMainBinding;
 import com.example.productsaleprm.fragement.CartFragment;
@@ -38,6 +42,27 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(new HomeFragment());
             binding.bottomNav.setSelectedItemId(R.id.nav_home);
         }
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+            binding.bottomNav.setSelectedItemId(R.id.nav_home);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "cart_channel";
+            CharSequence name = "Cart Notifications";
+            String description = "Hiển thị thông báo số lượng sản phẩm trong giỏ";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void setupActionBar() {
@@ -59,10 +84,14 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.nav_account) {
                 Toast.makeText(this, "Account Details", Toast.LENGTH_SHORT).show();
+            }else if (id == R.id.nav_order_history) {
+                startActivity(new Intent(this, OrderHistoryActivity.class));
             } else if (id == R.id.nav_settings) {
                 Toast.makeText(this, "Settings Opened", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_logout) {
                 Toast.makeText(this, "You are Logged Out", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_product) {
+                startActivity(new Intent(this, ProductActivity.class));
             }
             binding.drawerLayout.closeDrawers();
             return true;

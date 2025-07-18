@@ -40,4 +40,7 @@ public interface ReviewAPI {
     @POST("/api/reviews/{reviewID}/replies")
     Call<BaseResponse<ReviewReply>> createReply(@Path("reviewID") int reviewId,
                                                 @Body ReviewReplyRequest request);
+
+    @DELETE("/api/reviews/{replyID}/replies")
+    Call<BaseResponse<String>> deleteReply(@Path("replyID") int replyId);
 }

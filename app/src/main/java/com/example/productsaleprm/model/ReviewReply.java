@@ -5,17 +5,18 @@ public class ReviewReply {
     private int reviewID;
     private int repliedBy;
     private String username;
+    private String email;
     private String replyText;
     private String repliedAt;
 
     public ReviewReply() {}
 
-    public ReviewReply(int replyID, int reviewID, int repliedBy,
-                       String username, String replyText, String repliedAt) {
+    public ReviewReply(int replyID, int reviewID, int repliedBy, String username, String email, String replyText, String repliedAt) {
         this.replyID = replyID;
         this.reviewID = reviewID;
         this.repliedBy = repliedBy;
         this.username = username;
+        this.email = email;
         this.replyText = replyText;
         this.repliedAt = repliedAt;
     }
@@ -37,4 +38,12 @@ public class ReviewReply {
 
     public String getRepliedAt() { return repliedAt; }
     public void setRepliedAt(String repliedAt) { this.repliedAt = repliedAt; }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

@@ -3,7 +3,7 @@ package com.example.productsaleprm.model;
 import java.math.BigDecimal;
 
 public class Product {
-    private int id;
+    private int productID;
     private String productName;
     private String briDesc;
     private String fullDesc;
@@ -13,8 +13,8 @@ public class Product {
     private int  categoryID;
     private String categoryName;
 
-    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName) {
-        this.id = id;
+    public Product(int productID, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName) {
+        this.productID = productID;
         this.productName = productName;
         this.briDesc = briDesc;
         this.fullDesc = fullDesc;
@@ -41,8 +41,8 @@ public class Product {
         this.categoryName = categoryName;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setproductID(int productID) {
+        this.productID = productID;
     }
 
     public void setProductName(String productName) {
@@ -69,8 +69,8 @@ public class Product {
         this.imageURL = imageURL;
     }
 
-    public int getId() {
-        return id;
+    public int getProductID() {
+        return productID;
     }
 
     public String getProductName() {

@@ -1,6 +1,7 @@
 package com.example.productsaleprm.adapter;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     private List<Review> reviews = new ArrayList<>();
     private final String currentUser;
+    private final String role;
+    private final String admin = "ADMIN";
     private final OnReviewActionListener listener;
     private final Map<Integer, List<ReviewReply>> repliesMap = new HashMap<>();
 
@@ -34,10 +38,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         void onVoteReview(Review review, String voteType);
         void onLoadReplies(Review review);
         void onSubmitReply(Review review, String replyText);
+        void onDeleteReply(Review review, ReviewReply reply);
     }
 
-    public ReviewAdapter(String currentUser, OnReviewActionListener listener) {
+    public ReviewAdapter(String currentUser, String role, OnReviewActionListener listener) {
         this.currentUser = currentUser;
+        this.role = role;
         this.listener = listener;
     }
 
@@ -84,13 +90,49 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             binding.textComment.setText(review.getComment());
             binding.textDate.setText(review.getCreatedAt());
             binding.textRating.setText(new String(new char[review.getRating()]).replace("\0", "★"));
-            binding.textHelpfulCount.setText(review.getHelpfulCount() + " likes");
+            binding.textHelpfulCount.setText(review.getHelpfulCount() + " votes");
 
             boolean canModify = review.getEmail().equals(currentUser);
             binding.btnMore.setVisibility(canModify ? View.VISIBLE : View.GONE);
             binding.btnMore.setOnClickListener(v -> showPopupMenu(v, review));
 
             binding.btnUpvote.setOnClickListener(v -> listener.onVoteReview(review, "up"));
+
+            boolean voted = review.isVotedByCurrentUser(currentUser);
+            if (voted) {
+                binding.btnUpvote.setBackgroundTintList(ContextCompat.getColorStateList(binding.getRoot().getContext(), R.color.colorTextPrimary));
+                binding.btnUpvote.setTextColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.white));
+            } else {
+                binding.btnUpvote.setBackgroundTintList(ContextCompat.getColorStateList(binding.getRoot().getContext(), R.color.colorTextSecondary));
+                binding.btnUpvote.setTextColor(ContextCompat.getColor(binding.getRoot().getContext(), R.color.black));
+            }
+
+
+            binding.editReply.setVisibility(View.GONE);
+            binding.btnSubmitReply.setVisibility(View.GONE);
+
+            boolean isAdmin = role != null && role.equals(admin);
+
+            binding.btnShowReplies.setOnClickListener(v -> {
+                boolean isVisible = binding.replyRecyclerView.getVisibility() == View.VISIBLE;
+                if (isVisible) {
+                    binding.replyRecyclerView.setVisibility(View.GONE);
+                    binding.editReply.setVisibility(View.GONE);
+                    binding.btnSubmitReply.setVisibility(View.GONE);
+                } else {
+                    listener.onLoadReplies(review);
+                    binding.replyRecyclerView.setVisibility(View.VISIBLE);
+
+                    if (isAdmin) {
+                        binding.editReply.setVisibility(View.VISIBLE);
+                        binding.btnSubmitReply.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        binding.editReply.setVisibility(View.GONE);
+                        binding.btnSubmitReply.setVisibility(View.GONE);
+                    }
+                }
+            });
 
             binding.btnShowReplies.setOnClickListener(v -> {
                 if (binding.replyRecyclerView.getVisibility() == View.VISIBLE) {
@@ -116,7 +158,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             List<ReviewReply> replies = repliesMap.get(review.getReviewID());
             if (replies != null) {
                 binding.replyRecyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
-                binding.replyRecyclerView.setAdapter(new ReplyAdapter(replies));
+                binding.replyRecyclerView.setAdapter(new ReplyAdapter(replies, currentUser, role, reply -> listener.onDeleteReply(review, reply)));
                 binding.replyRecyclerView.setVisibility(View.VISIBLE);
             }
         }

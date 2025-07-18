@@ -1,5 +1,7 @@
 package com.example.productsaleprm.model;
 
+import java.util.List;
+
 public class Review {
     private int reviewID;
     private int productID;
@@ -10,6 +12,7 @@ public class Review {
     private String comment;
     private int helpfulCount;
     private String createdAt;
+    private List<Vote> voteList;
 
     public int getReviewID() { return reviewID; }
     public void setReviewID(int reviewID) { this.reviewID = reviewID; }
@@ -41,5 +44,16 @@ public class Review {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public List<Vote> getVoteList() {
+        return voteList;
+    }
+
+    public boolean isVotedByCurrentUser(String currentUserEmail) {
+        if (voteList == null) return false;
+        for (Vote vote : voteList) {
+            if (vote.getEmail().equals(currentUserEmail)) return true;
+        }
+        return false;
     }
 }

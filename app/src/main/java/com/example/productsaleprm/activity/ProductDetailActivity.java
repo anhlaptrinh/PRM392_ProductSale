@@ -7,7 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.productsaleprm.R;
 import com.example.productsaleprm.databinding.ProductDetailBinding;
+import com.example.productsaleprm.fragement.ReviewFragment;
 import com.example.productsaleprm.model.Product;
 import com.example.productsaleprm.model.response.ProductResponse;
 import com.example.productsaleprm.model.resquest.AddToCartRequest;
@@ -42,6 +44,17 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         // Nhận productId từ Intent
         int productId = getIntent().getIntExtra("PRODUCT_ID", 0);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("PRODUCT_ID", productId);
+
+        ReviewFragment reviewFragment = new ReviewFragment();
+        reviewFragment.setArguments(bundle);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(com.example.productsaleprm.R.id.reviewFragmentContainer, reviewFragment)
+                .commit();
 
         loadProductDetail(productId);
 

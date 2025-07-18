@@ -44,7 +44,15 @@ public class ReviewFragment extends Fragment {
     private ReviewAdapter adapter;
     private List<Review> allReviews = new ArrayList<>();
     private ReviewAPI api;
-    private int productId = 25;
+    private int productId;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            productId = getArguments().getInt("PRODUCT_ID", 0);
+        }
+    }
 
     @Nullable
     @Override
@@ -53,8 +61,9 @@ public class ReviewFragment extends Fragment {
 
         api = RetrofitClient.getClient(requireContext()).create(ReviewAPI.class);
         String currentUser = getCurrentUserEmail();
+        String role = getCurrentUserRole();
 
-        adapter = new ReviewAdapter(currentUser, new ReviewAdapter.OnReviewActionListener() {
+        adapter = new ReviewAdapter(currentUser, role, new ReviewAdapter.OnReviewActionListener() {
             @Override
             public void onDeleteReview(Review review) {
                 deleteReview(review);
@@ -74,6 +83,11 @@ public class ReviewFragment extends Fragment {
             public void onSubmitReply(Review review, String replyText) {
                 submitReply(review, replyText);
             }
+
+            @Override
+            public void onDeleteReply(Review review, ReviewReply reply) {
+                deleteReply(review, reply);
+            }
         });
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -81,12 +95,6 @@ public class ReviewFragment extends Fragment {
 
         DividerItemDecoration divider = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         binding.recyclerView.addItemDecoration(divider);
-
-        binding.btnBack.setOnClickListener(v -> {
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .popBackStack();
-        });
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -150,6 +158,7 @@ public class ReviewFragment extends Fragment {
                         adapter.submitList(new ArrayList<>(allReviews));
                         binding.commentInput.getEditText().setText("");
                         binding.ratingBar.setRating(5f);
+                        Toast.makeText(requireContext(), "Commented successfully", Toast.LENGTH_SHORT).show();
                     } else if (response.code() == 400) {
                         Toast.makeText(requireContext(), "You already reviewed this product", Toast.LENGTH_SHORT).show();
                     }
@@ -260,6 +269,7 @@ public class ReviewFragment extends Fragment {
             public void onResponse(Call<BaseResponse<ReviewReply>> call, Response<BaseResponse<ReviewReply>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     loadReplies(review);
+                    Toast.makeText(requireContext(), "Replied successfully", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -267,6 +277,26 @@ public class ReviewFragment extends Fragment {
             public void onFailure(Call<BaseResponse<ReviewReply>> call, Throwable t) {
                 t.printStackTrace();
                 Log.d("ReviewFragment", "onFailure_submitReply: " + t.getMessage());
+            }
+        });
+    }
+
+    private void deleteReply(Review review, ReviewReply reply) {
+        api.deleteReply(reply.getReplyID()).enqueue(new Callback<BaseResponse<String>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
+                if (response.isSuccessful()) {
+                    loadReplies(review);
+                    Toast.makeText(requireContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Failed to delete reply", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(requireContext(), "Delete failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -282,6 +312,24 @@ public class ReviewFragment extends Fragment {
                 String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.DEFAULT));
                 JSONObject json = new JSONObject(payload);
                 return json.getString("sub");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getCurrentUserRole() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE);
+        String token = prefs.getString("jwt_token", null);
+        if (token == null) return null;
+
+        try {
+            String[] parts = token.split("\\.");
+            if (parts.length == 3) {
+                String payload = new String(android.util.Base64.decode(parts[1], android.util.Base64.DEFAULT));
+                JSONObject json = new JSONObject(payload);
+                return json.getString("scope");
             }
         } catch (Exception e) {
             e.printStackTrace();

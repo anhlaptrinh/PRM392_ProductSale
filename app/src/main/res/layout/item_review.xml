@@ -65,15 +65,15 @@
                 android:id="@+id/btnUpvote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:backgroundTint="@color/colorTextPrimary"
-                android:text="Like"/>
+                android:text="Vote"/>
 
             <TextView
                 android:id="@+id/textHelpfulCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 likes"
+                android:text="0 votes"
                 android:layout_marginStart="8dp"
                 android:textColor="@android:color/holo_green_dark"/>
         </LinearLayout>
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:text="Answer"
             android:backgroundTint="@color/colorTextPrimary"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/editReply"
             app:layout_constraintStart_toStartOf="@id/textUserName"

@@ -1,6 +1,8 @@
 package com.example.productsaleprm.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.productsaleprm.R;
+import com.example.productsaleprm.activity.ProductDetailActivity;
 import com.example.productsaleprm.model.Product;
 
 import java.util.List;
@@ -37,6 +40,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
 
+        holder.ivProductImage.setOnClickListener(v -> {
+            int productId = product.getProductID();
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.putExtra("PRODUCT_ID", productId);
+            context.startActivity(intent);
+        });
         holder.tvName.setText(product.getProductName());
         holder.tvPrice.setText(product.getPrice().toPlainString() + " ₫");
         Glide.with(context).load(product.getImageURL()).into(holder.ivProductImage);

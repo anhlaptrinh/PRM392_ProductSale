@@ -1,12 +1,21 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
 }
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        load(FileInputStream(file))
+    }
+}
+val googleMapsKey = localProperties.getProperty("google.maps.key") ?: ""
 
 android {
     namespace = "com.example.productsaleprm"
     compileSdk = 35
-
 
     defaultConfig {
         applicationId = "com.example.productsaleprm"
@@ -17,6 +26,9 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GOOGLE_MAPS_API_KEY", "\"$googleMapsKey\"")
+        manifestPlaceholders["googleMapsApiKey"] = googleMapsKey
     }
 
     buildTypes {
@@ -35,6 +47,8 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
+
     }
 }
 
@@ -72,6 +86,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation ("com.makeramen:roundedimageview:2.3.0")
 
-
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
 }

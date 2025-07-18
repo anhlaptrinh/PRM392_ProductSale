@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.productsaleprm.R;
 import com.example.productsaleprm.activity.MapActivity;
 import com.example.productsaleprm.databinding.FragmentEditUserBinding;
 import com.example.productsaleprm.databinding.FragmentUserInfoBinding;
@@ -46,6 +47,14 @@ public class ProfileFragment extends Fragment {
             if (currentUser != null) {
                 switchToEditMode(container);
             }
+        });
+
+        userInfoBinding.btnOrder.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ReviewFragment())
+                    .addToBackStack(null)
+                    .commit();
         });
 
         userInfoBinding.btnGetStoreLocation.setOnClickListener(v -> {

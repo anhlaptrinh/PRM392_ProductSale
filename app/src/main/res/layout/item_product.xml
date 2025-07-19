@@ -13,13 +13,14 @@
         android:layout_height="140dp"
         android:layout_marginBottom="8dp">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/ivProductImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="140dp"
             android:scaleType="centerCrop"
             android:background="#8BD8CAB8"
-            android:clipToOutline="true" />
+            android:clipToOutline="true"/>
+
 
         <ImageView
             android:id="@+id/ivHeart"
@@ -39,8 +40,7 @@
         android:textSize="14sp"
         android:textColor="#1A237E"
         android:paddingTop="4dp"
-        android:maxLines="2"
-        android:layout_marginBottom="7dp" />
+        android:maxLines="2" />
 
     <TextView
         android:id="@+id/tvProductPrice"
@@ -50,7 +50,6 @@
         android:textColor="@android:color/holo_green_dark"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:paddingTop="2dp"
-        android:layout_marginBottom="8dp"/>
+        android:paddingTop="2dp" />
 
 </LinearLayout>

@@ -1,14 +1,12 @@
 package com.example.productsaleprm.model;
 
 import com.example.productsaleprm.model.response.CartProductResponse;
+import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
 public class CartItem {
     private int id;
-
-
-
     private int quantity;
     private BigDecimal price;
     private CartProductResponse product;

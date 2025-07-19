@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/colorBackground">
+
+    <!-- Nút Home thay nút Back -->
+    <ImageView
+        android:id="@+id/btnHome"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_home"
+        app:tint="@android:color/black"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp" />
+
+    <!-- Icon tick xanh -->
+    <ImageView
+        android:id="@+id/ivSuccess"
+        android:layout_width="248dp"
+        android:layout_height="269dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/ic_success" />
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_below="@id/ivSuccess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ORDER SUCCESSFUL"
+        android:textColor="@color/colorTextPrimary"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"/>
+
+    <!-- Nội dung mô tả -->
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_below="@id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your payment has been successfully! Details of transaction are include below."
+        android:textColor="#777"
+        android:textAlignment="center"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_below="@id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCC"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Thông tin đơn -->
+    <TextView
+        android:id="@+id/tvItems"
+        android:layout_below="@id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Summary"
+        android:textColor="@color/colorTextPrimary"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"/>
+
+    <!-- Tổng tiền -->
+    <TextView
+        android:id="@+id/tvTotalLabel"
+        android:layout_below="@id/tvItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TOTAL AMOUNT PAID"
+        android:textColor="#555"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvTotalAmount"
+        android:layout_alignBaseline="@id/tvTotalLabel"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$550.00"
+        android:textColor="#000"
+        android:textStyle="bold"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_below="@id/tvTotalLabel"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCC"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Payment Method -->
+    <TextView
+        android:id="@+id/tvPayedLabel"
+        android:layout_below="@id/tvTotalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAYED BY"
+        android:textColor="#555"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:id="@+id/tvPayedBy"
+        android:layout_alignBaseline="@id/tvPayedLabel"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAYTM"
+        android:textColor="#000"
+        android:textStyle="bold"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_below="@id/tvPayedLabel"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCC"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Ngày giao dịch -->
+    <TextView
+        android:id="@+id/tvDateLabel"
+        android:layout_below="@id/tvPayedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TRANSACTION DATE"
+        android:textColor="#555"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_alignBaseline="@id/tvDateLabel"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="22 Aug 2020, 05:25 AM"
+        android:textColor="#000"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

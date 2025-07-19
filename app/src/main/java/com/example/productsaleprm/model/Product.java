@@ -1,8 +1,10 @@
 package com.example.productsaleprm.model;
+import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
 public class Product {
+    @SerializedName("productID")
     private int id;
     private String productName;
     private String briDesc;
@@ -12,8 +14,12 @@ public class Product {
     private String imageURL;
     private int  categoryID;
     private String categoryName;
+    @SerializedName("favorite")
+    private boolean isFavorite;
+    @SerializedName("wishlistId")
+    private Integer wishlistId;
 
-    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName) {
+    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName,boolean isFavorite,Integer wishlistId) {
         this.id = id;
         this.productName = productName;
         this.briDesc = briDesc;
@@ -23,6 +29,8 @@ public class Product {
         this.imageURL = imageURL;
         this.categoryID = categoryID;
         this.categoryName = categoryName;
+        this.isFavorite = isFavorite;
+        this.wishlistId=wishlistId;
     }
 
     public int getCategoryID() {
@@ -96,4 +104,13 @@ public class Product {
     public String getImageURL() {
         return imageURL;
     }
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.isFavorite = favorite;
+    }
+    public Integer getWishlistId() { return wishlistId; }
+    public void setWishlistId(Integer wishlistId) { this.wishlistId = wishlistId; }
 }

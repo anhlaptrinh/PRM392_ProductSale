@@ -22,24 +22,44 @@
             android:name=".activity.MapActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.OrderHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PaymentSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MomoPaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.ProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ProductDetailActivity"
             android:exported="false" /> <!-- 2) Khai báo Activity -->
+        <activity
+            android:name=".activity.OrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.MainAuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/my_map_api_key" />
-    </application>
+           <meta-data
+               android:name="com.google.android.geo.API_KEY"
+               android:value="${googleMapsApiKey}" />
+       </application>
 
-</manifest>
+   </manifest>

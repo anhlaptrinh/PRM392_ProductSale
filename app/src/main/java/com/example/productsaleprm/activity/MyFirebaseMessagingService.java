@@ -15,8 +15,23 @@ import com.google.firebase.messaging.RemoteMessage;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        String title = remoteMessage.getData().get("title");
-        String body = remoteMessage.getData().get("body");
+        String title = "";
+        String body = "";
+
+        if (remoteMessage.getNotification() != null) {
+            title = remoteMessage.getNotification().getTitle();
+            body = remoteMessage.getNotification().getBody();
+        }
+
+        if (remoteMessage.getData().size() > 0) {
+            if (remoteMessage.getData().containsKey("title")) {
+                title = remoteMessage.getData().get("title");
+            }
+            if (remoteMessage.getData().containsKey("body")) {
+                body = remoteMessage.getData().get("body");
+            }
+        }
+
         sendNotification(title, body);
     }
 

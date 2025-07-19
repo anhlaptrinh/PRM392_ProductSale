@@ -49,14 +49,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        userInfoBinding.btnOrder.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new ReviewFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
-
         userInfoBinding.btnGetStoreLocation.setOnClickListener(v -> {
             Intent intent  = new Intent(requireContext(), MapActivity.class);
             startActivity(intent);

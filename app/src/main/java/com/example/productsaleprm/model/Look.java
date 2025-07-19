@@ -3,12 +3,12 @@ package com.example.productsaleprm.model;
 public class Look {
     private String title;
     private String subtitle;
-    private int imageResId;
+    private String imageUrl;
 
-    public Look(String title, String subtitle, int imageResId) {
+    public Look(String title, String subtitle, String imageUrl) {
         this.title = title;
         this.subtitle = subtitle;
-        this.imageResId = imageResId;
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -19,7 +19,7 @@ public class Look {
         return subtitle;
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

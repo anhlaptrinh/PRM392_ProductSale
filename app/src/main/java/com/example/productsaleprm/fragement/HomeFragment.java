@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.productsaleprm.R;
 import com.example.productsaleprm.adapter.BannerAdapter;
 import com.example.productsaleprm.adapter.BrandAdapter;
 import com.example.productsaleprm.adapter.CategoryAdapter;
@@ -42,7 +41,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
 
     private List<Category> categoryList = new ArrayList<>();
-    private List<Integer> bannerList = new ArrayList<>();
+    private List<String> bannerList = new ArrayList<>();
     private List<Brand> brandList = new ArrayList<>();
     private List<Look> lookList = new ArrayList<>();
     private List<Product> productList = new ArrayList<>();
@@ -108,21 +107,25 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupBanner() {
-        bannerList.add(R.drawable.banner1);
-        bannerList.add(R.drawable.banner2);
-        bannerList.add(R.drawable.banner3);
-        bannerList.add(R.drawable.banner4);
-        bannerList.add(R.drawable.banner5);
+        bannerList.add("https://res.cloudinary.com/di9gy73rg/image/upload/v1752916959/banner1_cit5tt.jpg");
+        bannerList.add("https://res.cloudinary.com/di9gy73rg/image/upload/v1752916962/banner2_newsss.jpg");
+        bannerList.add("https://res.cloudinary.com/di9gy73rg/image/upload/v1752916959/banner3_b3xndl.jpg");
+        bannerList.add("https://res.cloudinary.com/di9gy73rg/image/upload/v1752916959/banner4_aiw603.jpg");
+        bannerList.add("https://res.cloudinary.com/di9gy73rg/image/upload/v1752916960/banner5_xm3seh.jpg");
 
         BannerAdapter bannerAdapter = new BannerAdapter(bannerList);
         binding.bannerViewPager.setAdapter(bannerAdapter);
     }
 
     private void setupBrands() {
-        brandList.add(new Brand("Nike", R.drawable.nike));
-        brandList.add(new Brand("Adidas", R.drawable.adidas));
-        brandList.add(new Brand("Puma", R.drawable.puma));
-        brandList.add(new Brand("Zara", R.drawable.zara));
+        brandList.add(new Brand("Nike", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916968/nike_wgbbq6.png"));
+        brandList.add(new Brand("Adidas", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916957/adidas_t7w6lg.png"));
+        brandList.add(new Brand("Puma", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916969/puma_uqgmfy.png"));
+        brandList.add(new Brand("Zara", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916974/zara_vuvfl8.png"));
+        brandList.add(new Brand("Fog", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916959/fog_zwkyz0.png"));
+        brandList.add(new Brand("Uniqlo", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916970/uniqlo_rn3l3x.png"));
+        brandList.add(new Brand("Dior", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916958/dior_jstkwl.png"));
+        brandList.add(new Brand("Gap", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916959/gap_ov0693.png"));
 
         BrandAdapter brandAdapter = new BrandAdapter(getContext(), brandList);
         binding.rvBrands.setLayoutManager(new GridLayoutManager(getContext(), 4));
@@ -130,10 +133,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupLooks() {
-        lookList.add(new Look("Minimalist", "Tokyo", R.drawable.look1));
-        lookList.add(new Look("Streetwear", "NYC", R.drawable.look2));
-        lookList.add(new Look("Facion", "Japan", R.drawable.look3));
-        lookList.add(new Look("Streetwear", "China", R.drawable.look4));
+        lookList.add(new Look("Minimalist", "Tokyo", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916961/look1_blz0yp.jpg"));
+        lookList.add(new Look("Streetwear", "NYC", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916962/look2_dxbork.jpg"));
+        lookList.add(new Look("Facion", "Japan", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916967/look3_ioohzt.jpg"));
+        lookList.add(new Look("Streetwear", "China", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916969/look4_nj8edm.jpg"));
+        lookList.add(new Look("Streetwear", "China", "https://res.cloudinary.com/di9gy73rg/image/upload/v1752916969/look5_lcbuuw.jpg"));
 
         LookAdapter lookAdapter = new LookAdapter(getContext(), lookList);
         binding.rvLooks.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));

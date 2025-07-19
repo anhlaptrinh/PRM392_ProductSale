@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.model.Look;
 
@@ -37,7 +38,12 @@ public class LookAdapter extends RecyclerView.Adapter<LookAdapter.LookViewHolder
         Look look = lookList.get(position);
         holder.tvTitle.setText(look.getTitle());
         holder.tvSubtitle.setText(look.getSubtitle());
-        holder.ivImage.setImageResource(look.getImageResId());
+
+        // Load ảnh từ URL bằng Glide
+        Glide.with(context)
+                .load(look.getImageUrl())
+
+                .into(holder.ivImage);
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.model.Brand;
 
@@ -36,7 +37,11 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
     public void onBindViewHolder(@NonNull BrandViewHolder holder, int position) {
         Brand brand = brandList.get(position);
         holder.tvName.setText(brand.getName());
-        holder.ivBrand.setImageResource(brand.getImageResId());
+
+        Glide.with(context)
+                .load(brand.getImageUrl()) // sửa từ getImageResId() → getImageUrl()
+
+                .into(holder.ivBrand);
     }
 
     @Override

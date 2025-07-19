@@ -2,19 +2,18 @@ package com.example.productsaleprm.model;
 
 public class Brand {
     private String name;
-    private int imageResId;
+    private String imageUrl; // Dùng URL thay vì resource ID
 
-    public Brand(String name, int imageResId) {
+    public Brand(String name, String imageUrl) {
         this.name = name;
-        this.imageResId = imageResId;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public String getImageUrl() {
+        return imageUrl;
     }
 }
-

@@ -8,15 +8,16 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.productsaleprm.R;
 
 import java.util.List;
 
 public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerViewHolder> {
 
-    private List<Integer> bannerList;
+    private List<String> bannerList; // Đường dẫn URL ảnh
 
-    public BannerAdapter(List<Integer> bannerList) {
+    public BannerAdapter(List<String> bannerList) {
         this.bannerList = bannerList;
     }
 
@@ -29,8 +30,10 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerView
 
     @Override
     public void onBindViewHolder(@NonNull BannerViewHolder holder, int position) {
-        int bannerResId = bannerList.get(position);
-        holder.ivBanner.setImageResource(bannerResId);
+        String imageUrl = bannerList.get(position);
+        Glide.with(holder.itemView.getContext())
+                .load(imageUrl)
+                .into(holder.ivBanner);
     }
 
     @Override

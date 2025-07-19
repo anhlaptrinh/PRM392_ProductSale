@@ -37,6 +37,9 @@
             android:name=".activity.ChatActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.ProductActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ProductDetailActivity"
             android:exported="false" /> <!-- 2) Khai báo Activity -->
         <activity

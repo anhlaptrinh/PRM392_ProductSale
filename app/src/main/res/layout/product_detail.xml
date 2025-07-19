@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+
 
         >        <!-- Toolbar -->
         <RelativeLayout
@@ -27,13 +27,14 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
+                app:tint="@color/colorTextPrimary"
                 android:src="@drawable/ic_arrow_back" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your Product"
-                android:textColor="@android:color/white"
+                android:textColor="#E76627"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_centerInParent="true" />
@@ -42,7 +43,7 @@
         <!-- Product Image -->
         <ImageView
             android:src="@drawable/pant"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/imageProduct"
             android:layout_width="0dp"
             android:layout_height="300dp"

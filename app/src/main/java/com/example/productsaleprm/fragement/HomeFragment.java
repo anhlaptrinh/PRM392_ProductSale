@@ -28,6 +28,7 @@ import com.example.productsaleprm.model.response.ProductListResponse;
 import com.example.productsaleprm.retrofit.CategoryAPI;
 import com.example.productsaleprm.retrofit.ProductAPI;
 import com.example.productsaleprm.retrofit.RetrofitClient;
+import com.example.productsaleprm.retrofit.WishListAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +150,33 @@ public class HomeFragment extends Fragment {
         binding.rvProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
         binding.rvProducts.setAdapter(productAdapter);
 
+        // 👉 Xử lý sự kiện click trái tim như trong ProductActivity
+        productAdapter.setOnProductWishlistClick((product, position) -> {
+            WishListAPI api = RetrofitClient.getClient(getContext()).create(WishListAPI.class);
+
+            if (!product.isFavorite()) {
+                // Chưa yêu thích thì thêm vào wishlist
+                api.addToWishlist(product.getId()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            product.setFavorite(true);
+                            productAdapter.notifyItemChanged(position);
+                            Toast.makeText(getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Failed to add to wishlist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(getContext(), "API error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        // 👉 Gọi API để lấy danh sách sản phẩm
         ProductAPI productAPI = RetrofitClient.getClient(getContext()).create(ProductAPI.class);
 
         pendingApiCalls++;
@@ -175,7 +203,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
     private void showLoading() {
         if (binding != null && binding.progressBar != null) {
             binding.progressBar.setVisibility(View.VISIBLE);

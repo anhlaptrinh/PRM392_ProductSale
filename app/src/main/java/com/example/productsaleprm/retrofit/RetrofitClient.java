@@ -2,6 +2,8 @@ package com.example.productsaleprm.retrofit;
 
 import android.content.Context;
 
+import com.example.productsaleprm.BuildConfig;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,7 +12,7 @@ public class RetrofitClient {
     private static Retrofit retrofit;
     private static OkHttpClient client;
 
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static final String BASE_URL = BuildConfig.BASE_URL;
 
     public static Retrofit getClient(Context context) {
         if (client == null) {

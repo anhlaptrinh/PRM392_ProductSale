@@ -68,7 +68,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             context.startActivity(intent);
         });
         holder.tvName.setText(product.getProductName());
-        holder.tvPrice.setText(product.getPrice().toPlainString() + " ₫");
+        holder.tvPrice.setText("$ "+product.getPrice().toPlainString());
         Glide.with(context).load(product.getImageURL()).into(holder.ivProductImage);
 
         // Set icon yêu thích

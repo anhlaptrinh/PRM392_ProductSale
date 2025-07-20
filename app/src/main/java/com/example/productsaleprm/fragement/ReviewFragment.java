@@ -131,6 +131,12 @@ public class ReviewFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     allReviews = response.body().getData();
                     adapter.submitList(allReviews);
+                    updateEmptyState(allReviews);
+
+                    // Load replies
+                    for (Review review : allReviews) {
+                        loadReplies(review);
+                    }
                 }
             }
 
@@ -156,9 +162,10 @@ public class ReviewFragment extends Fragment {
                         Review review = body.getData();
                         allReviews.add(0, review);
                         adapter.submitList(new ArrayList<>(allReviews));
+                        updateEmptyState(allReviews);
                         binding.commentInput.getEditText().setText("");
                         binding.ratingBar.setRating(5f);
-                        Toast.makeText(requireContext(), "Commented successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Commented successful", Toast.LENGTH_SHORT).show();
                     } else if (response.code() == 400) {
                         Toast.makeText(requireContext(), "You already reviewed this product", Toast.LENGTH_SHORT).show();
                     }
@@ -187,7 +194,8 @@ public class ReviewFragment extends Fragment {
                 if (response.isSuccessful()) {
                     allReviews.remove(review);
                     adapter.submitList(allReviews);
-                    Toast.makeText(requireContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                    updateEmptyState(allReviews);
+                    Toast.makeText(requireContext(), "Deleted successful", Toast.LENGTH_SHORT).show();
                 }
                 else if(response.code() == 403) {
                     Toast.makeText(requireContext(), "You are not allowed to delete this review", Toast.LENGTH_SHORT).show();
@@ -269,7 +277,7 @@ public class ReviewFragment extends Fragment {
             public void onResponse(Call<BaseResponse<ReviewReply>> call, Response<BaseResponse<ReviewReply>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     loadReplies(review);
-                    Toast.makeText(requireContext(), "Replied successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Replied successful", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -287,7 +295,7 @@ public class ReviewFragment extends Fragment {
             public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
                 if (response.isSuccessful()) {
                     loadReplies(review);
-                    Toast.makeText(requireContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Deleted successful", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(requireContext(), "Failed to delete reply", Toast.LENGTH_SHORT).show();
                 }
@@ -349,6 +357,15 @@ public class ReviewFragment extends Fragment {
                 }
             }
             adapter.submitList(filtered);
+            updateEmptyState(filtered);
+        }
+    }
+
+    private void updateEmptyState(List<Review> list) {
+        if (list.isEmpty()) {
+            binding.emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            binding.emptyTextView.setVisibility(View.GONE);
         }
     }
 }

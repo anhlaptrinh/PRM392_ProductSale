@@ -12,6 +12,7 @@ val localProperties = Properties().apply {
     }
 }
 val googleMapsKey = localProperties.getProperty("google.maps.key") ?: ""
+val baseUrl = localProperties.getProperty("base.url") ?: ""
 
 android {
     namespace = "com.example.productsaleprm"
@@ -29,6 +30,8 @@ android {
 
         buildConfigField("String", "GOOGLE_MAPS_API_KEY", "\"$googleMapsKey\"")
         manifestPlaceholders["googleMapsApiKey"] = googleMapsKey
+
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
     buildTypes {

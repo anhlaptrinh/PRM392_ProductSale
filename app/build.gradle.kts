@@ -12,6 +12,7 @@ val localProperties = Properties().apply {
     }
 }
 val googleMapsKey = localProperties.getProperty("google.maps.key") ?: ""
+val baseUrl = localProperties.getProperty("base.url") ?: ""
 
 android {
     namespace = "com.example.productsaleprm"
@@ -29,6 +30,8 @@ android {
 
         buildConfigField("String", "GOOGLE_MAPS_API_KEY", "\"$googleMapsKey\"")
         manifestPlaceholders["googleMapsApiKey"] = googleMapsKey
+
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
     buildTypes {
@@ -55,7 +58,7 @@ android {
 
 
 dependencies {
-
+    implementation("com.google.firebase:firebase-messaging:23.4.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -88,4 +91,7 @@ dependencies {
 
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
+    // Navigtaiton
+    implementation (libs.navigation.fragment.ktx)
+    implementation (libs.navigation.ui.ktx)
 }

@@ -1,5 +1,6 @@
 package com.example.productsaleprm.fragement;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.productsaleprm.R;
+import com.example.productsaleprm.activity.MainAuthActivity;
 import com.example.productsaleprm.activity.MapActivity;
 import com.example.productsaleprm.databinding.FragmentEditUserBinding;
 import com.example.productsaleprm.databinding.FragmentUserInfoBinding;
@@ -51,6 +54,10 @@ public class ProfileFragment extends Fragment {
         userInfoBinding.btnGetStoreLocation.setOnClickListener(v -> {
             Intent intent  = new Intent(requireContext(), MapActivity.class);
             startActivity(intent);
+        });
+
+        userInfoBinding.btnLogout.setOnClickListener(v -> {
+            logout();
         });
 
         return rootView;
@@ -118,5 +125,17 @@ public class ProfileFragment extends Fragment {
             parent.addView(userInfoBinding.getRoot());
         }
         isEditing = false;
+    }
+
+    private void logout() {
+        // Xóa JWT token khỏi SharedPreferences
+        requireActivity().getSharedPreferences("auth", Context.MODE_PRIVATE)
+                .edit()
+                .remove("jwt_token")
+                .apply();
+
+        Intent intent = new Intent(requireContext(), MainAuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

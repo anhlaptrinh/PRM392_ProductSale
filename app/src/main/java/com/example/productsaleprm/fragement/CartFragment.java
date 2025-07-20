@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import com.example.productsaleprm.receiver.CartBadgeUtils;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -176,6 +178,8 @@ public class CartFragment extends Fragment {
                     if(page == 0){
                         cartList = new ArrayList<>(cartData.getCartItems());
 
+                        int cartCount = cartData.getCartItems().size();
+                        CartBadgeUtils.sendCartBadge(requireContext(), cartCount);
                         // Khởi tạo adapter
                         cartAdapter = new CartAdapter(requireContext(), cartList);
                         cartAdapter.setOnCartChangedListener(CartFragment.this::checkEmptyCart);
@@ -259,6 +263,7 @@ public class CartFragment extends Fragment {
                     checkEmptyCart();
                     updateTotalAmount();
                     Toast.makeText(getContext(), "Xoá thành công", Toast.LENGTH_SHORT).show();
+                    CartBadgeUtils.sendCartBadge(requireContext(), cartList.size());
                 } else {
 
                     Toast.makeText(getContext(), "Xoá thất bại", Toast.LENGTH_SHORT).show();
@@ -291,7 +296,7 @@ public class CartFragment extends Fragment {
                                 // Cập nhật dữ liệu mới từ server
                                 item.setQuantity(data.getQuantity());
                                 item.setPrice(data.getPrice());
-
+                                CartBadgeUtils.sendCartBadge(requireContext(), cartList.size());
                                 cartAdapter.notifyItemChanged(position);
 
                                 // Cập nhật tổng tiền
@@ -329,9 +334,15 @@ public class CartFragment extends Fragment {
         }
 
         binding.tvTotalAmount.setText("$" + total);
+
     }
 
 
+    private void updateCartBadgeNotification(int cartCount) {
+        Intent intent = new Intent(requireContext(), com.example.productsaleprm.receiver.CartBadgeReceiver.class);
+        intent.putExtra(com.example.productsaleprm.receiver.CartBadgeReceiver.EXTRA_CART_COUNT, cartCount);
+        requireContext().sendBroadcast(intent);
+    }
 
 
 

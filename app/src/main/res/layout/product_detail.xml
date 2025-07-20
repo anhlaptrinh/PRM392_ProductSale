@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         >
         <!-- ✅ FULL WIDTH TOOLBAR -->
         <RelativeLayout
@@ -28,13 +28,14 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_centerVertical="true"
+                app:tint="@color/colorTextPrimary"
                 android:src="@drawable/ic_arrow_back" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your Product"
-                android:textColor="@android:color/white"
+                android:textColor="#E76627"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_centerInParent="true" />
@@ -43,7 +44,7 @@
         <!-- Product Image -->
         <ImageView
             android:src="@drawable/pant"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/imageProduct"
             android:layout_width="0dp"
             android:layout_height="300dp"
@@ -211,6 +212,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="32dp" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/reviewFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/buttonAddToCart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout="@layout/fragment_review" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

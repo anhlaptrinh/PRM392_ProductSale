@@ -105,6 +105,7 @@ public class WishlistFragment extends Fragment {
                                         checkEmptyWishlist();
                                         if (isCreate)
                                          Toast.makeText(getContext(), "Update to cart success", Toast.LENGTH_SHORT).show();
+
                                         else Toast.makeText(getContext(), "Delete Success", Toast.LENGTH_SHORT).show();
                                     }else{
                                         Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();

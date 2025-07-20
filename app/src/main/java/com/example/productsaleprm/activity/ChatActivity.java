@@ -64,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
 
         preloadCheck(); // NEW: kiểm tra dữ liệu có tồn tại
         listenForMessages();
+        binding.imgBack.setOnClickListener(v -> finish());
 
         btnSend.setOnClickListener(v -> sendMessage());
     }

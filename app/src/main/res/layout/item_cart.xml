@@ -29,7 +29,6 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                android:layout_weight="1"
                 android:src="@drawable/ic_empty_product"
                 android:clipToOutline="true" />
 
@@ -44,8 +43,9 @@
                 <!-- Tên sản phẩm -->
                 <TextView
                     android:id="@+id/tvProductName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Product Name"
                     android:textSize="15sp"
                     android:layout_gravity="center"

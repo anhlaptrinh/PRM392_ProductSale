@@ -160,7 +160,7 @@ public class ReviewFragment extends Fragment {
                         updateEmptyState(allReviews);
                         binding.commentInput.getEditText().setText("");
                         binding.ratingBar.setRating(5f);
-                        Toast.makeText(requireContext(), "Commented successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Commented successful", Toast.LENGTH_SHORT).show();
                     } else if (response.code() == 400) {
                         Toast.makeText(requireContext(), "You already reviewed this product", Toast.LENGTH_SHORT).show();
                     }
@@ -190,7 +190,7 @@ public class ReviewFragment extends Fragment {
                     allReviews.remove(review);
                     adapter.submitList(allReviews);
                     updateEmptyState(allReviews);
-                    Toast.makeText(requireContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Deleted successful", Toast.LENGTH_SHORT).show();
                 }
                 else if(response.code() == 403) {
                     Toast.makeText(requireContext(), "You are not allowed to delete this review", Toast.LENGTH_SHORT).show();
@@ -272,7 +272,7 @@ public class ReviewFragment extends Fragment {
             public void onResponse(Call<BaseResponse<ReviewReply>> call, Response<BaseResponse<ReviewReply>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     loadReplies(review);
-                    Toast.makeText(requireContext(), "Replied successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Replied successful", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -290,7 +290,7 @@ public class ReviewFragment extends Fragment {
             public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
                 if (response.isSuccessful()) {
                     loadReplies(review);
-                    Toast.makeText(requireContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Deleted successful", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(requireContext(), "Failed to delete reply", Toast.LENGTH_SHORT).show();
                 }

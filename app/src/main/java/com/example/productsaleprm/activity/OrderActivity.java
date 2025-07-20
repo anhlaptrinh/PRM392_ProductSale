@@ -2,6 +2,7 @@ package com.example.productsaleprm.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import com.example.productsaleprm.retrofit.RetrofitClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class OrderActivity extends AppCompatActivity {
     private BigDecimal totalAmount;
     private int userId = -1; // nhận từ Intent
     private String address;
+    private boolean isCartLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,10 @@ public class OrderActivity extends AppCompatActivity {
 
         // Nút thanh toán
         binding.btnCheckout.setOnClickListener(v -> {
+            if (!isCartLoaded) {
+                Toast.makeText(OrderActivity.this, "Vui lòng đợi giỏ hàng tải xong!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (cartList.isEmpty()) {
                 Toast.makeText(OrderActivity.this, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
                 return;
@@ -108,6 +115,14 @@ public class OrderActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     } else {
+                        Log.e("ORDER_ERROR", "Code: " + response.code());
+                        try {
+                            if (response.errorBody() != null) {
+                                Log.e("ORDER_ERROR", "ErrorBody: " + response.errorBody().string());
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Toast.makeText(OrderActivity.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -137,8 +152,10 @@ public class OrderActivity extends AppCompatActivity {
                     orderAdapter.notifyDataSetChanged();
                     updateTotalAmount();
                     checkEmptyCart();
+                    isCartLoaded = true;
                 } else {
                     Toast.makeText(OrderActivity.this, "Không thể lấy giỏ hàng", Toast.LENGTH_SHORT).show();
+                    isCartLoaded = false;
                 }
             }
 

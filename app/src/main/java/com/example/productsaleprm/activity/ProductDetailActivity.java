@@ -31,7 +31,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Sử dụng ViewBinding cho Activity
         binding = ProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

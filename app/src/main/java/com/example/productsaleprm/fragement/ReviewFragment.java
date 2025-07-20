@@ -132,6 +132,11 @@ public class ReviewFragment extends Fragment {
                     allReviews = response.body().getData();
                     adapter.submitList(allReviews);
                     updateEmptyState(allReviews);
+
+                    // Load replies
+                    for (Review review : allReviews) {
+                        loadReplies(review);
+                    }
                 }
             }
 

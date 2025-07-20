@@ -153,7 +153,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             } else {
                 binding.replyRecyclerView.setVisibility(View.GONE);
             }
-
         }
 
         private void showPopupMenu(View anchor, Review review) {

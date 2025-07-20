@@ -114,35 +114,38 @@ public class CartFragment extends Fragment {
 
         // Example: set text
         //Checkout
-        binding.btnCheckout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserAPI userAPI = RetrofitClient.getClient(getContext()).create(UserAPI.class);
-                userAPI.getCurrentUser().enqueue(new Callback<BaseResponse<User>>() {
-                    @Override
-                    public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            User user = response.body().getData();
-                            if (user != null) {
-                                Intent intent = new Intent(getActivity(), OrderActivity.class);
-                                intent.putExtra("USER_ID", user.getId());
-                                intent.putExtra("ADDRESS", user.getAddress());
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(getContext(), "Không tìm thấy User!", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(getContext(), "Không load được User!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        binding.btnCheckout.setOnClickListener(v -> {
+            if (cartList == null || cartList.isEmpty()) {
+                Toast.makeText(getContext(), "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                    @Override
-                    public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
+            UserAPI userAPI = RetrofitClient.getClient(getContext()).create(UserAPI.class);
+            userAPI.getCurrentUser().enqueue(new Callback<BaseResponse<User>>() {
+                @Override
+                public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        User user = response.body().getData();
+                        if (user != null) {
+                            Intent intent = new Intent(getActivity(), OrderActivity.class);
+                            intent.putExtra("USER_ID", user.getId());
+                            intent.putExtra("ADDRESS", user.getAddress());
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getContext(), "Không tìm thấy User!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
                         Toast.makeText(getContext(), "Không load được User!", Toast.LENGTH_SHORT).show();
                     }
-                });
-            }
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
+                    Toast.makeText(getContext(), "Không load được User!", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
+
 
         return binding.getRoot();
     }

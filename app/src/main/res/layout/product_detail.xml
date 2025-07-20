@@ -4,21 +4,23 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
 
-        >        <!-- Toolbar -->
+        >
+        <!-- ✅ FULL WIDTH TOOLBAR -->
         <RelativeLayout
             android:id="@+id/toolbarLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="56dp"
             android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:id="@+id/btnBack"
@@ -46,6 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
@@ -58,6 +61,9 @@
             android:layout_marginTop="12dp"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Quan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,6 +78,8 @@
             android:numStars="5"
             android:rating="4"
             android:stepSize="0.5"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:theme="@style/RatingBarGold"
             app:layout_constraintTop_toBottomOf="@id/textTitle"
             app:layout_constraintStart_toStartOf="parent" />
@@ -85,6 +93,8 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/layoutQuantity"/>
@@ -97,6 +107,8 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginTop="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/textPrice"
@@ -140,6 +152,8 @@
             android:layout_height="wrap_content"
             android:text="10 Days Return Policy"
             android:layout_marginTop="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/textPrice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -151,6 +165,8 @@
             android:layout_height="wrap_content"
             android:text="Cash on Delivery Available"
             android:layout_marginTop="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/textPolicy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -164,6 +180,8 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/textCOD"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -174,6 +192,8 @@
             android:textColor="@android:color/black"
             android:layout_marginTop="4dp"
             android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/textDescriptionTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

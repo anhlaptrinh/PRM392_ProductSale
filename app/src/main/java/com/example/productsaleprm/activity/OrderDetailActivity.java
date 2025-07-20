@@ -78,6 +78,8 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
 
         binding.btnReorder.setOnClickListener(v -> {
+            binding.loadingOverlay.setVisibility(View.VISIBLE); // 👉 show loading
+
             List<ReorderRequest.Item> reorderItems = new ArrayList<>();
             for (CartItemResponse item : cartItemList) {
                 reorderItems.add(new ReorderRequest.Item(item.getProductId(), item.getQuantity()));
@@ -89,23 +91,23 @@ public class OrderDetailActivity extends AppCompatActivity {
             orderApi.reorder(request).enqueue(new Callback<BaseResponse<Boolean>>() {
                 @Override
                 public void onResponse(Call<BaseResponse<Boolean>> call, Response<BaseResponse<Boolean>> response) {
-                    binding.progressBar.setVisibility(View.GONE);  // Tắt progress bar
-
-                    if (response.isSuccessful() && response.body() != null && Boolean.TRUE.equals(response.body().getData())) {
+                    if (response.isSuccessful() && Boolean.TRUE.equals(response.body().getData())) {
                         Toast.makeText(OrderDetailActivity.this, "Đã thêm lại giỏ hàng!", Toast.LENGTH_SHORT).show();
 
-                        // Chuyển sang màn hình chính (tuỳ bạn)
-                        Intent intent = new Intent(OrderDetailActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        // Delay để đảm bảo backend xử lý xong
+                        binding.loadingOverlay.postDelayed(() -> {
+                            binding.loadingOverlay.setVisibility(View.GONE);
+                            Intent intent = new Intent(OrderDetailActivity.this, MainActivity.class);
+                            intent.putExtra("open_cart", true);
+                            startActivity(intent);
+                            finish();
+                        }, 400);
                     } else {
+                        binding.loadingOverlay.setVisibility(View.GONE);
                         Toast.makeText(OrderDetailActivity.this, "Thêm lại giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();
-
-                        // Log chi tiết lỗi từ server nếu có
                         try {
                             if (response.errorBody() != null) {
-                                String errorBody = response.errorBody().string();
-                                Log.e("REORDER_ERROR", "Error Body: " + errorBody);
+                                Log.e("REORDER_ERROR", response.errorBody().string());
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -115,12 +117,13 @@ public class OrderDetailActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<BaseResponse<Boolean>> call, Throwable t) {
-                    binding.progressBar.setVisibility(View.GONE);  // Tắt progress bar
+                    binding.loadingOverlay.setVisibility(View.GONE);
                     Log.e("REORDER_FAILURE", "Error: " + t.getMessage(), t);
                     Toast.makeText(OrderDetailActivity.this, "Lỗi mạng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
+
     }
 
     private void setupRecyclerView() {

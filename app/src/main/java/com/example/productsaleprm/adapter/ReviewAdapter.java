@@ -134,19 +134,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
                 }
             });
 
-            binding.btnShowReplies.setOnClickListener(v -> {
-                if (binding.replyRecyclerView.getVisibility() == View.VISIBLE) {
-                    binding.replyRecyclerView.setVisibility(View.GONE);
-                    binding.editReply.setVisibility(View.GONE);
-                    binding.btnSubmitReply.setVisibility(View.GONE);
-                } else {
-                    listener.onLoadReplies(review);
-                    binding.replyRecyclerView.setVisibility(View.VISIBLE);
-                    binding.editReply.setVisibility(View.VISIBLE);
-                    binding.btnSubmitReply.setVisibility(View.VISIBLE);
-                }
-            });
-
             binding.btnSubmitReply.setOnClickListener(v -> {
                 String replyText = binding.editReply.getText().toString();
                 if (!replyText.isEmpty()) {
@@ -156,11 +143,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             });
 
             List<ReviewReply> replies = repliesMap.get(review.getReviewID());
-            if (replies != null) {
+            boolean hasReplies = replies != null && !replies.isEmpty();
+            binding.btnShowReplies.setVisibility(hasReplies ? View.VISIBLE : View.GONE);
+
+            if (hasReplies) {
                 binding.replyRecyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
                 binding.replyRecyclerView.setAdapter(new ReplyAdapter(replies, currentUser, role, reply -> listener.onDeleteReply(review, reply)));
                 binding.replyRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                binding.replyRecyclerView.setVisibility(View.GONE);
             }
+
         }
 
         private void showPopupMenu(View anchor, Review review) {

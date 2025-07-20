@@ -103,6 +103,7 @@ public class OrderActivity extends AppCompatActivity {
                             Intent intent = new Intent(OrderActivity.this, MomoPaymentActivity.class);
                             intent.putExtra("QR_CODE_URL", payment.getQrCodeUrl());
                             intent.putExtra("PAY_URL", payment.getPaymentUrl());
+                            intent.putExtra("ORDER_ID", payment.getOrderID());
                             startActivity(intent);
                         } else {
                             PaymentSuccessResponse cod = new Gson().fromJson(data, PaymentSuccessResponse.class);

@@ -44,7 +44,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.btnBack.setOnClickListener(v -> {
-            finish(); // quay lại màn hình trước
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("ORDER_UPDATED", true);
+            setResult(RESULT_OK, resultIntent);
+            finish();
         });
         int orderId = getIntent().getIntExtra("ORDER_ID", -1);
         if (orderId == -1) {

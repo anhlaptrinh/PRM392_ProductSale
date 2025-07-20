@@ -131,6 +131,7 @@ public class ReviewFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     allReviews = response.body().getData();
                     adapter.submitList(allReviews);
+                    updateEmptyState(allReviews);
                 }
             }
 
@@ -156,6 +157,7 @@ public class ReviewFragment extends Fragment {
                         Review review = body.getData();
                         allReviews.add(0, review);
                         adapter.submitList(new ArrayList<>(allReviews));
+                        updateEmptyState(allReviews);
                         binding.commentInput.getEditText().setText("");
                         binding.ratingBar.setRating(5f);
                         Toast.makeText(requireContext(), "Commented successfully", Toast.LENGTH_SHORT).show();
@@ -187,6 +189,7 @@ public class ReviewFragment extends Fragment {
                 if (response.isSuccessful()) {
                     allReviews.remove(review);
                     adapter.submitList(allReviews);
+                    updateEmptyState(allReviews);
                     Toast.makeText(requireContext(), "Deleted successfully", Toast.LENGTH_SHORT).show();
                 }
                 else if(response.code() == 403) {
@@ -349,6 +352,15 @@ public class ReviewFragment extends Fragment {
                 }
             }
             adapter.submitList(filtered);
+            updateEmptyState(filtered);
+        }
+    }
+
+    private void updateEmptyState(List<Review> list) {
+        if (list.isEmpty()) {
+            binding.emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            binding.emptyTextView.setVisibility(View.GONE);
         }
     }
 }

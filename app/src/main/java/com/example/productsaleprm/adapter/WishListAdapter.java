@@ -70,7 +70,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.Wishli
 
         holder.imgHeart.setOnClickListener(v -> {
             if(listener != null){
-                listener.onWishlistChange(item.getId(),position,true);
+                listener.onWishlistChange(item.getId(),position,false);
             }
             Toast.makeText(context, "Removed from wishlist: " + item.getProductName(), Toast.LENGTH_SHORT).show();
         });

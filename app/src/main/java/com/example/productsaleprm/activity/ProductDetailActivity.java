@@ -1,6 +1,7 @@
 package com.example.productsaleprm.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -106,9 +107,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                             .load(imageUrl)
                             .into(binding.imageProduct);
 
-                    binding.textPrice.setText(String.valueOf(product.getPrice()));
+                    binding.textPrice.setText("$ "+String.valueOf(product.getPrice()));
                     binding.textTitle.setText(product.getProductName());
                     binding.textDescription.setText(product.getFullDesc());
+                    binding.ratingBar.setRating(product.getRatingAverage());
 
                 } else {
                     Toast.makeText(ProductDetailActivity.this, "Không tải được chi tiết sản phẩm", Toast.LENGTH_SHORT).show();

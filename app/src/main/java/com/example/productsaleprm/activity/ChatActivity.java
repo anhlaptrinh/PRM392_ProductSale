@@ -36,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private DatabaseReference chatRef;
 
-    private String currentUserId = "shop";
+    private String currentUserId = "shop"; // giải token để lấy id
     private String shopId = "shop"; // id admin
     private String roomId = "room_shop_user_01";
     private boolean firstLoad = true;

@@ -18,8 +18,11 @@ public class Product {
     private boolean isFavorite;
     @SerializedName("wishlistId")
     private Integer wishlistId;
+    @SerializedName("ratingAverage")
+    private Float ratingAverage;
 
-    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName,boolean isFavorite,Integer wishlistId) {
+
+    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName,boolean isFavorite,Integer wishlistId,Float ratingAverage) {
         this.id = id;
         this.productName = productName;
         this.briDesc = briDesc;
@@ -31,6 +34,7 @@ public class Product {
         this.categoryName = categoryName;
         this.isFavorite = isFavorite;
         this.wishlistId=wishlistId;
+        this.ratingAverage = ratingAverage;
     }
 
     public int getCategoryID() {
@@ -113,4 +117,12 @@ public class Product {
     }
     public Integer getWishlistId() { return wishlistId; }
     public void setWishlistId(Integer wishlistId) { this.wishlistId = wishlistId; }
+
+    public Float getRatingAverage() {
+        return ratingAverage;
+    }
+
+    public void setRatingAverage(Float ratingAverage) {
+        this.ratingAverage = ratingAverage;
+    }
 }

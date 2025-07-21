@@ -106,7 +106,7 @@ public class ProductActivity extends AppCompatActivity {
         spinnerSort = findViewById(R.id.spinnerSort);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                new String[]{"Default", "Ascending", "Descending"});
+                new String[]{"Default", " Price Ascending", " Price Descending", "Rating Asc", "Rating Desc"});
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSort.setAdapter(adapter);
 
@@ -184,6 +184,10 @@ public class ProductActivity extends AppCompatActivity {
                 return "price_asc";
             case 2:
                 return "price_desc";
+            case 3:
+                return "rating_asc";
+            case 4:
+                return "rating_desc";
             default:
                 return null;
         }

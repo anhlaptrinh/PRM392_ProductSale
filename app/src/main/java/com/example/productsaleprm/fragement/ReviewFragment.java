@@ -45,6 +45,7 @@ public class ReviewFragment extends Fragment {
     private List<Review> allReviews = new ArrayList<>();
     private ReviewAPI api;
     private int productId;
+    private int visibleCount = 3;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,32 +122,49 @@ public class ReviewFragment extends Fragment {
 
         fetchReviews();
 
+        binding.btnShowMore.setOnClickListener(v -> {
+            visibleCount += 3;
+            showVisibleReviews();
+
+            if (visibleCount >= allReviews.size()) {
+                binding.btnShowMore.setVisibility(View.GONE);
+            }
+        });
+
         return binding.getRoot();
     }
 
     private void fetchReviews() {
+        visibleCount = 3;
         api.getReviewsByProduct(productId).enqueue(new Callback<BaseResponse<List<Review>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<Review>>> call, Response<BaseResponse<List<Review>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allReviews = response.body().getData();
-                    adapter.submitList(allReviews);
-                    updateEmptyState(allReviews);
+                    showVisibleReviews();
 
-                    // Load replies
                     for (Review review : allReviews) {
                         loadReplies(review);
                     }
+
+                    // Show button if there's more to load
+                    if (allReviews.size() > visibleCount) {
+                        binding.btnShowMore.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.btnShowMore.setVisibility(View.GONE);
+                    }
+
+                    updateEmptyState(allReviews);
                 }
             }
 
             @Override
             public void onFailure(Call<BaseResponse<List<Review>>> call, Throwable t) {
                 t.printStackTrace();
-                Log.d("ReviewFragment", "fetchReviews onFailure: " + t.getMessage());
             }
         });
     }
+
 
     private void submitReview() {
         String comment = binding.commentInput.getEditText().getText().toString();
@@ -161,7 +179,7 @@ public class ReviewFragment extends Fragment {
                         BaseResponse<Review> body = response.body();
                         Review review = body.getData();
                         allReviews.add(0, review);
-                        adapter.submitList(new ArrayList<>(allReviews));
+                        showVisibleReviews();
                         updateEmptyState(allReviews);
                         binding.commentInput.getEditText().setText("");
                         binding.ratingBar.setRating(5f);
@@ -193,7 +211,7 @@ public class ReviewFragment extends Fragment {
             public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
                 if (response.isSuccessful()) {
                     allReviews.remove(review);
-                    adapter.submitList(allReviews);
+                    showVisibleReviews();
                     updateEmptyState(allReviews);
                     Toast.makeText(requireContext(), "Deleted successful", Toast.LENGTH_SHORT).show();
                 }
@@ -347,7 +365,15 @@ public class ReviewFragment extends Fragment {
 
     private void filterReviewsByRating(int position) {
         if (position == 0) {
-            adapter.submitList(new ArrayList<>(allReviews));
+            showVisibleReviews();
+            updateEmptyState(allReviews);
+
+            if (allReviews.size() > visibleCount) {
+                binding.btnShowMore.setVisibility(View.VISIBLE);
+            } else {
+                binding.btnShowMore.setVisibility(View.GONE);
+            }
+
         } else {
             int selectedRating = position;
             List<Review> filtered = new ArrayList<>();
@@ -358,8 +384,10 @@ public class ReviewFragment extends Fragment {
             }
             adapter.submitList(filtered);
             updateEmptyState(filtered);
+            binding.btnShowMore.setVisibility(View.GONE);
         }
     }
+
 
     private void updateEmptyState(List<Review> list) {
         if (list.isEmpty()) {
@@ -367,5 +395,10 @@ public class ReviewFragment extends Fragment {
         } else {
             binding.emptyTextView.setVisibility(View.GONE);
         }
+    }
+
+    private void showVisibleReviews() {
+        int end = Math.min(visibleCount, allReviews.size());
+        adapter.submitList(new ArrayList<>(allReviews.subList(0, end)));
     }
 }

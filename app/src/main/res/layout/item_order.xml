@@ -5,7 +5,8 @@
     android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:background="#6AA49D6A">
 
     <ImageView
         android:id="@+id/imgItem"

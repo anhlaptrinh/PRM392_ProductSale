@@ -119,7 +119,12 @@
                 new AlertDialog.Builder(this)
                         .setTitle("Thoát thanh toán?")
                         .setMessage("Đơn hàng đã được tạo và sẽ hết hạn nếu bạn không hoàn tất thanh toán MOMO.")
-                        .setPositiveButton("Thoát", (dialogInterface, i) -> finish())
+                        .setPositiveButton("Thoát", (dialogInterface, i) -> {
+                            Intent intent = new Intent(MomoPaymentActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish(); // đóng MomoPaymentActivity
+                        })
                         .setNegativeButton("Tiếp tục", null)
                         .show();
             }

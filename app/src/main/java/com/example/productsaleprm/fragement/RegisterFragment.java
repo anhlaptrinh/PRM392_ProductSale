@@ -80,7 +80,7 @@ public class RegisterFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getContext(), "Error sending OTP:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error sending OTP: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -131,36 +131,49 @@ public class RegisterFragment extends Fragment {
         });
     }
 
+    // Validate tất cả các trường và hiển thị lỗi đồng thời
     private boolean isValidInput(String email, String otp, String username, String phone, String address, String password, String confirmPassword) {
+        boolean isValid = true;
+
         if (TextUtils.isEmpty(email)) {
             etEmail.setError("Please enter email");
-            return false;
+            isValid = false;
         }
+
         if (TextUtils.isEmpty(otp)) {
             etVerificationCode.setError("Please enter verification code");
-            return false;
+            isValid = false;
         }
+
         if (TextUtils.isEmpty(username)) {
             etUsername.setError("Please enter username");
-            return false;
+            isValid = false;
         }
+
         if (TextUtils.isEmpty(phone)) {
             etPhone.setError("Please enter phone number");
-            return false;
+            isValid = false;
         }
+
         if (TextUtils.isEmpty(address)) {
             etAddress.setError("Please enter address");
-            return false;
+            isValid = false;
         }
+
         if (TextUtils.isEmpty(password)) {
             etPassword.setError("Please enter password");
-            return false;
+            isValid = false;
         }
-        if (!password.equals(confirmPassword)) {
+
+        if (TextUtils.isEmpty(confirmPassword)) {
+            etConfirmPassword.setError("Please confirm password");
+            isValid = false;
+        } else if (!password.equals(confirmPassword)) {
             etConfirmPassword.setError("Passwords do not match");
-            return false;
+            isValid = false;
         }
-        return true;
+
+        return isValid;
     }
 
     private void showErrorFromResponse(Response<?> response) {

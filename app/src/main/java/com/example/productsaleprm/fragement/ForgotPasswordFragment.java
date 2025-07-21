@@ -67,13 +67,13 @@ public class ForgotPasswordFragment extends Fragment {
                     Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     ((MainAuthActivity) requireActivity()).loadFragment(new LoginFragment());
                 } else {
-                    showErrorFromResponse(response);
+                    handleErrorResponse(response);
                 }
             }
 
             @Override
             public void onFailure(Call<GenericResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Connection error:" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Connection error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -86,13 +86,23 @@ public class ForgotPasswordFragment extends Fragment {
         return true;
     }
 
-    private void showErrorFromResponse(Response<?> response) {
-        String errorMsg = "Email could not be sent. Please try again.";
-        try {
-            if (response.errorBody() != null) {
-                errorMsg = response.errorBody().string();
-            }
-        } catch (Exception ignored) {}
-        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_LONG).show();
+    private void handleErrorResponse(Response<?> response) {
+        String message = "Failed to send reset email.";
+
+        if (response.code() == 404) {
+            message = "Email not found!";
+        } else if (response.code() == 400) {
+            message = "Wrong email !";
+        } else {
+            try {
+                if (response.errorBody() != null) {
+                    message = "Error: " + response.code() + " - " + response.errorBody().string();
+                } else {
+                    message = "Error: " + response.code();
+                }
+            } catch (Exception ignored) {}
+        }
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 }

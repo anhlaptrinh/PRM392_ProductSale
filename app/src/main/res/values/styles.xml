@@ -21,4 +21,8 @@
     <style name="RatingBarGold" parent="Theme.MaterialComponents.DayNight">
         <item name="colorControlActivated">#FFD700</item> <!-- màu vàng -->
     </style>
+    <style name="ShapeAppearanceOverlay.App.RoundedImage" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 </resources>

@@ -31,7 +31,7 @@ public class LoginFragment extends Fragment {
     private EditText etUsername, etPassword;
     private Button btnLogin, btnRegister;
     private TextView tvForgotPassword;
-    private ProgressBar progressBar; // ✅ Thêm ProgressBar
+    private ProgressBar progressBar;
 
     public LoginFragment() {}
 
@@ -55,7 +55,7 @@ public class LoginFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btnLogin);
         btnRegister = view.findViewById(R.id.btnRegister);
         tvForgotPassword = view.findViewById(R.id.tvForgotPassword);
-        progressBar = view.findViewById(R.id.progressBarLogin); // ✅ Gán view ProgressBar
+        progressBar = view.findViewById(R.id.progressBarLogin);
     }
 
     private void setupListeners() {
@@ -70,7 +70,6 @@ public class LoginFragment extends Fragment {
 
         if (!isValidInput(email, password)) return;
 
-        // ✅ Hiển thị loading
         progressBar.setVisibility(View.VISIBLE);
         btnLogin.setEnabled(false);
 
@@ -79,18 +78,23 @@ public class LoginFragment extends Fragment {
         authApi.login(email, password).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
-                // ✅ Ẩn loading sau phản hồi
                 progressBar.setVisibility(View.GONE);
                 btnLogin.setEnabled(true);
 
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getData();
-                    Log.d("JWT_TOKEN", "Token Login nhận được: " + token);
+                    Log.d("JWT_TOKEN", "Token received: " + token);
                     saveToken(token);
                     Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                     goToMainActivity();
                 } else {
-                    showErrorFromResponse(response);
+                    if (response.code() == 401) {
+                        Toast.makeText(getContext(), "Incorrect email or password!", Toast.LENGTH_SHORT).show();
+                    } else if (response.code() == 400) {
+                        Toast.makeText(getContext(), "Wrong Password", Toast.LENGTH_SHORT).show();
+                    } else {
+                        showErrorFromResponse(response);
+                    }
                 }
             }
 
@@ -103,16 +107,21 @@ public class LoginFragment extends Fragment {
         });
     }
 
+    // Bắt lỗi đồng thời cho tất cả các trường
     private boolean isValidInput(String email, String password) {
+        boolean isValid = true;
+
         if (TextUtils.isEmpty(email)) {
             etUsername.setError("Please enter email");
-            return false;
+            isValid = false;
         }
+
         if (TextUtils.isEmpty(password)) {
             etPassword.setError("Please enter password");
-            return false;
+            isValid = false;
         }
-        return true;
+
+        return isValid;
     }
 
     private void saveToken(String token) {
@@ -127,12 +136,15 @@ public class LoginFragment extends Fragment {
     }
 
     private void showErrorFromResponse(Response<LoginResponse> response) {
-        String message = "Wrong email or password!";
+        String message = "Unknown error!";
         try {
             if (response.errorBody() != null) {
-                message = response.errorBody().string();
+                message = "Error: " + response.code() + " - " + response.errorBody().string();
+            } else {
+                message = "Error: " + response.code();
             }
         } catch (Exception ignored) {}
+
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 

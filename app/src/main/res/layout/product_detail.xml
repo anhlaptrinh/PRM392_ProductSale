@@ -42,7 +42,7 @@
         </RelativeLayout>
 
         <!-- Product Image -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:src="@drawable/pant"
             android:layout_marginTop="20dp"
             android:id="@+id/imageProduct"
@@ -52,7 +52,8 @@
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
+            app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.App.RoundedImage"/>
 
         <!-- Title -->
         <TextView
@@ -79,8 +80,7 @@
             android:numStars="5"
             android:rating="4"
             android:stepSize="0.5"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+
             android:theme="@style/RatingBarGold"
             app:layout_constraintTop_toBottomOf="@id/textTitle"
             app:layout_constraintStart_toStartOf="parent" />

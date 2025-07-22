@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.productsaleprm.R;
+import com.example.productsaleprm.activity.ProductDetailActivity;
 import com.example.productsaleprm.adapter.ReviewAdapter;
 import com.example.productsaleprm.databinding.FragmentReviewBinding;
 import com.example.productsaleprm.model.Review;
@@ -183,6 +184,11 @@ public class ReviewFragment extends Fragment {
                         updateEmptyState(allReviews);
                         binding.commentInput.getEditText().setText("");
                         binding.ratingBar.setRating(5f);
+
+                        // Load lại product detail sau khi submit review
+                        if (getActivity() instanceof ProductDetailActivity) {
+                            ((ProductDetailActivity) getActivity()).loadProductDetail(productId);
+                        }
                         Toast.makeText(requireContext(), "Commented successful", Toast.LENGTH_SHORT).show();
                     } else if (response.code() == 400) {
                         Toast.makeText(requireContext(), "You already reviewed this product", Toast.LENGTH_SHORT).show();

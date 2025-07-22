@@ -94,7 +94,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void loadProductDetail(int productId) {
+    public void loadProductDetail(int productId) {
         Call<ProductResponse> call = productAPI.getProductById(productId);
         call.enqueue(new Callback<ProductResponse>() {
             @Override

@@ -1,148 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    android:padding="16dp">
 
-    <!-- Nút Home thay nút Back -->
-    <ImageView
-        android:id="@+id/btnHome"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:src="@drawable/ic_home"
-        app:tint="@android:color/black"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp" />
-
-    <!-- Icon tick xanh -->
-    <ImageView
-        android:id="@+id/ivSuccess"
-        android:layout_width="248dp"
-        android:layout_height="269dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/ic_success" />
-
-    <!-- Tiêu đề -->
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_below="@id/ivSuccess"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ORDER SUCCESSFUL"
-        android:textColor="@color/colorTextPrimary"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"/>
-
-    <!-- Nội dung mô tả -->
-    <TextView
-        android:id="@+id/tvDescription"
-        android:layout_below="@id/tvTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Your payment has been successfully! Details of transaction are include below."
-        android:textColor="#777"
-        android:textAlignment="center"
-        android:layout_marginTop="12dp"/>
+        android:layout_height="wrap_content">
 
-    <!-- Divider -->
-    <View
-        android:layout_below="@id/tvDescription"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCC"
-        android:layout_marginTop="16dp"/>
+        <!-- Nút Home -->
+        <ImageView
+            android:id="@+id/btnHome"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_home"
+            app:tint="@android:color/black"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp" />
 
-    <!-- Thông tin đơn -->
-    <TextView
-        android:id="@+id/tvItems"
-        android:layout_below="@id/tvDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Summary"
-        android:textColor="@color/colorTextPrimary"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp"/>
+        <!-- Nút Screenshot -->
+        <ImageView
+            android:id="@+id/btnScreenshot"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_camera"
+            android:layout_alignTop="@id/btnHome"
+            android:layout_alignParentEnd="true" />
 
-    <!-- Tổng tiền -->
-    <TextView
-        android:id="@+id/tvTotalLabel"
-        android:layout_below="@id/tvItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TOTAL AMOUNT PAID"
-        android:textColor="#555"
-        android:layout_marginTop="16dp"/>
+        <!-- Icon tick xanh -->
+        <ImageView
+            android:id="@+id/ivSuccess"
+            android:layout_width="248dp"
+            android:layout_height="269dp"
+            android:layout_below="@id/btnHome"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_success" />
 
-    <TextView
-        android:id="@+id/tvTotalAmount"
-        android:layout_alignBaseline="@id/tvTotalLabel"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="$550.00"
-        android:textColor="#000"
-        android:textStyle="bold"/>
+        <!-- Tiêu đề -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_below="@id/ivSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ORDER SUCCESSFUL"
+            android:textColor="@color/colorTextPrimary"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"/>
 
-    <!-- Divider -->
-    <View
-        android:layout_below="@id/tvTotalLabel"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCC"
-        android:layout_marginTop="16dp"/>
+        <!-- Nội dung mô tả -->
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_below="@id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your payment has been successfully! Details of transaction are included below."
+            android:textColor="#777"
+            android:textAlignment="center"
+            android:layout_marginTop="12dp"/>
 
-    <!-- Payment Method -->
-    <TextView
-        android:id="@+id/tvPayedLabel"
-        android:layout_below="@id/tvTotalLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PAYED BY"
-        android:textColor="#555"
-        android:layout_marginTop="32dp"/>
+        <!-- Divider -->
+        <View
+            android:id="@+id/viewDivider1"
+            android:layout_below="@id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/tvPayedBy"
-        android:layout_alignBaseline="@id/tvPayedLabel"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PAYTM"
-        android:textColor="#000"
-        android:textStyle="bold"/>
+        <!-- Summary -->
+        <TextView
+            android:id="@+id/tvItems"
+            android:layout_below="@id/viewDivider1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Summary"
+            android:textColor="@color/colorTextPrimary"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"/>
 
-    <!-- Divider -->
-    <View
-        android:layout_below="@id/tvPayedLabel"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCC"
-        android:layout_marginTop="16dp"/>
+        <!-- Tổng tiền -->
+        <TextView
+            android:id="@+id/tvTotalLabel"
+            android:layout_below="@id/tvItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TOTAL AMOUNT PAID"
+            android:textColor="#555"
+            android:layout_marginTop="16dp"/>
 
-    <!-- Ngày giao dịch -->
-    <TextView
-        android:id="@+id/tvDateLabel"
-        android:layout_below="@id/tvPayedLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TRANSACTION DATE"
-        android:textColor="#555"
-        android:layout_marginTop="32dp"/>
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:layout_alignBaseline="@id/tvTotalLabel"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$550.00"
+            android:textColor="#000"
+            android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_alignBaseline="@id/tvDateLabel"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="22 Aug 2020, 05:25 AM"
-        android:textColor="#000"
-        android:textStyle="bold"/>
+        <!-- Divider -->
+        <View
+            android:id="@+id/viewDivider2"
+            android:layout_below="@id/tvTotalLabel"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginTop="16dp"/>
 
-</RelativeLayout>
+        <!-- Payment Method -->
+        <TextView
+            android:id="@+id/tvPayedLabel"
+            android:layout_below="@id/viewDivider2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAYED BY"
+            android:textColor="#555"
+            android:layout_marginTop="32dp"/>
+
+        <TextView
+            android:id="@+id/tvPayedBy"
+            android:layout_alignBaseline="@id/tvPayedLabel"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAYTM"
+            android:textColor="#000"
+            android:textStyle="bold"/>
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/viewDivider3"
+            android:layout_below="@id/tvPayedLabel"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Ngày giao dịch -->
+        <TextView
+            android:id="@+id/tvDateLabel"
+            android:layout_below="@id/viewDivider3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRANSACTION DATE"
+            android:textColor="#555"
+            android:layout_marginTop="32dp"/>
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_alignBaseline="@id/tvDateLabel"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22 Aug 2020, 05:25 AM"
+            android:textColor="#000"
+            android:textStyle="bold"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOrderItems"
+            android:layout_below="@id/tvDateLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            />
+        <!-- Empty State -->
+        <LinearLayout
+            android:id="@+id/emptyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="24dp">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_cart_pretty" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your cart is empty"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:textColor="@android:color/darker_gray" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

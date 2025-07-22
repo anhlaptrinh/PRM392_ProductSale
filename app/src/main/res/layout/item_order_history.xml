@@ -45,10 +45,15 @@
                 android:text="$464.30"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:textColor="#4CAF50"
+                android:textColor="@color/black"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:layout_marginEnd="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_price_chip"/>
 
             <ImageView
                 android:id="@+id/btnArrow"
@@ -76,6 +81,35 @@
             android:orientation="horizontal"
             android:gravity="center">
 
+            <!-- Pending -->
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/iconPending"
+                    android:src="@drawable/ic_radio_button_unchecked"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:text="Pending"
+                    android:textSize="12sp"
+                    android:textColor="#212121"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Line -->
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.1"
+                android:layout_height="2dp"
+                android:background="#BDBDBD" />
             <!-- Shipped -->
             <LinearLayout
                 android:layout_weight="1"
@@ -91,7 +125,7 @@
                     android:layout_height="24dp" />
 
                 <TextView
-                    android:text="Shipped"
+                    android:text="Shipping"
                     android:textSize="12sp"
                     android:textColor="#212121"
                     android:layout_marginTop="4dp"
@@ -121,9 +155,38 @@
                     android:layout_height="24dp" />
 
                 <TextView
-                    android:text="Arrives"
+                    android:text="Arrived"
                     android:textSize="12sp"
                     android:textColor="#212121"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Line -->
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.1"
+                android:layout_height="2dp"
+                android:background="#BDBDBD" />
+
+            <!-- Cancelled -->
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/iconCancelled"
+                    android:src="@drawable/ic_radio_button_unchecked"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" />
+
+                <TextView
+                    android:text="Cancelled"
+                    android:textSize="12sp"
                     android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

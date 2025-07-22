@@ -18,11 +18,9 @@ public class Product {
     private boolean isFavorite;
     @SerializedName("wishlistId")
     private Integer wishlistId;
-    @SerializedName("ratingAverage")
     private Float ratingAverage;
 
-
-    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName,boolean isFavorite,Integer wishlistId,Float ratingAverage) {
+    public Product(int id, String productName, String briDesc, String fullDesc, String technic, BigDecimal price, String imageURL, int categoryID, String categoryName,boolean isFavorite,Integer wishlistId, Float ratingAverage) {
         this.id = id;
         this.productName = productName;
         this.briDesc = briDesc;

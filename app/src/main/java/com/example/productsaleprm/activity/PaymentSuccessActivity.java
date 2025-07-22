@@ -26,7 +26,6 @@ public class PaymentSuccessActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String paymentMethod = intent.getStringExtra("PAYMENT_METHOD");
 
-        if ("COD".equalsIgnoreCase(paymentMethod)) {
             int orderId = intent.getIntExtra("ORDER_ID", -1);
             String totalAmount = intent.getStringExtra("TOTAL_AMOUNT");
             String paymentDateStr = intent.getStringExtra("PAYMENT_DATE");
@@ -45,7 +44,6 @@ public class PaymentSuccessActivity extends AppCompatActivity {
             String formattedDate = paymentDate.format(formatter);
 
             binding.tvDate.setText(formattedDate);
-        }
 
         binding.btnHome.setOnClickListener(v -> {
             Intent intent2 = new Intent(PaymentSuccessActivity.this, MainActivity.class);

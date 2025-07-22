@@ -5,6 +5,8 @@
     import android.widget.ImageView;
     import android.widget.Toast;
 
+    import androidx.activity.result.ActivityResultLauncher;
+    import androidx.activity.result.contract.ActivityResultContracts;
     import androidx.annotation.Nullable;
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,7 +34,8 @@
         private RecyclerView rvOrders;
         private OrderHistoryAdapter adapter;
         private List<Order> orderList;
-
+        private int currentUserId = -1;
+        private ActivityResultLauncher<Intent> orderDetailLauncher;
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -49,10 +52,23 @@
             adapter = new OrderHistoryAdapter(this, orderList, order -> {
                 Intent intent = new Intent(this, OrderDetailActivity.class);
                 intent.putExtra("ORDER_ID", order.getId());
-                startActivity(intent);
+                orderDetailLauncher.launch(intent);
             });
 
             rvOrders.setAdapter(adapter);
+
+            orderDetailLauncher = registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK) {
+                            Intent data = result.getData();
+                            boolean updated = data != null && data.getBooleanExtra("ORDER_UPDATED", false);
+                            if (updated && currentUserId != -1) {
+                                fetchOrdersFromApi(currentUserId); // gọi lại API để reload đơn hàng
+                            }
+                        }
+                    }
+            );
 
             // Gọi API lấy user trước → khi có user mới gọi API lấy đơn hàng
             getCurrentUserAndLoadOrders();
@@ -65,6 +81,7 @@
                 public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
                     if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                         User user = response.body().getData();
+                        currentUserId = user.getId(); // lưu lại để dùng sau
                         fetchOrdersFromApi(user.getId());  // ✅ Gọi ở đây để đảm bảo user đã sẵn sàng
                     } else {
                         Toast.makeText(OrderHistoryActivity.this, "Không tìm thấy User!", Toast.LENGTH_SHORT).show();

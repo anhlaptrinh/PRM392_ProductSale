@@ -6,6 +6,7 @@ import com.example.productsaleprm.model.response.BaseResponse;
 import com.example.productsaleprm.model.response.CartItemResponse;
 import com.example.productsaleprm.model.response.OrderDetailResponse;
 import com.example.productsaleprm.model.response.PaymentResponse;
+import com.example.productsaleprm.model.response.PaymentSuccessResponse;
 import com.example.productsaleprm.model.resquest.CreateOrderRequest;
 import com.example.productsaleprm.model.resquest.ReorderRequest;
 import com.google.gson.JsonElement;
@@ -37,4 +38,7 @@ public interface OrderApi {
 
     @POST("/api/orders/reorder")
     Call<BaseResponse<Boolean>> reorder(@Body ReorderRequest request);
+
+    @GET("api/payment/status/{orderId}")
+    Call<PaymentSuccessResponse> getPaymentStatus(@Path("orderId") int orderId);
 }

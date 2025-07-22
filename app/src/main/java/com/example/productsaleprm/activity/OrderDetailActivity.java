@@ -44,7 +44,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.btnBack.setOnClickListener(v -> {
-            finish(); // quay lại màn hình trước
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("ORDER_UPDATED", true);
+            setResult(RESULT_OK, resultIntent);
+            finish();
         });
         int orderId = getIntent().getIntExtra("ORDER_ID", -1);
         if (orderId == -1) {
@@ -65,6 +68,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                         Toast.makeText(OrderDetailActivity.this, "Đã đánh dấu đơn hàng hoàn thành", Toast.LENGTH_SHORT).show();
                         binding.tvStatus.setText("Status: Arrived");
                         binding.btnArrived.setVisibility(View.GONE); // ẩn nút sau khi cập nhật
+
+                        binding.btnReorder.setVisibility(View.VISIBLE);
                     } else {
                         Toast.makeText(OrderDetailActivity.this, "Cập nhật trạng thái thất bại", Toast.LENGTH_SHORT).show();
                     }
@@ -187,6 +192,13 @@ public class OrderDetailActivity extends AppCompatActivity {
                         binding.btnArrived.setVisibility(View.GONE);
                     } else {
                         binding.btnArrived.setVisibility(View.VISIBLE);
+                    }
+
+                    // 👉 Ẩn nút "Reorder" nếu trạng thái là "shipping"
+                    if ("shipping".equalsIgnoreCase(order.getOrderStatus())) {
+                        binding.btnReorder.setVisibility(View.GONE);
+                    } else {
+                        binding.btnReorder.setVisibility(View.VISIBLE);
                     }
                 } else {
                     Toast.makeText(OrderDetailActivity.this, "Failed to load order info", Toast.LENGTH_SHORT).show();

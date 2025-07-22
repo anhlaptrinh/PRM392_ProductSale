@@ -12,7 +12,7 @@ val localProperties = Properties().apply {
     }
 }
 val googleMapsKey = localProperties.getProperty("google.maps.key") ?: ""
-val baseUrl = localProperties.getProperty("base.url") ?: ""
+val baseUrl = localProperties.getProperty("base.url") ?: "http://10.0.3.2:8080/"
 
 android {
     namespace = "com.example.productsaleprm"

@@ -1,7 +1,7 @@
 package com.example.productsaleprm.fragement;
 import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.os.Bundle;
@@ -52,7 +52,7 @@ public class CategoryFragment extends Fragment {
 
     private void setupCategoryRecyclerView() {
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
-        rvCategories.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvCategories.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 💡 2 cột
         rvCategories.setAdapter(categoryAdapter);
     }
 

@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
     private void setupCategory() {
         categoryList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(getContext(), categoryList);
-        binding.rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.rvCategories.setLayoutManager(new GridLayoutManager(getContext(), 2));
         binding.rvCategories.setAdapter(categoryAdapter);
 
         CategoryAPI categoryAPI = RetrofitClient.getClient(getContext()).create(CategoryAPI.class);

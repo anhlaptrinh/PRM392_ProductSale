@@ -50,6 +50,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             finish();
         });
         int orderId = getIntent().getIntExtra("ORDER_ID", -1);
+        String orderStatus = getIntent().getStringExtra("ORDER_STATUS");
         if (orderId == -1) {
             Toast.makeText(this, "Order ID not found", Toast.LENGTH_SHORT).show();
             finish();
@@ -61,15 +62,13 @@ public class OrderDetailActivity extends AppCompatActivity {
         loadOrderItems(orderId);
         loadOrderDetail(orderId);
         binding.btnArrived.setOnClickListener(view -> {
-            orderService.updateOrder(orderId).enqueue(new Callback<BaseResponse<Void>>() {
+            orderService.updateOrder(orderId , "arrived").enqueue(new Callback<BaseResponse<Void>>() {
                 @Override
                 public void onResponse(Call<BaseResponse<Void>> call, Response<BaseResponse<Void>> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(OrderDetailActivity.this, "Đã đánh dấu đơn hàng hoàn thành", Toast.LENGTH_SHORT).show();
                         binding.tvStatus.setText("Status: Arrived");
-                        binding.btnArrived.setVisibility(View.GONE); // ẩn nút sau khi cập nhật
-
-                        binding.btnReorder.setVisibility(View.VISIBLE);
+                        loadOrderDetail(orderId);
                     } else {
                         Toast.makeText(OrderDetailActivity.this, "Cập nhật trạng thái thất bại", Toast.LENGTH_SHORT).show();
                     }
@@ -81,6 +80,34 @@ public class OrderDetailActivity extends AppCompatActivity {
                 }
             });
         });
+
+        binding.btnCancel.setOnClickListener(v -> {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Xác nhận hủy đơn")
+                    .setMessage("Bạn có muốn hủy đơn hàng này không?")
+                    .setPositiveButton("Hủy đơn", (dialog, which) -> {
+                        // Gọi API cập nhật status thành "cancelled"
+                        orderService.updateOrder(orderId ,"cancelled").enqueue(new Callback<BaseResponse<Void>>() {
+                            @Override
+                            public void onResponse(Call<BaseResponse<Void>> call, Response<BaseResponse<Void>> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(OrderDetailActivity.this, "Đơn hàng đã được hủy", Toast.LENGTH_SHORT).show();
+                                    loadOrderDetail(orderId); // reload lại giao diện
+                                } else {
+                                    Toast.makeText(OrderDetailActivity.this, "Hủy đơn thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<BaseResponse<Void>> call, Throwable t) {
+                                Toast.makeText(OrderDetailActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .setNegativeButton("Đóng", null)
+                    .show();
+        });
+
 
         binding.btnReorder.setOnClickListener(v -> {
             binding.loadingOverlay.setVisibility(View.VISIBLE); // 👉 show loading
@@ -188,17 +215,34 @@ public class OrderDetailActivity extends AppCompatActivity {
                     binding.tvAddress.setText("Address: " + order.getAddress());
                     binding.tvTotalAmount.setText("Total Amount: $" + order.getTotal());
 
-                    if ("arrived".equalsIgnoreCase(order.getOrderStatus())) {
-                        binding.btnArrived.setVisibility(View.GONE);
-                    } else {
-                        binding.btnArrived.setVisibility(View.VISIBLE);
-                    }
+                    String status = order.getOrderStatus().toLowerCase();
 
-                    // 👉 Ẩn nút "Reorder" nếu trạng thái là "shipping"
-                    if ("shipping".equalsIgnoreCase(order.getOrderStatus())) {
-                        binding.btnReorder.setVisibility(View.GONE);
-                    } else {
-                        binding.btnReorder.setVisibility(View.VISIBLE);
+                    switch (status) {
+                        case "pending":
+                            binding.btnCancel.setVisibility(View.VISIBLE);
+                            binding.btnArrived.setVisibility(View.GONE);
+                            binding.btnReorder.setVisibility(View.GONE);
+                            break;
+
+                        case "shipping":
+                            binding.btnCancel.setVisibility(View.GONE);
+                            binding.btnArrived.setVisibility(View.VISIBLE);
+                            binding.btnReorder.setVisibility(View.GONE);
+                            break;
+
+                        case "arrived":
+                        case "cancelled":
+                            binding.btnCancel.setVisibility(View.GONE);
+                            binding.btnArrived.setVisibility(View.GONE);
+                            binding.btnReorder.setVisibility(View.VISIBLE);
+                            break;
+
+                        default:
+                            // fallback
+                            binding.btnCancel.setVisibility(View.GONE);
+                            binding.btnArrived.setVisibility(View.GONE);
+                            binding.btnReorder.setVisibility(View.GONE);
+                            break;
                     }
                 } else {
                     Toast.makeText(OrderDetailActivity.this, "Failed to load order info", Toast.LENGTH_SHORT).show();

@@ -88,7 +88,7 @@ dependencies {
     implementation ("com.google.android.flexbox:flexbox:3.0.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation ("com.makeramen:roundedimageview:2.3.0")
-
+    implementation ("com.auth0.android:jwtdecode:2.0.1")
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
     // Navigtaiton

@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    tools:ignore="HardcodedText">
 
     <item
         android:id="@+id/nav_account"
-        android:title="My Account" />
+        android:title="My Account"
+        android:icon="@drawable/ic_account" />
 
     <item
         android:id="@+id/nav_order_history"
-        android:title="Order History" />
+        android:title="Order History"
+        android:icon="@drawable/ic_history" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings" />
 
     <item
         android:id="@+id/nav_product"
-        android:title="Products" />
+        android:title="Products"
+        android:icon="@drawable/ic_product" />
 
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout"
+        android:icon="@drawable/ic_logout" />
 </menu>

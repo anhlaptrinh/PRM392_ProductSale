@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.auth0.android.jwt.JWT;
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.activity.MainActivity;
 import com.example.productsaleprm.activity.MainAuthActivity;
@@ -84,9 +85,25 @@ public class LoginFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getData();
                     Log.d("JWT_TOKEN", "Token received: " + token);
-                    saveToken(token);
-                    Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-                    goToMainActivity();
+
+                    try {
+                        JWT jwt = new JWT(token);
+                        String scope = jwt.getClaim("scope").asString(); // hoặc "role" nếu BE trả về "role"
+
+                        Log.d("JWT_ROLE", "Scope/Role: " + scope);
+
+                        if (scope != null && scope.equalsIgnoreCase("MEMBER")) {
+                            saveToken(token);
+                            Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                            goToMainActivity();
+                        } else {
+                            Toast.makeText(getContext(), "Only MEMBER can login!", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Invalid token format!", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     if (response.code() == 401) {
                         Toast.makeText(getContext(), "Incorrect email or password!", Toast.LENGTH_SHORT).show();
@@ -107,7 +124,6 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    // Bắt lỗi đồng thời cho tất cả các trường
     private boolean isValidInput(String email, String password) {
         boolean isValid = true;
 

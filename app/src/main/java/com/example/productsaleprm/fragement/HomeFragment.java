@@ -20,12 +20,10 @@ import com.example.productsaleprm.adapter.LookAdapter;
 import com.example.productsaleprm.adapter.ProductAdapter;
 import com.example.productsaleprm.databinding.FragmentHomeBinding;
 import com.example.productsaleprm.model.Brand;
-import com.example.productsaleprm.model.Category;
 import com.example.productsaleprm.model.Look;
 import com.example.productsaleprm.model.Product;
 import com.example.productsaleprm.model.response.CategoryListResponse;
 import com.example.productsaleprm.model.response.ProductListResponse;
-import com.example.productsaleprm.retrofit.CategoryAPI;
 import com.example.productsaleprm.retrofit.ProductAPI;
 import com.example.productsaleprm.retrofit.RetrofitClient;
 import com.example.productsaleprm.retrofit.WishListAPI;
@@ -41,13 +39,11 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    private List<Category> categoryList = new ArrayList<>();
     private List<String> bannerList = new ArrayList<>();
     private List<Brand> brandList = new ArrayList<>();
     private List<Look> lookList = new ArrayList<>();
     private List<Product> productList = new ArrayList<>();
 
-    private CategoryAdapter categoryAdapter;
     private ProductAdapter productAdapter;
 
     private int pendingApiCalls = 0;
@@ -65,47 +61,13 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         showLoading();
-
-        setupCategory();
         setupBanner();
         setupBrands();
         setupLooks();
         setupProducts();
     }
 
-    private void setupCategory() {
-        categoryList = new ArrayList<>();
-        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
-        binding.rvCategories.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.rvCategories.setAdapter(categoryAdapter);
 
-        CategoryAPI categoryAPI = RetrofitClient.getClient(getContext()).create(CategoryAPI.class);
-
-        pendingApiCalls++;
-        categoryAPI.getAllCategories().enqueue(new Callback<CategoryListResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<CategoryListResponse> call, @NonNull Response<CategoryListResponse> response) {
-                if (!isAdded() || binding == null) return;
-
-                if (response.isSuccessful() && response.body() != null && response.body().getCode() == 200) {
-                    categoryList.clear();
-                    categoryList.addAll(response.body().getData());
-                    categoryAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getContext(), "Unable to get categories", Toast.LENGTH_SHORT).show();
-                }
-                checkAllApiCompleted();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<CategoryListResponse> call, @NonNull Throwable t) {
-                if (!isAdded() || binding == null) return;
-                Log.e("CATEGORY_API", "Error calling API Category:" + t.getMessage(), t);
-                Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                checkAllApiCompleted();
-            }
-        });
-    }
 
     private void setupBanner() {
         bannerList.add("https://res.cloudinary.com/di9gy73rg/image/upload/v1752916959/banner1_cit5tt.jpg");

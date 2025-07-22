@@ -71,6 +71,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvPrice.setText("$ "+product.getPrice().toPlainString());
         Glide.with(context).load(product.getImageURL()).into(holder.ivProductImage);
 
+        if (product.getRatingAverage() != null && product.getRatingAverage() > 0f) {
+            holder.tvRating.setText("⭐ " + String.format("%.1f", product.getRatingAverage()));
+        } else {
+            holder.tvRating.setText("Chưa có đánh giá");
+        }
         // Set icon yêu thích
         if (product.isFavorite()) {
             holder.ivHeart.setImageResource(R.drawable.ic_heart_filled);
@@ -100,7 +105,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView ivProductImage, ivHeart;
-        TextView tvName, tvPrice;
+        TextView tvName, tvPrice , tvRating;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,6 +113,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             ivHeart = itemView.findViewById(R.id.ivHeart); // trái tim
             tvName = itemView.findViewById(R.id.tvProductName);
             tvPrice = itemView.findViewById(R.id.tvProductPrice);
+            tvRating = itemView.findViewById(R.id.tvProductRating);
         }
     }
 }

@@ -51,5 +51,12 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:paddingTop="2dp" />
+    <TextView
+        android:id="@+id/tvProductRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="⭐ 4.5"
+        android:textColor="#FFA000"
+        android:textSize="13sp"/>
 
 </LinearLayout>

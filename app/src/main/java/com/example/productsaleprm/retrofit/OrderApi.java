@@ -19,6 +19,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface OrderApi {
     @POST("/api/orders")
@@ -34,7 +35,10 @@ public interface OrderApi {
     Call<BaseResponse<OrderDetailResponse>> getOrderById(@Path("id") int orderId);
 
     @PUT("/api/orders/{id}")
-    Call<BaseResponse<Void>> updateOrder(@Path("id") int id);
+    Call<BaseResponse<Void>> updateOrder(
+            @Path("id") int orderId,
+            @Query("status") String status
+    );
 
     @POST("/api/orders/reorder")
     Call<BaseResponse<Boolean>> reorder(@Body ReorderRequest request);

@@ -47,14 +47,39 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.tvTotal.setText("$" + String.format("%.2f", order.getTotal()));
         holder.tvOrderId.setText("Order #" + order.getId());
 
-        // Icon Shipped
-        holder.iconShipped.setImageResource(
-                order.isShipped() ? R.drawable.ic_radio_button_checked : R.drawable.ic_radio_button_unchecked
-        );
-        // Icon Arrives
-        holder.iconArrives.setImageResource(
-                order.isArrived() ? R.drawable.ic_radio_button_checked : R.drawable.ic_radio_button_unchecked
-        );
+        // 1️⃣ Set tất cả icon mặc định là "unchecked" và hiển thị
+        holder.iconPending.setVisibility(View.VISIBLE);
+        holder.iconPending.setImageResource(R.drawable.ic_radio_button_unchecked);
+
+        holder.iconShipped.setVisibility(View.VISIBLE);
+        holder.iconShipped.setImageResource(R.drawable.ic_radio_button_unchecked);
+
+        holder.iconArrives.setVisibility(View.VISIBLE);
+        holder.iconArrives.setImageResource(R.drawable.ic_radio_button_unchecked);
+
+        holder.iconCancelled.setVisibility(View.VISIBLE);
+        holder.iconCancelled.setImageResource(R.drawable.ic_radio_button_unchecked);
+
+        // Chỉ hiển thị icon phù hợp
+        switch (order.getStatus()) {
+            case "pending":
+                holder.iconPending.setVisibility(View.VISIBLE);
+                holder.iconPending.setImageResource(R.drawable.ic_radio_button_checked);
+                break;
+            case "shipping":
+                holder.iconShipped.setVisibility(View.VISIBLE);
+                holder.iconShipped.setImageResource(R.drawable.ic_radio_button_checked);
+                break;
+            case "arrived":
+                holder.iconArrives.setVisibility(View.VISIBLE);
+                holder.iconArrives.setImageResource(R.drawable.ic_radio_button_checked);
+                break;
+            case "cancelled":
+                holder.iconCancelled.setVisibility(View.VISIBLE);
+                holder.iconCancelled.setImageResource(R.drawable.ic_radio_button_checked);
+                break;
+        }
+
 
         holder.itemOrderContainer.setOnClickListener(v -> listener.onOrderClick(order));
     }
@@ -66,7 +91,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvTotal, tvOrderId;
-        ImageView btnArrow, iconShipped, iconArrives;
+        ImageView btnArrow, iconShipped, iconArrives, iconPending, iconCancelled;
         CardView itemOrderContainer;
 
         public OrderViewHolder(@NonNull View itemView) {
@@ -75,8 +100,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             tvTotal = itemView.findViewById(R.id.tvOrderTotal);
             tvOrderId = itemView.findViewById(R.id.tvOrderId);
             btnArrow = itemView.findViewById(R.id.btnArrow);
+            iconPending = itemView.findViewById(R.id.iconPending);
             iconShipped = itemView.findViewById(R.id.iconShipped);
             iconArrives = itemView.findViewById(R.id.iconArrives);
+            iconCancelled = itemView.findViewById(R.id.iconCancelled);
             itemOrderContainer = itemView.findViewById(R.id.itemOrderContainer);
         }
     }

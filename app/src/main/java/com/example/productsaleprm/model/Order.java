@@ -6,8 +6,14 @@ public class Order {
     private int id;
     private String date;
     private BigDecimal total;
-    private boolean shipped;
-    private boolean arrived;
+    private String status;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     // Getter/Setter
     public int getId() { return id; }
@@ -25,10 +31,5 @@ public class Order {
     public void setDate(String date) { this.date = date; }
 
 
-    public boolean isShipped() { return shipped; }
-    public void setShipped(boolean shipped) { this.shipped = shipped; }
-
-    public boolean isArrived() { return arrived; }
-    public void setArrived(boolean arrived) { this.arrived = arrived; }
 }
 

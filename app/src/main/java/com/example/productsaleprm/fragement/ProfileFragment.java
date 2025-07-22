@@ -105,16 +105,11 @@ public class ProfileFragment extends Fragment {
 
     private void updateUser() {
         String updatedUsername = editUserBinding.usernameLayout.getEditText().getText().toString().trim();
-        String updatedEmail = editUserBinding.emailLayout.getEditText().getText().toString().trim();
         String updatedPhone = editUserBinding.phoneLayout.getEditText().getText().toString().trim();
         String updatedAddress = editUserBinding.addressLayout.getEditText().getText().toString().trim();
 
         if (updatedUsername.isEmpty()) {
             Toast.makeText(getContext(), "Username is empty!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!isValidEmail(updatedEmail)) {
-            Toast.makeText(getContext(), "Email is incorrect!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -130,7 +125,6 @@ public class ProfileFragment extends Fragment {
 
         // Cập nhật lại dữ liệu user bằng các giá trị đã nhập
         currentUser.setUsername(updatedUsername);
-        currentUser.setEmail(updatedEmail);
         currentUser.setPhoneNumber(updatedPhone);
         currentUser.setAddress(updatedAddress);
 
@@ -162,10 +156,6 @@ public class ProfileFragment extends Fragment {
             parent.addView(userInfoBinding.getRoot());
         }
         isEditing = false;
-    }
-
-    private boolean isValidEmail(String email) {
-        return email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isValidPhone(String phone) {

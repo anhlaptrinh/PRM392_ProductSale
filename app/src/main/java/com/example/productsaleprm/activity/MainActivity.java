@@ -1,20 +1,20 @@
 package com.example.productsaleprm.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import android.content.Intent;
-import android.os.Build;
-import android.content.pm.PackageManager;
-import androidx.core.app.ActivityCompat;
+
 import com.example.productsaleprm.R;
 import com.example.productsaleprm.databinding.ActivityMainBinding;
 import com.example.productsaleprm.fragement.CartFragment;
@@ -86,10 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Account Details", Toast.LENGTH_SHORT).show();
             }else if (id == R.id.nav_order_history) {
                 startActivity(new Intent(this, OrderHistoryActivity.class));
-            } else if (id == R.id.nav_settings) {
-                Toast.makeText(this, "Settings Opened", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_logout) {
-                Toast.makeText(this, "You are Logged Out", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_product) {
                 startActivity(new Intent(this, ProductActivity.class));
             }

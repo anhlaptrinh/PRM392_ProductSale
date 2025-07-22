@@ -8,7 +8,9 @@ import com.example.productsaleprm.model.resquest.RegisterRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface AuthApi {
@@ -26,6 +28,14 @@ public interface AuthApi {
 
     @POST("api/authentication/forgot-password")
     Call<GenericResponse> forgotPassword(@Query("email") String email);
+
+    @PUT("api/authentication/password-change")
+    Call<GenericResponse> changePassword(
+            @Header("Authorization") String authToken,
+            @Query("email") String email,
+            @Query("oldPassword") String oldPassword,
+            @Query("newPassword") String newPassword
+    );
 
 
 }

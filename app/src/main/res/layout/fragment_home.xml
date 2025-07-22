@@ -23,10 +23,12 @@
                 android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxHeight="300dp"
                 android:layout_marginTop="10dp"
                 android:overScrollMode="never"
-                android:paddingBottom="8dp"
-                android:scrollbars="none" />
+                android:scrollbars="none"
+                android:nestedScrollingEnabled="false"
+            />
 
             <!-- 3. Banner Carousel -->
             <androidx.viewpager2.widget.ViewPager2

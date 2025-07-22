@@ -1,5 +1,6 @@
 package com.example.productsaleprm.adapter;
-
+import android.widget.ImageView;
+import com.bumptech.glide.Glide;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categoryList.get(position);
         holder.tvName.setText(category.getCategoryName());
+        Glide.with(context)
+                .load(category.getImageUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .into(holder.ivCategoryImage);
     }
 
 
@@ -45,10 +50,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
+        ImageView ivCategoryImage;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvCategoryName);
+            ivCategoryImage = itemView.findViewById(R.id.ivCategoryImage);
         }
     }
 }

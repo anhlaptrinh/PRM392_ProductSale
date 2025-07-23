@@ -34,12 +34,12 @@ public interface OrderApi {
     @GET("/api/orders/{id}")
     Call<BaseResponse<OrderDetailResponse>> getOrderById(@Path("id") int orderId);
 
-    @PUT("/api/orders/{id}")
-    Call<BaseResponse<Void>> updateOrder(
+    @PUT("api/orders/{id}")
+    Call<BaseResponse> updateOrder(
             @Path("id") int orderId,
-            @Query("status") String status
+            @Query("status") String status,
+            @Query("date") String date // gửi ISO-8601 format
     );
-
     @POST("/api/orders/reorder")
     Call<BaseResponse<Boolean>> reorder(@Body ReorderRequest request);
 

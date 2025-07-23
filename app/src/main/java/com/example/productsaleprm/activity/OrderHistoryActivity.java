@@ -22,8 +22,12 @@
     import com.example.productsaleprm.retrofit.RetrofitClient;
     import com.example.productsaleprm.retrofit.UserAPI;
 
+    import java.text.SimpleDateFormat;
     import java.util.ArrayList;
+    import java.util.Collections;
+    import java.util.Date;
     import java.util.List;
+    import java.util.Locale;
 
     import retrofit2.Call;
     import retrofit2.Callback;
@@ -104,6 +108,18 @@
                     if (response.isSuccessful() && response.body() != null) {
                         orderList.clear();
                         orderList.addAll(response.body());
+                        // ✅ Sắp xếp theo ngày giảm dần (mới nhất trước)
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                        Collections.sort(orderList, (o1, o2) -> {
+                            try {
+                                Date d1 = sdf.parse(o1.getDate());
+                                Date d2 = sdf.parse(o2.getDate());
+                                return d2.compareTo(d1); // giảm dần
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return 0;
+                            }
+                        });
                         adapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(OrderHistoryActivity.this, "Không thể tìm thấy Orders", Toast.LENGTH_SHORT).show();

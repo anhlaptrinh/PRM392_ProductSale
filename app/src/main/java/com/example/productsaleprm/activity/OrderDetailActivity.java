@@ -62,9 +62,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         loadOrderItems(orderId);
         loadOrderDetail(orderId);
         binding.btnArrived.setOnClickListener(view -> {
-            orderService.updateOrder(orderId , "arrived").enqueue(new Callback<BaseResponse<Void>>() {
+            String isoDateNow = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault()).format(new Date());
+            orderService.updateOrder(orderId , "arrived", isoDateNow).enqueue(new Callback<BaseResponse>() {
                 @Override
-                public void onResponse(Call<BaseResponse<Void>> call, Response<BaseResponse<Void>> response) {
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(OrderDetailActivity.this, "Đã đánh dấu đơn hàng hoàn thành", Toast.LENGTH_SHORT).show();
                         binding.tvStatus.setText("Status: Arrived");
@@ -75,21 +76,23 @@ public class OrderDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<BaseResponse<Void>> call, Throwable t) {
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
                     Toast.makeText(OrderDetailActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
 
         binding.btnCancel.setOnClickListener(v -> {
+            String isoDateNow = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.getDefault()).format(new Date());
             new android.app.AlertDialog.Builder(this)
                     .setTitle("Xác nhận hủy đơn")
                     .setMessage("Bạn có muốn hủy đơn hàng này không?")
                     .setPositiveButton("Hủy đơn", (dialog, which) -> {
                         // Gọi API cập nhật status thành "cancelled"
-                        orderService.updateOrder(orderId ,"cancelled").enqueue(new Callback<BaseResponse<Void>>() {
+                        orderService.updateOrder(orderId ,"cancelled",isoDateNow).enqueue(new Callback<BaseResponse>() {
                             @Override
-                            public void onResponse(Call<BaseResponse<Void>> call, Response<BaseResponse<Void>> response) {
+                            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
                                 if (response.isSuccessful()) {
                                     Toast.makeText(OrderDetailActivity.this, "Đơn hàng đã được hủy", Toast.LENGTH_SHORT).show();
                                     loadOrderDetail(orderId); // reload lại giao diện
@@ -99,8 +102,9 @@ public class OrderDetailActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<BaseResponse<Void>> call, Throwable t) {
+                            public void onFailure(Call<BaseResponse> call, Throwable t) {
                                 Toast.makeText(OrderDetailActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
                             }
                         });
                     })

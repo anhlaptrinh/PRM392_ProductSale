@@ -34,7 +34,7 @@ public interface OrderApi {
     @GET("/api/orders/{id}")
     Call<BaseResponse<OrderDetailResponse>> getOrderById(@Path("id") int orderId);
 
-    @PUT("api/orders/{id}")
+    @PUT("/api/orders/{id}")
     Call<BaseResponse> updateOrder(
             @Path("id") int orderId,
             @Query("status") String status,
